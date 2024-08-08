@@ -1,23 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import NavMenu from "./components/navbar/NavMenu";
+import Login from "./components/autho/Login";
+import Dashboard from "./components/pages/dashboard/Dashboard";
+import PublishMagazine from "./components/pages/dashboard/PublishMagazine";
+import NewMagIssue from "./components/pages/dashboard/NewMagIssue";
+import GenreCreate from "./components/pages/dashboard/GenreCreate";
+import ArticlesGenreView from "./components/pages/dashboard/ArticlesGenreView";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <BrowserRouter>
+      <NavMenu />
+      <Routes>
+        <Route path="/bmag" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/publish_magazine" element={<PublishMagazine />} />
+        <Route path="/new_mag_issue" element={<NewMagIssue />} />
+        <Route path="/genres_create" element={<GenreCreate />} />
+        <Route path="/article_genres_view" element={<ArticlesGenreView />} />
+
+
+
+      </Routes>
+
+
+      </BrowserRouter>
+      
     </div>
   );
 }
