@@ -1,5 +1,5 @@
 import axios from "axios"
-import { ARTICLE_BY_MAGAZINE_ISSUE, ARTICLES_BY_MAGAZINE_ISSUE, MAGAZINE_ARTICLE_GENRE_CREATE, MAGAZINE_ARTICLE_GENRE_VIEW, MAGAZINES_ISSUES_ERROR, NEW_ISSUE_SINGLE } from "./types"
+import { ARTICLE_BY_MAGAZINE_ISSUE, ARTICLES_BY_MAGAZINE_ISSUE, DELETE_ARTICLE, EDIT_ARTICLE_AUTHOR, EDIT_ARTICLE_CONTENT, EDIT_ARTICLE_TITLE, ISSUE_SINGLE, MAGAZINE_ARTICLE_GENRE_CREATE, MAGAZINE_ARTICLE_GENRE_VIEW, MAGAZINES_ISSUES_ERROR, NEW_ISSUE_SINGLE } from "./types"
 import { ApiUrl } from "../../helpers/ApiUrl"
 import { bmagtoken } from "../../helpers/Bmag"
 
@@ -28,6 +28,35 @@ export function getIssueAdmin() {
         }
     }
 }
+
+
+
+export function getSingleIssueAdmin(id) {
+
+    return async function(dispatch) {
+        try {
+
+            const response = await axios.get(`${ApiUrl}/adminmagaroute/maga_issue/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${bmagtoken}`
+                }
+            })
+
+            const singleIssue = response.data.singleIssue
+
+            dispatch({type: ISSUE_SINGLE, payload: singleIssue})
+              
+
+            
+        } catch (error) {
+            console.error(error)
+            dispatch({type: MAGAZINES_ISSUES_ERROR})
+            throw error
+        }
+    }
+}
+
+
 
 
 export function genreCreate(data) {
@@ -141,3 +170,124 @@ export function articleByMagIssue(id) {
 
 
 }
+
+
+export function editArticleContent(data, id) {
+
+return async function(dispatch) {
+
+    try {
+
+        const response = await axios.put(`${ApiUrl}/adminarticleroute/update_content/${id}`, data, {
+
+            headers: {
+                Authorization: `Bearer ${bmagtoken}`
+            }
+        })
+
+        dispatch({type: EDIT_ARTICLE_CONTENT})
+        alert(response.data.msg)
+         window.location.href = `/article_single/${id}`        
+    } catch (error) {
+
+        console.error(error)
+            dispatch({type: MAGAZINES_ISSUES_ERROR})
+            throw error
+
+        
+    }
+
+}
+
+}
+
+
+
+
+export function editArticleTitle(data, id) {
+
+    return async function(dispatch) {
+    
+        try {
+    
+            const response = await axios.put(`${ApiUrl}/adminarticleroute/update_title/${id}`, data, {
+    
+                headers: {
+                    Authorization: `Bearer ${bmagtoken}`
+                }
+            })
+    
+            dispatch({type: EDIT_ARTICLE_TITLE})
+            alert(response.data.msg)
+             window.location.href = `/article_single/${id}`        
+        } catch (error) {
+    
+            console.error(error)
+                dispatch({type: MAGAZINES_ISSUES_ERROR})
+                throw error
+    
+            
+        }
+    
+    }
+    
+    }
+
+
+
+    export function editArticleAuthor(data, id) {
+
+        return async function(dispatch) {
+        
+            try {
+        
+                const response = await axios.put(`${ApiUrl}/adminarticleroute/update_author/${id}`, data, {
+        
+                    headers: {
+                        Authorization: `Bearer ${bmagtoken}`
+                    }
+                })
+        
+                dispatch({type: EDIT_ARTICLE_AUTHOR})
+                alert(response.data.msg)
+                 window.location.href = `/article_single/${id}`        
+            } catch (error) {
+        
+                console.error(error)
+                    dispatch({type: MAGAZINES_ISSUES_ERROR})
+                    throw error
+        
+                
+            }
+        
+        }
+        
+        }
+
+
+       export function deleteArticle(id) {
+        return async function(dispatch) {
+
+            try {
+
+                const response = await axios.delete(`${ApiUrl}/adminarticleroute/delete_article/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${bmagtoken}`
+                    }
+                })
+
+               dispatch({type: DELETE_ARTICLE}) 
+               alert(response.data.msg)
+               window.location.href = "/new_mag_issue"
+                
+            } catch (error) {
+
+                console.error(error)
+                    dispatch({type: MAGAZINES_ISSUES_ERROR})
+                    throw error
+        
+                
+            }
+
+        }
+       } 
