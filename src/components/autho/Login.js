@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import "./auth.css"
 import { useDispatch } from 'react-redux'
 import { adminLogin } from '../../redux/actions/adminAuthAction'
 
