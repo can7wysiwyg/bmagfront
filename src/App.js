@@ -16,6 +16,10 @@ import EditArticleTitle from "./components/pages/dashboard/EditArticleTitle";
 import Home from "./components/pages/publico/Home";
 import PostDetails from "./components/pages/publico/PostDetails";
 import ArticlesByGenre from "./components/pages/publico/ArticlesByGenre";
+import ShowAllMagIssueArticles from "./components/pages/publico/ShowAllMagIssueArticles";
+import Footer from "./components/pages/publico/Footer";
+import About from "./components/pages/publico/About";
+import Contact from "./components/pages/publico/Contact";
 
 
 function App() {
@@ -40,10 +44,16 @@ function App() {
         <Route path="/edit_article_title/:id" element={<EditArticleTitle />} />
         <Route path="/post-details/:id" element={<PostDetails />} />
         <Route path="/article_by_genre/:id" element={<ArticlesByGenre />} />
+        <Route path="/show_all_mag_issue_articles/:id" element={<ShowAllMagIssueArticles />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
 
 
 
       </Routes>
+
+
+      <Footer />
 
 
       </BrowserRouter>

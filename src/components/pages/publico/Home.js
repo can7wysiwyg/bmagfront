@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { publicGetGenres, publicNewMagIssue } from '../../../redux/actions/publicAction'
 import moment from 'moment/moment';
-import { articlesAll } from '../../../redux/actions/magazineAction';
+import { articlesAll, magShowAll } from '../../../redux/actions/magazineAction';
 
 
 
@@ -12,6 +12,7 @@ export default function Home() {
     const categories = useSelector((state) => state.publicRdcr.categories)
     const newIssue = useSelector((state) => state.publicRdcr.newIssue)
     const articles = useSelector((state) => state.magRdcr.articles)
+    const magIssues = useSelector((state) => state.magRdcr.magIssues)
 
     useEffect(() => {
 
@@ -70,6 +71,26 @@ try {
     }, [dispatch]);
 
 
+    useEffect(() => {
+
+      const fetchData = async() => {
+
+        try {
+
+          await dispatch(magShowAll())
+          
+        } catch (error) {
+          console.error("there was a problem")
+        }
+
+      }
+
+      fetchData()
+
+
+    }, [dispatch])
+
+
     if(!categories || categories === undefined || categories === null) {
         return(<>
         <h5 className='text-center mt-5'>categories are loading</h5>
@@ -85,6 +106,10 @@ try {
     if(!articles) {
         return ""
     }
+
+    if(!magIssues) {
+      return ""
+  }
 
   
 
@@ -120,6 +145,23 @@ try {
                     }
           </ul>
         </div>
+
+        {/* here */}
+
+
+        <div className="widget">
+          <h5 className="widget-title"><span>Magazine Issues</span></h5>
+          <ul className="list-unstyled widget-list">
+
+          {
+                        magIssues?.map((mag) => (
+                            <li key={mag._id}><a className="d-flex" href={`/show_all_mag_issue_articles/${mag._id}`}>{mag.magazineIssue}</a></li>
+
+                        ))
+                    }
+          </ul>
+        </div>
+
     
         <div className="widget">
           <h5 className="widget-title"><span>Tags</span></h5>
@@ -150,7 +192,7 @@ try {
                 <img loading="lazy" className="mr-3 panoramic-image" src={issue.magazinePhoto} alt="post-thumb" width="70%" />
               </a>
               <div className="media-body">
-                <h5 className="h6 mb-0"><a href="post-elements.html">{issue.magazineIssue}</a></h5>
+                <h5 className="h6 mb-0"><a href={`/show_all_mag_issue_articles/${issue._id}`}>{issue.magazineIssue}</a></h5>
                 <small>released on{moment(issue.createdAt).format("MMM D YYYY")}</small>
               </div>
             </li>
@@ -187,7 +229,7 @@ try {
           </div>
           <div className="col-12 mx-auto">
             <h3>
-              <a className="post-title" href={`post-details/${article._id}`}>
+              <a className="post-title" href={`/post-details/${article._id}`}>
                 {article.articleTitle}
               </a>
             </h3>

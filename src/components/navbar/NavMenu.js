@@ -60,10 +60,10 @@ fetchCats()
 
 
               <li className="nav-item">
-                <a className="nav-link" href="about.html">About</a>
+                <a className="nav-link" href="/about">About</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="contact.html">Contact</a>
+                <a className="nav-link" href="/contact">Contact</a>
               </li>
               <li className="nav-item dropdown">
                 <p className="nav-link dropdown-toggle"  id="pagesDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
