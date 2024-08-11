@@ -13,7 +13,10 @@ import EditArticle from "./components/pages/dashboard/EditArticle";
 import EditArticleContent from "./components/pages/dashboard/EditArticleContent";
 import EditArticleAuthor from "./components/pages/dashboard/EditArticleAuthor";
 import EditArticleTitle from "./components/pages/dashboard/EditArticleTitle";
-import Home from "./components/navbar/Home";
+import Home from "./components/pages/publico/Home";
+import PostDetails from "./components/pages/publico/PostDetails";
+import ArticlesByGenre from "./components/pages/publico/ArticlesByGenre";
+
 
 function App() {
   return (
@@ -35,6 +38,8 @@ function App() {
         <Route path="/edit_article_content/:id" element={<EditArticleContent />} />
         <Route path="/edit_article_author/:id" element={<EditArticleAuthor />} />
         <Route path="/edit_article_title/:id" element={<EditArticleTitle />} />
+        <Route path="/post-details/:id" element={<PostDetails />} />
+        <Route path="/article_by_genre/:id" element={<ArticlesByGenre />} />
 
 
 

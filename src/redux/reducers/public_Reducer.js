@@ -1,10 +1,13 @@
-import { PUBLIC_ERROR, PUBLIC_GET_GENRES, PUBLIC_SINGLE_MAG_ISSUE } from "../actions/types"
+import { PUBLIC_ERROR, PUBLIC_GET_GENRE, PUBLIC_GET_GENRES, PUBLIC_SINGLE_MAG_ISSUE } from "../actions/types"
 
 export function publicRdcr(state={}, action) {
 
     switch(action.type) {
         case PUBLIC_GET_GENRES:
             return {...state, categories: action.payload}
+
+        case PUBLIC_GET_GENRE:
+            return{...state, category: action.payload}    
 
         case PUBLIC_SINGLE_MAG_ISSUE:
             return{...state, newIssue: action.payload}

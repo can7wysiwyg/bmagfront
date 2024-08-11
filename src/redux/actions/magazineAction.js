@@ -1,5 +1,5 @@
 import axios from "axios"
-import { ARTICLE_BY_MAGAZINE_ISSUE, ARTICLES_BY_MAGAZINE_ISSUE, ARTICLES_SHOWING_ALL, DELETE_ARTICLE, EDIT_ARTICLE_AUTHOR, EDIT_ARTICLE_CONTENT, EDIT_ARTICLE_TITLE, ISSUE_SINGLE, MAGAZINE_ARTICLE_GENRE_CREATE, MAGAZINE_ARTICLE_GENRE_VIEW, MAGAZINES_ISSUES_ERROR, NEW_ISSUE_SINGLE } from "./types"
+import { ARTICLE_BY_MAGAZINE_ISSUE, ARTICLES_BY_GENRE, ARTICLES_BY_MAGAZINE_ISSUE, ARTICLES_SHOWING_ALL, DELETE_ARTICLE, EDIT_ARTICLE_AUTHOR, EDIT_ARTICLE_CONTENT, EDIT_ARTICLE_TITLE, ISSUE_SINGLE, MAGAZINE_ARTICLE_GENRE_CREATE, MAGAZINE_ARTICLE_GENRE_VIEW, MAGAZINES_ISSUES_ERROR, NEW_ISSUE_SINGLE } from "./types"
 import { ApiUrl } from "../../helpers/ApiUrl"
 import { bmagtoken } from "../../helpers/Bmag"
 
@@ -171,6 +171,27 @@ export function articleByMagIssue(id) {
 
 }
 
+export function ByGenreArticles(id) {
+
+    return async function(dispatch) {
+        try {
+
+            const response = await axios.get(`${ApiUrl}/articleroute/articles_by_genre/${id}`)
+
+            const articlesByGenre = response.data.articlesByGenre
+
+            dispatch({type: ARTICLES_BY_GENRE, payload: articlesByGenre})
+            
+        } catch (error) {
+
+            console.error(error)
+            dispatch({type: MAGAZINES_ISSUES_ERROR})
+            throw error
+
+            
+        }
+    }
+}
 
 
 export function  articlesAll() {

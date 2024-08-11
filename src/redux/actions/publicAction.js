@@ -1,5 +1,5 @@
 import axios from "axios"
-import { PUBLIC_ERROR, PUBLIC_GET_GENRES, PUBLIC_SINGLE_MAG_ISSUE } from "./types"
+import { PUBLIC_ERROR, PUBLIC_GET_GENRE, PUBLIC_GET_GENRES, PUBLIC_SINGLE_MAG_ISSUE } from "./types"
 import { ApiUrl } from "../../helpers/ApiUrl"
 
 
@@ -20,6 +20,27 @@ export function publicGetGenres() {
         }
     }
 }
+
+
+export function publicGetGenre(id) {
+    return async function(dispatch) {
+        try {
+
+            const response = await axios.get(`${ApiUrl}/genreroute/get_single_genre/${id}`)
+
+            const category = response.data.category
+            
+            dispatch({type: PUBLIC_GET_GENRE, payload: category})
+            
+        } catch (error) {
+            console.error(error)
+            dispatch({type: PUBLIC_ERROR})
+            throw error
+        }
+    }
+}
+
+
 
 
 export function publicNewMagIssue() {

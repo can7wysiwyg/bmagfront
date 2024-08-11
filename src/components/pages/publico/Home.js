@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { publicGetGenres, publicNewMagIssue } from '../../redux/actions/publicAction'
+import { publicGetGenres, publicNewMagIssue } from '../../../redux/actions/publicAction'
 import moment from 'moment/moment';
-import { articlesAll } from '../../redux/actions/magazineAction';
+import { articlesAll } from '../../../redux/actions/magazineAction';
 
 
 
@@ -147,7 +147,7 @@ try {
 
                     <li key={issue._id} className="media widget-post align-items-center">
               <a href="post-elements.html">
-                <img loading="lazy" className="img-mr-3" src={issue.magazinePhoto} alt="post-thumb" width="70%" />
+                <img loading="lazy" className="mr-3 panoramic-image" src={issue.magazinePhoto} alt="post-thumb" width="70%" />
               </a>
               <div className="media-body">
                 <h5 className="h6 mb-0"><a href="post-elements.html">{issue.magazineIssue}</a></h5>
@@ -180,7 +180,7 @@ try {
               <img
                 loading="lazy"
                 src={article.articlePhoto}
-                className="img-fluid"
+                className="img-fluid panoramic-image"
                 alt="post-thumb"
               />
             </div>
@@ -207,10 +207,9 @@ try {
                 Tags : <a href="#!" className="ml-1">Tag1</a>, <a href="#!" className="ml-1">Tag2</a> 
               </li>
             </ul>
-            <p>{article.articleContent}</p> 
-            <a href={`post-details/${article.id}`} className="btn btn-outline-primary">
-              Continue Reading
-            </a>
+
+            <ArticleBody article={article} />
+            
           </div>
         </article>
       ))} 
@@ -229,4 +228,46 @@ try {
 
     </>
   )
+}
+
+
+const ArticleBody = ({article}) => {
+
+  const [isExpanded, setIsExpanded] = useState(false);
+  
+
+  const toggleExpansion = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  const {articleContent} = article
+  const maxChars = 150
+
+  const shouldShowSeeMore = articleContent.length > maxChars;
+
+
+
+
+  return(<>
+
+<p >
+            
+            {isExpanded ? articleContent : articleContent.slice(0, maxChars)}
+        {shouldShowSeeMore && (
+          <span onClick={toggleExpansion}>
+            {isExpanded ? `` : <a href={`post-details/${article._id}`} className="btn btn-outline-primary">continue reading</a> }
+          </span>
+        )}
+
+            </p>
+
+
+  {/* <p>{article.articleContent}</p> 
+            <a href={`post-details/${article.id}`} className="btn btn-outline-primary">
+              Continue Reading
+            </a> */}
+  
+  
+  </>)
+
 }

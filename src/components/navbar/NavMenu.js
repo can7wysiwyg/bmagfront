@@ -39,7 +39,7 @@ fetchCats()
       <div className="container">
         <nav className="navbar navbar-expand-lg navbar-white">
           <a className="navbar-brand" href="/">
-            <img className="img-fluid" width="150px" src="images/logo.png" alt="BMAG" />
+            <img className="img-fluid" width="150px" src="images/logo.png" alt="BIM" />
           </a>
           
 <button className="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navigation">
