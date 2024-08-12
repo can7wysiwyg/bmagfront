@@ -42,6 +42,13 @@ export default function EditArticle() {
         </ListGroup.Item>
       </ListGroup>
 
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+
+
+
       {/* Modal for Deleting Article */}
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>

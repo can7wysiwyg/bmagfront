@@ -96,6 +96,10 @@ const Magazine = ({magazine}) => {
             
           </div> 
 
+          <br></br>
+          <br></br>
+          <br></br>
+
 
     
     

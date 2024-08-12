@@ -9,6 +9,8 @@ import { articlesAll, magShowAll } from '../../../redux/actions/magazineAction';
 export default function Home() {
     
     const dispatch = useDispatch()
+    const [query, setQuery] = useState('');
+    const [suggestions, setSuggestions] = useState([]);
     const categories = useSelector((state) => state.publicRdcr.categories)
     const newIssue = useSelector((state) => state.publicRdcr.newIssue)
     const articles = useSelector((state) => state.magRdcr.articles)
@@ -91,6 +93,37 @@ try {
     }, [dispatch])
 
 
+    const handleSearchChange = (e) => {
+      const value = e.target.value;
+      setQuery(value);
+
+
+      if(value.length > 0) {
+        
+        const articleSuggestions = articles?.filter(article => 
+          article.articleTitle.toLowerCase().includes(value.toLowerCase())
+        );
+        const issueSuggestions = magIssues?.filter(issue => 
+          issue.magazineIssue.toLowerCase().includes(value.toLowerCase())
+        );
+  
+        setSuggestions([...articleSuggestions, ...issueSuggestions]);
+      } else {
+        setSuggestions([]);
+      }
+    };
+  
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      if (query.length > 0) {
+        dispatch(magShowAll(query)); 
+        dispatch(articlesAll(query)); 
+      }
+    };
+   
+  
+
+
     if(!categories || categories === undefined || categories === null) {
         return(<>
         <h5 className='text-center mt-5'>categories are loading</h5>
@@ -123,15 +156,38 @@ try {
     <div className="row">
       <aside className="col-lg-4 order-2 order-lg-1">
     
-        <div className="widget">
-          <h5 className="widget-title"><span>Search</span></h5>
-          <form action="/logbook-hugo/search" className="widget-search">
-            <input id="search-query" name="s" type="search" placeholder="Type &amp; Hit Enter..." />
-            <button type="submit">
-              <i className="ti-search"></i>
-            </button>
-          </form>
-        </div>
+        
+
+<div className="widget">
+      <h5 className="widget-title"><span>Search</span></h5>
+      <form onSubmit={handleSubmit} className="widget-search">
+        <input
+          id="search-query"
+          name="s"
+          type="search"
+          value={query}
+          onChange={handleSearchChange}
+          placeholder="Type &amp; Hit Enter..."
+        />
+        <button type="submit">
+          <i className="bi bi-search"></i>
+        </button>
+      </form>
+      
+      {suggestions.length > 0 && (
+        <ul className="suggestions-list" style={{listStyle: "none"}}>
+          {suggestions.map((item, index) => (
+            <li key={index}>
+            <a href={`post-details/${item._id}`} > {item.articleTitle} </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+
+      
+
+
     
         <div className="widget">
           <h5 className="widget-title"><span>Categories</span></h5>
@@ -304,10 +360,6 @@ const ArticleBody = ({article}) => {
             </p>
 
 
-  {/* <p>{article.articleContent}</p> 
-            <a href={`post-details/${article.id}`} className="btn btn-outline-primary">
-              Continue Reading
-            </a> */}
   
   
   </>)

@@ -89,6 +89,11 @@ export default function PublishMagazine() {
               </Col>
               </Row>
               </Container>
+              <br></br>
+
+              <br></br>
+              <br></br>
+              <br></br>
 
 
 

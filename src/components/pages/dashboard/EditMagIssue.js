@@ -2,12 +2,14 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
-import { editArticleTitle } from '../../../redux/actions/magazineAction';
+import { updateMagIssue } from '../../../redux/actions/magazineAction';
 
-
-export default function EditArticleTitle() {
+export default function EditMagIssue() {
     const {id} = useParams()
-    const[formData, setFormData] = useState({articleTitle: ""})
+    const[formData, setFormData] = useState({
+   magazineIssue: ""
+    })
+
     const dispatch = useDispatch()
 
     const handleInputChange = (e) => {
@@ -21,18 +23,20 @@ export default function EditArticleTitle() {
       const handleSubmit = async(event) => {
         event.preventDefault()
 
-        await dispatch(editArticleTitle(formData, id))
+        await dispatch(updateMagIssue(formData, id))
 
 
       }
     
 
 
-  return (
-    <> 
 
-<Container style={{marginTop: "4rem", fontFamily: "Times New Roman"}}>
-        <h4 className="text-center">Update Article Title</h4>
+
+
+  return (
+    <>
+    <Container style={{marginTop: "4rem", fontFamily: "Times New Roman"}}>
+        <h4 className="text-center">Update Magazine Issue</h4>
         <Row className="justify-content-md-center">
           <Col xs={12} md={6}>
       
@@ -41,30 +45,34 @@ export default function EditArticleTitle() {
                 
                 <Form.Control
                   type="text"
-                  name="articleTitle"
-                  value={ formData.articleTitle }
+                  name="magazineIssue"
+                  value={ formData.magazineIssue }
                   onChange={handleInputChange}
 
-                  placeholder="Article Title"
+                  placeholder="Magazine Issue"
                   required
                 />
               </Form.Group>
 
 
 
-            <Button type="submit">Update Article Title</Button>
+            <Button type="submit">Update Magazine Issue</Button>
             </Form>
             </Col>
             </Row>
             </Container>
+
+            <br></br>
+            <br></br>
+<br></br>
+
+<br></br>
+
     
 
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
 
 
-    </>
+        
+   </>
   )
 }

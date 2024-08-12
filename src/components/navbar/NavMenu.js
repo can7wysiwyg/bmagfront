@@ -3,12 +3,14 @@ import { DashboardComp } from '../../helpers/DashboardComp'
 import { AuthComp } from '../../helpers/AuthComp'
 import { useDispatch, useSelector } from 'react-redux'
 import { publicGetGenres } from '../../redux/actions/publicAction'
+import Logo from "./Logo.jpg"
+
 
 export default function NavMenu() {
 
     const dispatch = useDispatch()
     const categories = useSelector((state) => state.publicRdcr.categories)
-
+    
     useEffect(() => {
 
 const fetchCats = async()=> {
@@ -26,6 +28,9 @@ fetchCats()
     }, [dispatch])
 
 
+  
+    
+
     if(!categories || categories === undefined || categories === null) {
         return(<>
         <h5 className='text-center mt-5'>categories are loading</h5>
@@ -39,7 +44,7 @@ fetchCats()
       <div className="container">
         <nav className="navbar navbar-expand-lg navbar-white">
           <a className="navbar-brand" href="/">
-            <img className="img-fluid" width="150px" src="images/logo.png" alt="BIM" />
+            <img className="img-fluid" width="100px" src={Logo} alt="BIM" />
           </a>
           
 <button className="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navigation">
@@ -58,7 +63,9 @@ fetchCats()
                 {DashboardComp()}
               </li>
 
-
+              <li className="nav-item">
+                <a className="nav-link" href="/search">Search</a>
+              </li>
               <li className="nav-item">
                 <a className="nav-link" href="/about">About</a>
               </li>
@@ -87,9 +94,16 @@ fetchCats()
                 }
 
               </li>
+
+
+
             </ul>
 
            
+
+              
+    
+
             
           </div>
         </nav>

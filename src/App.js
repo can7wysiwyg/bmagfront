@@ -20,6 +20,10 @@ import ShowAllMagIssueArticles from "./components/pages/publico/ShowAllMagIssueA
 import Footer from "./components/pages/publico/Footer";
 import About from "./components/pages/publico/About";
 import Contact from "./components/pages/publico/Contact";
+import SeeMagazines from "./components/pages/dashboard/SeeMagazines";
+import AllMagazineIssues from "./components/pages/dashboard/AllMagazineIssues";
+import EditMagIssue from "./components/pages/dashboard/EditMagIssue";
+import Search from "./components/pages/publico/Search";
 
 
 function App() {
@@ -47,6 +51,10 @@ function App() {
         <Route path="/show_all_mag_issue_articles/:id" element={<ShowAllMagIssueArticles />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/see_magazines" element={<SeeMagazines />} />
+        <Route path="/all_magazine_issues" element={<AllMagazineIssues />} />
+        <Route path="/edit_mag_issue/:id" element={<EditMagIssue />} />
+        <Route path="/search" element={<Search />} />
 
 
 

@@ -57,7 +57,7 @@ if(!articleByIssue || articleByIssue === undefined || articleByIssue === null) {
             <img 
               src={articleByIssue.articlePhoto} 
               alt="Article Poster" 
-              className="img-fluid mb-3 blog-photo" 
+              className="img-fluid mb-3 panoramic-image" 
 
               width="50%"
             />

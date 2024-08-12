@@ -1,5 +1,5 @@
 import axios from "axios"
-import { ARTICLE_BY_MAGAZINE_ISSUE, ARTICLES_BY_GENRE, ARTICLES_BY_MAGAZINE_ISSUE, ARTICLES_SHOWING_ALL, DELETE_ARTICLE, EDIT_ARTICLE_AUTHOR, EDIT_ARTICLE_CONTENT, EDIT_ARTICLE_TITLE, ISSUE_SINGLE, MAGAZINE_ARTICLE_GENRE_CREATE, MAGAZINE_ARTICLE_GENRE_VIEW, MAGAZINE_SHOW_ALL, MAGAZINE_SHOW_SINGLE, MAGAZINES_ISSUES_ERROR, NEW_ISSUE_SINGLE } from "./types"
+import { ARTICLE_BY_MAGAZINE_ISSUE, ARTICLES_BY_GENRE, ARTICLES_BY_MAGAZINE_ISSUE, ARTICLES_SHOWING_ALL, DELETE_ARTICLE, DELETE_MAG_ISSUE, EDIT_ARTICLE_AUTHOR, EDIT_ARTICLE_CONTENT, EDIT_ARTICLE_TITLE, ISSUE_SINGLE, MAGAZINE_ARTICLE_GENRE_CREATE, MAGAZINE_ARTICLE_GENRE_VIEW, MAGAZINE_SHOW_ALL, MAGAZINE_SHOW_SINGLE, MAGAZINES_ISSUES_ERROR, NEW_ISSUE_SINGLE, UPDATE_MAG_ISSUE } from "./types"
 import { ApiUrl } from "../../helpers/ApiUrl"
 import { bmagtoken } from "../../helpers/Bmag"
 
@@ -389,5 +389,63 @@ export function editArticleTitle(data, id) {
                 
             }
 
+        }
+       }
+
+
+       export function deletingMagIssue(id) {
+
+        return async function(dispatch) {
+
+            try {
+
+                const response = await axios.delete(`${ApiUrl}/adminmagaroute/delete_magazine_issue/${id}`, {
+
+                    headers: {
+                        Authorization: `Bearer ${bmagtoken}`
+                    }
+
+                })
+
+                dispatch({type: DELETE_MAG_ISSUE})
+                alert(response.data.msg)
+                window.location.href = "/dashboard"
+                
+            } catch (error) {
+
+                console.error(error)
+                    dispatch({type: MAGAZINES_ISSUES_ERROR})
+                    throw error
+        
+                
+            }
+
+        }
+
+       }
+
+
+       export function updateMagIssue(data, id) {
+        return async function(dispatch) {
+            try {
+
+                const response = await axios.put(`${ApiUrl}/adminmagaroute/update_magazine_issue/${id}`, data, {
+                    headers: {
+                        Authorization: `Bearer ${bmagtoken}`
+                    }
+                })
+
+                dispatch({type: UPDATE_MAG_ISSUE})
+                alert(response.data.msg)
+                window.location.href = "/dashboard"
+                
+            } catch (error) {
+
+                console.error(error)
+                    dispatch({type: MAGAZINES_ISSUES_ERROR})
+                    throw error
+        
+                
+            }
         }
        }

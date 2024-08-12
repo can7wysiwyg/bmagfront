@@ -4,7 +4,7 @@ export default function Dashboard() {
   return (
     <>
 
-<section className="py-6 bg-light-primary">
+<section className="py-6 bg-light-primary mb-5">
     <div className="container">
         <div className="row justify-content-center text-center mb-4">
             <div className="col-xl-6 col-lg-8 col-sm-10" style={{marginTop: "1.5px"}}>

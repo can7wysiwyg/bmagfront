@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { adminLogin } from '../../redux/actions/adminAuthAction'
-
+import "./auth.css"
 
 
 export default function Login() {
@@ -34,7 +34,7 @@ export default function Login() {
 
   return (
     <>
-    <div className="container" style={{ marginTop: "2rem" }}>
+    <div className="container" style={{ marginTop: "2rem", marginBottom: "6rem" }}>
         <div className="row justify-content-center">
           <div className="col-md-6">
             <div className="card">

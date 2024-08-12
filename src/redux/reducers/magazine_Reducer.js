@@ -1,4 +1,4 @@
-import { ARTICLE_BY_MAGAZINE_ISSUE, ARTICLES_BY_GENRE, ARTICLES_BY_MAGAZINE_ISSUE, ARTICLES_SHOWING_ALL, DELETE_ARTICLE, EDIT_ARTICLE_AUTHOR, EDIT_ARTICLE_CONTENT, EDIT_ARTICLE_TITLE, ISSUE_SINGLE, MAGAZINE_ARTICLE_GENRE_CREATE, MAGAZINE_ARTICLE_GENRE_VIEW, MAGAZINE_SHOW_ALL, MAGAZINE_SHOW_SINGLE, MAGAZINES_ISSUES_ERROR, NEW_ISSUE_SINGLE } from "../actions/types";
+import { ARTICLE_BY_MAGAZINE_ISSUE, ARTICLES_BY_GENRE, ARTICLES_BY_MAGAZINE_ISSUE, ARTICLES_SHOWING_ALL, DELETE_ARTICLE, DELETE_MAG_ISSUE, EDIT_ARTICLE_AUTHOR, EDIT_ARTICLE_CONTENT, EDIT_ARTICLE_TITLE, ISSUE_SINGLE, MAGAZINE_ARTICLE_GENRE_CREATE, MAGAZINE_ARTICLE_GENRE_VIEW, MAGAZINE_SHOW_ALL, MAGAZINE_SHOW_SINGLE, MAGAZINES_ISSUES_ERROR, NEW_ISSUE_SINGLE, UPDATE_MAG_ISSUE } from "../actions/types";
 
 export function magRdcr(state={}, action) {
 
@@ -20,7 +20,13 @@ export function magRdcr(state={}, action) {
             return{...state, magIssues: action.payload}
             
         case MAGAZINE_SHOW_SINGLE:
-            return{...state, singleIssue: action.payload}    
+            return{...state, singleIssue: action.payload}
+            
+        case DELETE_MAG_ISSUE:
+            return{...state, msg: "success"}    
+
+        case UPDATE_MAG_ISSUE:
+            return{...state, msg: "success"}    
         
         case ARTICLES_BY_MAGAZINE_ISSUE:
             return{...state, articlesByIssue: action.payload}
