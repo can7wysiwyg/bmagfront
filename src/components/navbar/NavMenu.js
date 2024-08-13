@@ -31,12 +31,12 @@ fetchCats()
   
     
 
-    if(!categories || categories === undefined || categories === null) {
-        return(<>
-        <h5 className='text-center mt-5'>categories are loading</h5>
+    // if(!categories || categories === undefined || categories === null) {
+    //     return(<>
+    //     <h5 className='text-center mt-5'>categories are loading</h5>
         
-        </>)
-    }
+    //     </>)
+    // }
 
   return (
     <>

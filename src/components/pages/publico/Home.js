@@ -125,10 +125,7 @@ try {
 
 
     if(!categories || categories === undefined || categories === null) {
-        return(<>
-        <h5 className='text-center mt-5'>categories are loading</h5>
-        
-        </>)
+        return ""
     }
 
 
@@ -220,15 +217,14 @@ try {
 
     
         <div className="widget">
-          <h5 className="widget-title"><span>Tags</span></h5>
+          <h5 className="widget-title"><span>Football Leagues</span></h5>
           <ul className="list-inline widget-list-inline">
-            <li className="list-inline-item"><a href="#!">Booth</a></li>
-            <li className="list-inline-item"><a href="#!">City</a></li>
-            <li className="list-inline-item"><a href="#!">Image</a></li>
-            <li className="list-inline-item"><a href="#!">New</a></li>
-            <li className="list-inline-item"><a href="#!">Photo</a></li>
-            <li className="list-inline-item"><a href="#!">Seasone</a></li>
-            <li className="list-inline-item"><a href="#!">Video</a></li>
+            <li className="list-inline-item"><p>EPL</p></li>
+            <li className="list-inline-item"><p>La Liga</p></li>
+            <li className="list-inline-item"><p>Serie A</p></li>
+            <li className="list-inline-item"><p>Bundesliga</p></li>
+            <li className="list-inline-item"><p>Ligue 1</p></li>
+            
           </ul>
         </div>
         

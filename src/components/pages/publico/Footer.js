@@ -10,9 +10,12 @@ export default function Footer() {
     <div className="row justify-content-between">
       <div className="col-md-3 mb-4">
         <a className="mb-4 d-block" href="index.html">
-          <img className="img-fluid" width="100px" src={Logo} alt="BIM" />
+          <img className="img-fluid " width="100px" src={Logo} alt="BIM" />
         </a>
-        <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
+        <p>
+        Business In-detail Magazine (BIM) is a creative agency which specialises in all media related issues. 
+
+           </p>
       </div>
 
       <div className="col-lg-2 col-md-3 col-6 mb-4">

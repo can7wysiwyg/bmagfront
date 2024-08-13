@@ -24,6 +24,7 @@ import SeeMagazines from "./components/pages/dashboard/SeeMagazines";
 import AllMagazineIssues from "./components/pages/dashboard/AllMagazineIssues";
 import EditMagIssue from "./components/pages/dashboard/EditMagIssue";
 import Search from "./components/pages/publico/Search";
+// import Epl from "./components/pages/publico/tables/Epl";
 
 
 function App() {
@@ -55,6 +56,7 @@ function App() {
         <Route path="/all_magazine_issues" element={<AllMagazineIssues />} />
         <Route path="/edit_mag_issue/:id" element={<EditMagIssue />} />
         <Route path="/search" element={<Search />} />
+        {/* <Route path="/epl_table" element={<Epl />} /> */}
 
 
 
