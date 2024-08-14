@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { articleByMagIssue } from '../../../redux/actions/magazineAction'
+import { publicGetGenre} from '../../../redux/actions/publicAction'
 import moment from 'moment/moment'
 
 export default function PostDetails() {
@@ -49,7 +50,7 @@ export default function PostDetails() {
           </li>
           <li className="list-inline-item">Date : {moment(articleByIssue.createdAt).format("MMM D YYYY")}</li>
           <li className="list-inline-item">
-            Categories : <a href="#!" className="ml-1">Photography</a>
+            Categories : <a href="#!" className="ml-1"><CatComp article={articleByIssue} /></a>
           </li>
           <li className="list-inline-item">
             Tags : 
@@ -80,3 +81,52 @@ export default function PostDetails() {
     </>
   )
 }
+
+
+
+
+const CatComp = ({article}) => {
+
+  const dispatch = useDispatch()
+  const category = useSelector((state) => state.publicRdcr.category)
+  
+
+
+  useEffect(() => {
+
+    const fetchCat = async() => {
+
+      try {
+
+        await dispatch(publicGetGenre(article.articleCategory))
+        
+      } catch (error) {
+        console.error("there was a problem")
+      }
+
+    }
+
+    fetchCat()
+
+
+  }, [dispatch, article.articleCategory])
+
+
+
+  if(!category) {
+    return ""
+  }
+
+  
+
+  
+
+  return(<>
+
+  
+  
+  {category.genreName.toUpperCase()}
+  
+  </>)
+
+} 

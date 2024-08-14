@@ -1,1 +1,3 @@
-export const ApiUrl = "https://apibmag.onrender.com"
+export const ApiUrl = "http://localhost:5000"
+
+// https://apibmag.onrender.com

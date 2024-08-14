@@ -24,6 +24,13 @@ import SeeMagazines from "./components/pages/dashboard/SeeMagazines";
 import AllMagazineIssues from "./components/pages/dashboard/AllMagazineIssues";
 import EditMagIssue from "./components/pages/dashboard/EditMagIssue";
 import Search from "./components/pages/publico/Search";
+import EditMagIssueName from "./components/pages/dashboard/EditMagIssueName";
+import UpdateMagaPdf from "./components/pages/dashboard/UpdateMagaPdf";
+import UpdateMagaCover from "./components/pages/dashboard/UpdateMagaCover";
+import ChooseActionCategory from "./components/pages/dashboard/ChooseActionCategory";
+import ViewAllArticles from "./components/pages/dashboard/ViewAllArticles";
+import UpdateArticlePhoto from "./components/pages/dashboard/UpdateArticlePhoto";
+import ReadMagazine from "./components/pages/publico/ReadMagazine";
 // import Epl from "./components/pages/publico/tables/Epl";
 
 
@@ -56,6 +63,13 @@ function App() {
         <Route path="/all_magazine_issues" element={<AllMagazineIssues />} />
         <Route path="/edit_mag_issue/:id" element={<EditMagIssue />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/edit_magissue_name/:id" element={<EditMagIssueName />} />
+        <Route path="/update_magaissue_pdffile/:id" element={<UpdateMagaPdf />} />
+        <Route path="/update_magaissue_cover/:id" element={<UpdateMagaCover />} />
+        <Route path="/choose_action" element={<ChooseActionCategory />} />
+        <Route path="/view_all_articles" element={<ViewAllArticles />} />
+        <Route path="/update_article_photo/:id" element={<UpdateArticlePhoto />} />
+        <Route path="/read_magazine/:id" element={<ReadMagazine />} />
         {/* <Route path="/epl_table" element={<Epl />} /> */}
 
 

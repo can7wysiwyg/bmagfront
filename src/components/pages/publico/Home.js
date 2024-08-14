@@ -217,16 +217,30 @@ try {
 
     
         <div className="widget">
-          <h5 className="widget-title"><span>Football Leagues</span></h5>
+          <h5 className="widget-title"><span>International Football Leagues</span></h5>
           <ul className="list-inline widget-list-inline">
-            <li className="list-inline-item"><p>EPL</p></li>
-            <li className="list-inline-item"><p>La Liga</p></li>
-            <li className="list-inline-item"><p>Serie A</p></li>
-            <li className="list-inline-item"><p>Bundesliga</p></li>
-            <li className="list-inline-item"><p>Ligue 1</p></li>
+            <li className="list-inline-item"><a href='#!'>EPL</a></li>
+            <li className="list-inline-item"><a href='#!'>La Liga</a></li>
+            <li className="list-inline-item"><a href='#!'>Serie A</a></li>
+            <li className="list-inline-item"><a href='#!'>Bundesliga</a></li>
+            <li className="list-inline-item"><a href='#!'>Ligue 1</a></li>
             
           </ul>
         </div>
+
+
+        <div className="widget">
+          <h5 className="widget-title"><span>Local Football Leagues</span></h5>
+          <ul className="list-inline widget-list-inline">
+            <li className="list-inline-item"><a href='#!'>TNM Super League</a></li>
+            <li className="list-inline-item"><a href='#!'>FDH Bank</a></li>
+            <li className="list-inline-item"><a href='#!'>Airtel Top 8</a></li>
+            <li className="list-inline-item"><a href='#!'>Castel Cup</a></li>
+            
+            
+          </ul>
+        </div>
+
         
       </aside>
 
@@ -244,7 +258,8 @@ try {
                 <img loading="lazy" className="mr-3 panoramic-image" src={issue.magazinePhoto} alt="post-thumb" width="70%" />
               </a>
               <div className="media-body">
-                <h5 className="h6 mb-0"><a href={`/show_all_mag_issue_articles/${issue._id}`}>{issue.magazineIssue}</a></h5>
+                <h2 className="h6 mb-0"><a href={`/show_all_mag_issue_articles/${issue._id}`}>{issue.magazineIssue}</a></h2>
+                <h4 className="h6 mb-0"><a href={`/read_magazine/${issue._id}`}>Read Magazine</a></h4>
                 <small>released on{moment(issue.createdAt).format("MMM D YYYY")}</small>
               </div>
             </li>
@@ -294,12 +309,7 @@ try {
                 Date : 
                 {moment(article.createdAt).format("MMM D YYYY")}
               </li>
-              <li className="list-inline-item">
-                Categories : <a href="#!" className="ml-1">General</a>
-              </li>
-              <li className="list-inline-item">
-                Tags : <a href="#!" className="ml-1">Tag1</a>, <a href="#!" className="ml-1">Tag2</a> 
-              </li>
+              
             </ul>
 
             <ArticleBody article={article} />
@@ -328,6 +338,7 @@ try {
 const ArticleBody = ({article}) => {
 
   const [isExpanded, setIsExpanded] = useState(false);
+
   
 
   const toggleExpansion = () => {
@@ -361,3 +372,5 @@ const ArticleBody = ({article}) => {
   </>)
 
 }
+
+

@@ -1,5 +1,5 @@
 import axios from "axios"
-import { ARTICLE_BY_MAGAZINE_ISSUE, ARTICLES_BY_GENRE, ARTICLES_BY_MAGAZINE_ISSUE, ARTICLES_SHOWING_ALL, DELETE_ARTICLE, DELETE_MAG_ISSUE, EDIT_ARTICLE_AUTHOR, EDIT_ARTICLE_CONTENT, EDIT_ARTICLE_TITLE, ISSUE_SINGLE, MAGAZINE_ARTICLE_GENRE_CREATE, MAGAZINE_ARTICLE_GENRE_VIEW, MAGAZINE_SHOW_ALL, MAGAZINE_SHOW_SINGLE, MAGAZINES_ISSUES_ERROR, NEW_ISSUE_SINGLE, UPDATE_MAG_ISSUE } from "./types"
+import { ARTICLE_BY_MAGAZINE_ISSUE, ARTICLES_BY_GENRE, ARTICLES_BY_MAGAZINE_ISSUE, ARTICLES_SHOWING_ALL, DELETE_ARTICLE, DELETE_MAG_ISSUE, EDIT_ARTICLE_AUTHOR, EDIT_ARTICLE_CONTENT, EDIT_ARTICLE_TITLE, ISSUE_SINGLE, MAGAZINE_ARTICLE_GENRE_CREATE, MAGAZINE_ARTICLE_GENRE_VIEW, MAGAZINE_COVER_UPDATE, MAGAZINE_PDF_UPDATE, MAGAZINE_SHOW_ALL, MAGAZINE_SHOW_SINGLE, MAGAZINES_ISSUES_ERROR, NEW_ISSUE_SINGLE, UPDATE_ARTICLE_PHOTO, UPDATE_MAG_ISSUE } from "./types"
 import { ApiUrl } from "../../helpers/ApiUrl"
 import { bmagtoken } from "../../helpers/Bmag"
 
@@ -316,6 +316,36 @@ export function editArticleTitle(data, id) {
         }
 
 
+        export function updatePhotoArticle(data, id) {
+
+            return async function(dispatch) {
+                try {
+
+                    const response = await axios.put(`${ApiUrl}/adminarticleroute/update_article_photo/${id}`, data, {
+                        headers: {
+                            Authorization: `Bearer ${bmagtoken}`
+                        }
+                    })
+
+                     dispatch({type: UPDATE_ARTICLE_PHOTO})
+                    alert(response.data.msg)
+                 window.location.href = `/article_single/${id}`
+
+
+                    
+                } catch (error) {
+
+                    console.error(error)
+                    dispatch({type: MAGAZINES_ISSUES_ERROR})
+                    throw error
+        
+                    
+                }
+            }
+
+        }
+
+
        export function deleteArticle(id) {
         return async function(dispatch) {
 
@@ -437,7 +467,7 @@ export function editArticleTitle(data, id) {
 
                 dispatch({type: UPDATE_MAG_ISSUE})
                 alert(response.data.msg)
-                window.location.href = "/dashboard"
+                window.location.href = "/all_magazine_issues"
                 
             } catch (error) {
 
@@ -449,3 +479,65 @@ export function editArticleTitle(data, id) {
             }
         }
        }
+
+
+
+export function magaPdfUpdate(data, id) {
+
+    return async function(dispatch) {
+
+        try {
+            const response = await axios.put(`${ApiUrl}/adminmagaroute/update_magazine_pdf_file/${id}`, data, {
+                headers: {
+                    Authorization: `Bearer ${bmagtoken}`
+                }
+            })
+
+
+            dispatch({type: MAGAZINE_PDF_UPDATE})
+
+            alert(response.data.msg)
+
+            window.location.href = "/all_magazine_issues"
+                
+            
+        } catch (error) {
+            console.error(error)
+                    dispatch({type: MAGAZINES_ISSUES_ERROR})
+                    throw error
+        
+        }
+
+    }
+
+}    
+
+export function magaCoverPhoto(data, id) {
+
+    return async function(dispatch) {
+
+        try {
+
+            const response = await axios.put(`${ApiUrl}/adminmagaroute/update_magazine_cover_photo/${id}`, data, {
+                headers: {
+                    Authorization: `Bearer ${bmagtoken}`
+                }
+            })
+
+            dispatch({type: MAGAZINE_COVER_UPDATE})
+            alert(response.data.msg)
+            window.location.href = "/all_magazine_issues"
+            
+            
+        } catch (error) {
+
+            console.error(error)
+                    dispatch({type: MAGAZINES_ISSUES_ERROR})
+                    throw error
+            
+
+        }
+
+    }
+
+}

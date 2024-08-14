@@ -23,6 +23,11 @@ export default function EditArticle() {
       <h5 style={{ fontFamily: 'Times New Roman' }}>Select Action</h5>
 
       <ListGroup className="mt-3">
+      <ListGroup.Item className="text-center">
+          <a href={`/update_article_photo/${id}`}>Update Article Photo</a>
+        </ListGroup.Item>
+
+
         <ListGroup.Item className="text-center">
           <a href={`/edit_article_content/${id}`}>Edit Article Content</a>
         </ListGroup.Item>

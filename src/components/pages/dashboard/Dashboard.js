@@ -57,12 +57,30 @@ export default function Dashboard() {
                 
 
             </div>
-            <h6 className="font-weight-bold mb-3">GENRES</h6>
-            <p className="text-muted mb-0"><a href="/genres_create">View and manage articles genres</a></p>
+            <h6 className="font-weight-bold mb-3">Articles Categories</h6>
+            <p className="text-muted mb-0"><a href="/choose_action">View and manage articles categories</a></p>
         </div>
     </div>
 </div>
 {/* categories item ends here */}
+
+
+<div className="col my-3">
+    <div className="card border-hover-primary hover-scale">
+        <div className="card-body">
+            <div className="text-primary mb-5">
+
+            <i className="bi bi-book-half" style={{fontSize: "70px"}}></i>
+                
+
+            </div>
+            <h6 className="font-weight-bold mb-3">ARTICLES</h6>
+            <p className="text-muted mb-0"><a href="/view_all_articles">View and manage articles</a></p>
+        </div>
+    </div>
+</div>
+{/* categories item ends here */}
+
 
 
 

@@ -73,7 +73,7 @@ export default function ArticlesGenreView() {
   return (
     <>
 
-<motion.div >
+<motion.div style={{marginTop: "3rem", marginBottom: "5rem"}} >
     <ul className="list-group">
           {genres?.map((category, index) => (
             <motion.li
@@ -81,7 +81,7 @@ export default function ArticlesGenreView() {
             className="list-group-item d-flex justify-content-between align-items-center mb-2"
             variants={categoryVariants}
           >
-         <a href={`/genre_single/${category._id}`}>{category.genreName}</a>   
+         <a href={`/article_by_genre/${category._id}`}>{category.genreName}</a>   || EDIT Category
 
           
             

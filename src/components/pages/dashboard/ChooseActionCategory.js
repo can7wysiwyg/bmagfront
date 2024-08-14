@@ -1,10 +1,8 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
 import { Container, ListGroup } from 'react-bootstrap';
 
 
-export default function EditMagIssue() {
-  const{id} = useParams()
+export default function ChooseActionCategory() {
   return (
     <>
     <Container className="mt-3 mb-3 text-center">
@@ -12,31 +10,27 @@ export default function EditMagIssue() {
 
       <ListGroup className="mt-3">
         <ListGroup.Item className="text-center">
-          <a href={`/edit_magissue_name/${id}`}>Edit Magazine Issue Name</a>
+          <a href="/genres_create">Create Category</a>
         </ListGroup.Item>
 
         <ListGroup.Item className="text-center">
-          <a href={`/update_magaissue_pdffile/${id}`}>Update Magazine PDF File</a>
-        </ListGroup.Item>
-
-        <ListGroup.Item className="text-center">
-          <a href={`/update_magaissue_cover/${id}`}>Update Magazine Cover</a>
+          <a href="/article_genres_view">View All Articles Categories </a>
         </ListGroup.Item>
 
         
+        
       </ListGroup>
-
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
 
       </Container>
 
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
 
 
 
-    
+
 
     </>
   )

@@ -27,7 +27,7 @@ export default function GenreCreate() {
   return (
     <>
     <Container style={{marginTop: "4rem", fontFamily: "Times New Roman"}}>
-        <h4 className="text-center">Create Genre</h4>
+        <h4 className="text-center">Create Article Category</h4>
         <Row className="justify-content-md-center">
           <Col xs={12} md={6}>
       
@@ -41,12 +41,12 @@ export default function GenreCreate() {
                   value={formData.genreName }
                   onChange={handleInputChange}
 
-                  placeholder="Article Genre"
+                  placeholder="Article Category"
                   required
                 />
               </Form.Group>
 
-              <Button type="submit">Create Genre</Button>
+              <Button type="submit">submit</Button>
 
 
 
@@ -55,6 +55,13 @@ export default function GenreCreate() {
                 </Col>
                 </Row>
                 </Container>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+
 
 
     
