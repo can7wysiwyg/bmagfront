@@ -941,3 +941,8 @@ body {
     max-height: 500px!important; /* Optional: limit the height */
     overflow: hidden!important;
   }
+
+
+  .preserve-whitespace {
+    white-space: pre-wrap!important;
+}

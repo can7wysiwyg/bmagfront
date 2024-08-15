@@ -65,7 +65,7 @@ export default function PostDetails() {
         </div>
       </div>
       <div className="col-lg-10 mx-auto">
-        <div className="content">
+        <div className="content preserve-whitespace">
           <p>{articleByIssue.articleContent}</p>
           
         </div>

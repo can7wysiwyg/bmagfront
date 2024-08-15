@@ -78,8 +78,9 @@ if(!articleByIssue || articleByIssue === undefined || articleByIssue === null) {
                   <a href={`/edit_article/${articleByIssue._id}`}><i className="bi bi-pen-fill"></i> Edit Article</a>
                 </li>
               </ul>
+              <div className='preserve-whitespace'>
               <p>{articleByIssue.articleContent}</p>
-              
+              </div>
             </div>
           </article>
         </div>

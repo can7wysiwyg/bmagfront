@@ -68,8 +68,11 @@ export default function ShowAllMagIssueArticles() {
     <article className="row mb-4">
       <div className="col-lg-10 mx-auto mb-4">
         <h1 className="h2 mb-3">Articles from The {singleIssue.magazineIssue}</h1>
+        
         <ul className="list-inline post-meta mb-3">
+        <li className="list-inline-item"><a href={`/read_magazine/${singleIssue._id}`}>Read Magazine</a> </li>
           
+          <br></br>
           <li className="list-inline-item">Released on : {moment(singleIssue.createdAt).format("MMM D YYYY")}</li>
           
           
