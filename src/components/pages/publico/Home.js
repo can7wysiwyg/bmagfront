@@ -279,24 +279,15 @@ try {
 
         </div>
 
-
-      
-
-      <div className="col-lg-8 order-1 order-lg-2 mb-5 mb-lg-0">
-
-        
-
-
-       {  
-       
-       
-      
-       
-       articles?.map(article => (
+        <div className="col-lg-8 order-1 order-lg-2 mb-5 mb-lg-0">
+  {
+    articles.length === 0 ? (
+      <Loader /> // You can replace this with your loader component or any other loading indicator
+    ) : (
+      articles.map(article => (
         <article key={article._id} className="row mb-5">
           <div className="col-12">
             <div className="post-slider">
-              
               <img
                 loading="lazy"
                 src={article.articlePhoto}
@@ -317,21 +308,20 @@ try {
                 <a href="author.html">{article.articleAuthor}</a> 
               </li>
               <li className="list-inline-item">
-                Date : 
-                {moment(article.createdAt).format("MMM D YYYY")}
+                Date : {moment(article.createdAt).format("MMM D YYYY")}
               </li>
-              
             </ul>
-
             <ArticleBody article={article} />
-            
           </div>
-        </article> 
-      )) } 
+        </article>
+      ))
+    )
+  }
+</div>
 
-     
-        
-      </div>
+      
+
+      
     </div>
   </div>
 </section>
