@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { publicGetGenres, publicNewMagIssue } from '../../../redux/actions/publicAction'
 import moment from 'moment/moment';
 import { articlesAll, magShowAll } from '../../../redux/actions/magazineAction';
+import Loader from './Loader';
 
 
 
@@ -134,7 +135,10 @@ try {
     } 
 
     if(!articles) {
-        return ""
+        return(<>
+        
+        <Loader />
+        </>)
     }
 
     if(!magIssues) {
@@ -280,8 +284,15 @@ try {
 
       <div className="col-lg-8 order-1 order-lg-2 mb-5 mb-lg-0">
 
+        
 
-       {articles.map(article => (
+
+       {  
+       
+       
+      
+       
+       articles?.map(article => (
         <article key={article._id} className="row mb-5">
           <div className="col-12">
             <div className="post-slider">
@@ -315,8 +326,8 @@ try {
             <ArticleBody article={article} />
             
           </div>
-        </article>
-      ))} 
+        </article> 
+      )) } 
 
      
         
