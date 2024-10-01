@@ -7,6 +7,9 @@ export default function PublishMagazine() {
     const[formDatta, setFormData] = useState({magazineIssue: ""})
     const[magazinePhoto, setMagazinePhoto] = useState(false)
     const[magazinePdfFile, setMagazinePdfFile] = useState(false)
+    const[btnText, setBtnText] = useState("PUBLISH MAGAZINE")
+    const [isSubmitting, setIsSubmitting] = useState(false); // New state for submit status
+
 
 
     const dispatch = useDispatch()
@@ -47,6 +50,15 @@ export default function PublishMagazine() {
 
 
       }
+
+
+      const chango = () => {
+        setIsSubmitting(true); // Set submitting to true
+
+        setBtnText("MAGAZINE IS PUBLISHING...")
+    
+      }
+    
     
     
     
@@ -104,7 +116,7 @@ export default function PublishMagazine() {
               </Form.Group>
 
 
-              <Button type="submit">Publish New Issue</Button>
+              <Button onClick={chango} disabled={isSubmitting}>{btnText}</Button>
 
 
 

@@ -942,6 +942,15 @@ body {
     overflow: hidden!important;
   }
 
+  .panoramic-video {
+    width: 100%!important;
+    height: auto!important;
+    object-fit: cover!important;
+    aspect-ratio: 16 / 9!important; /* Wide aspect ratio */
+    max-height: 500px!important; /* Optional: limit the height */
+    overflow: hidden!important;
+  }
+
 
   .preserve-whitespace {
     white-space: pre-wrap!important;

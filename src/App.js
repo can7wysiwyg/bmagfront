@@ -31,6 +31,11 @@ import ChooseActionCategory from "./components/pages/dashboard/ChooseActionCateg
 import ViewAllArticles from "./components/pages/dashboard/ViewAllArticles";
 import UpdateArticlePhoto from "./components/pages/dashboard/UpdateArticlePhoto";
 import ReadMagazine from "./components/pages/publico/ReadMagazine";
+import VideosDashboard from "./components/pages/dashboard/VideosDashboard";
+import UploadVideo from "./components/pages/dashboard/UploadVideo";
+import ManageVideos from "./components/pages/dashboard/ManageVideos";
+import ViewVideo from "./components/pages/publico/ViewVideo";
+import Videos from "./components/pages/publico/Videos";
 // import Epl from "./components/pages/publico/tables/Epl";
 
 
@@ -70,6 +75,11 @@ function App() {
         <Route path="/view_all_articles" element={<ViewAllArticles />} />
         <Route path="/update_article_photo/:id" element={<UpdateArticlePhoto />} />
         <Route path="/read_magazine/:id" element={<ReadMagazine />} />
+        <Route path="/videos_dashboard" element={<VideosDashboard />} />
+        <Route path="/upload_video" element={<UploadVideo />} />
+        <Route path="/manage_videos" element={<ManageVideos />} />
+        <Route path="/view_video/:id" element={<ViewVideo />} />
+        <Route path="/videos" element={<Videos />} />
         {/* <Route path="/epl_table" element={<Epl />} /> */}
 
 

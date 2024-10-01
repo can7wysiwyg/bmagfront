@@ -1,7 +1,9 @@
 import axios from "axios"
-import { MAGAZINE_ARTICLE_CREATE, PUBLISH_ERROR, PUBLISH_MAG } from "./types"
+import { MAGAZINE_ARTICLE_CREATE, PUBLISH_ERROR, PUBLISH_MAG, VIDEO_UPLOAD } from "./types"
 import { ApiUrl } from "../../helpers/ApiUrl"
 import { bmagtoken } from "../../helpers/Bmag"
+
+
 
 export default function publishMagazine(data) {
 
@@ -62,4 +64,37 @@ export function articleCreate(data, id) {
         
     }
 
+}
+
+
+
+
+
+export  function publishVideo(data) {
+
+    return async function (dispatch) {
+
+        try {
+
+            const response = await axios.post(`${ApiUrl}/upload_video`, data, {
+                headers: {
+                    Authorization: `Bearer ${bmagtoken}`
+                }
+
+            })
+
+            dispatch({type: VIDEO_UPLOAD})
+
+            alert(response.data.msg)
+
+            window.location.href = "/videos"
+            
+        } catch (error) {
+            console.error(error)
+            dispatch({type: PUBLISH_ERROR})
+            throw error
+            
+        }
+        
+    }
 }

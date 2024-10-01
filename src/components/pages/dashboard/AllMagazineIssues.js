@@ -30,7 +30,7 @@ export default function AllMagazineIssues() {
   
 
   return (
-    <div className='mt-3 mb-4'>
+    <div className='mb-4' style={{marginTop: "5rem", marginBottom: "5rem"}}>
 
 <Table striped bordered hover>
         <thead>

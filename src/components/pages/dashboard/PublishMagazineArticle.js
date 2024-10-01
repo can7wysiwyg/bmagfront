@@ -18,6 +18,8 @@ export default function PublishMagazineArticle() {
 
 const[articlePhoto, setArticlePhoto] = useState(false)
 
+const[btnText, setBtnText] = useState("ADD NEW ARTICLE")
+
 const dispatch = useDispatch()
 const genres = useSelector((state) => state.magRdcr.genres)
 
@@ -75,6 +77,13 @@ const handleInputChange = (e) => {
     await dispatch(articleCreate(formData, id))
 
   }
+
+  const chango = () => {
+
+    setBtnText("PUBLISHING NEW MAGAZINE ARTICLE...")
+
+  }
+
 
 
 
@@ -183,7 +192,7 @@ const handleInputChange = (e) => {
               </Form.Group>
 
              
-              <Button type="submit">Create Article</Button>
+              <Button type="submit" onClick={chango}>{btnText}</Button>
             </Form>
           </Col>
         </Row>

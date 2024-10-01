@@ -17,6 +17,8 @@ export default function EditArticleContent() {
 
      const articleByIssue = useSelector((state) => state.magRdcr.articleByIssue)
 
+     const[btnText, setBtnText] = useState("UPDATE ARTICLE")
+
 useEffect(() => {
 
     const fetchArticleByIssue = async() => {
@@ -53,6 +55,14 @@ const handleInputChange = (e) => {
 
 
   }
+
+
+  const chango = () => {
+
+    setBtnText("ARTICLE TEXT IS UPDATING...")
+
+  }
+
 
 
 
@@ -94,8 +104,7 @@ if(!articleByIssue || articleByIssue === undefined || articleByIssue === null) {
                 ></textarea>
               </Form.Group>
 
-              <Button type="submit" variant="danger">
-                update article
+              <Button type="submit" variant="danger" onClick={chango}>{btnText}
               </Button>
             </Form>
           </Col>

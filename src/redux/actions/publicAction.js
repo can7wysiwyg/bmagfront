@@ -1,6 +1,55 @@
 import axios from "axios"
-import { PUBLIC_ERROR, PUBLIC_GET_GENRE, PUBLIC_GET_GENRES, PUBLIC_SINGLE_MAG_ISSUE } from "./types"
+import { PUBLIC_ERROR, PUBLIC_GET_GENRE, PUBLIC_GET_GENRES, PUBLIC_SINGLE_MAG_ISSUE, WATCH_VIDEO, WATCH_VIDEOS } from "./types"
 import { ApiUrl } from "../../helpers/ApiUrl"
+
+
+export function watchVideos() {
+
+    return async function(dispatch) {
+
+        try {
+
+            const response = await axios.get(`${ApiUrl}/videos_all`)
+
+            const videos = response.data.videos
+
+            dispatch({type: WATCH_VIDEOS, payload: videos})
+            
+        } catch (error) {
+
+            console.error(error)
+            dispatch({type: PUBLIC_ERROR})
+            throw error
+            
+        }
+
+    }
+}
+
+
+export function watchVideo(id) {
+
+    return async function(dispatch) {
+
+        try {
+
+            const response = await axios.get(`${ApiUrl}/video_single/${id}`)
+
+            const video = response.data.video
+
+            dispatch({type: WATCH_VIDEO, payload: video})
+            
+        } catch (error) {
+
+            console.error(error)
+            dispatch({type: PUBLIC_ERROR})
+            throw error
+            
+        }
+
+    }
+}
+
 
 
 export function publicGetGenres() {

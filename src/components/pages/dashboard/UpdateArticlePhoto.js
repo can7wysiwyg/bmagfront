@@ -8,6 +8,7 @@ export default function UpdateArticlePhoto() {
     const{id} = useParams()
     const dispatch = useDispatch()
     const[articlePhoto, setArticlePhoto] = useState(false) 
+    const[btnText, setBtnText] = useState("UPDATE ARTICLE PHOTO")
 
     const handleBookImageUpload = (event) => {
         const file = event.target.files[0];
@@ -26,6 +27,13 @@ export default function UpdateArticlePhoto() {
         await dispatch(updatePhotoArticle(formData, id))
     
       }
+
+      const chango = () => {
+
+        setBtnText("ARTICLE PHOTO IS UPDATING...")
+    
+      }
+    
     
     
 
@@ -49,7 +57,7 @@ export default function UpdateArticlePhoto() {
             </Form.Group>
 
 
-            <Button type="submit">submit</Button>
+            <Button type="submit" onClick={chango}>{btnText} </Button>
 
 
 
