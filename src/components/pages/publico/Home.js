@@ -4,7 +4,7 @@ import { publicGetGenres, publicNewMagIssue } from '../../../redux/actions/publi
 import moment from 'moment/moment';
 import { articlesAll, magShowAll } from '../../../redux/actions/magazineAction';
 import Loader from './Loader';
-import { Pagination } from 'react-bootstrap';
+import { Pagination, Container, Spinner } from 'react-bootstrap';
 
 
 
@@ -137,6 +137,15 @@ try {
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
    
+    if (!articles) {
+      return (
+          <Container className="text-center" style={{ marginTop: "2rem" }}>
+              <Spinner animation="border" role="status">
+                  <span className="visually-hidden">Loading...</span>
+              </Spinner>
+          </Container>
+      );
+  }
   
 
 
@@ -149,14 +158,7 @@ try {
        return "" 
     } 
 
-    if(!articles) {
-        return(<>
-        
-        <Loader />
-        </>)
-    }
-
-    if(!magIssues) {
+       if(!magIssues) {
       return ""
   }
 
