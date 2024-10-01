@@ -88,7 +88,7 @@ fetchCats()
                 </ul>
               </li>
   <li className="nav-item">
-                <a className="nav-link" href="/about">Videos</a>
+                <a className="nav-link" href="/videos">Videos</a>
               </li>
 
               <li className='nav-item'>

@@ -7,6 +7,7 @@ import { magaPdfUpdate } from '../../../redux/actions/magazineAction';
 export default function UpdateMagaPdf() {
     const {id} = useParams()
     const[magazinePdfFile, setMagazinePdfFile] = useState(false)
+    const[btnText, setBtnText] = useState("UPDATE MAGAZINE PDF")
     const dispatch = useDispatch()
 
     const handleBookFileUpload = (event) => {
@@ -24,6 +25,13 @@ export default function UpdateMagaPdf() {
         formData.append('magazinePdfFile', magazinePdfFile)
     
         await dispatch(magaPdfUpdate(formData, id))
+    
+      }
+    
+
+      const chango = () => {
+
+        setBtnText("MAGAZINE PDF IS UPDATING...")
     
       }
     
@@ -53,7 +61,7 @@ export default function UpdateMagaPdf() {
 
 
 
-            <Button type="submit">submit</Button>
+            <Button type="submit"onClick={chango}>{btnText}</Button>
 
 
 

@@ -258,9 +258,9 @@ try {
                 newIssue?.map((issue) => (
 
                     <li key={issue._id} className="media widget-post align-items-center">
-              <a href="post-elements.html">
+              
                 <img loading="lazy" className="mr-3 panoramic-image" src={issue.magazinePhoto} alt="post-thumb" width="70%" />
-              </a>
+              
               <div className="media-body">
                 <h2 className="h6 mb-0"><a href={`/show_all_mag_issue_articles/${issue._id}`}>{issue.magazineIssue}</a></h2>
                 <h4 className="h6 mb-0"><a href={`/read_magazine/${issue._id}`}>Read Magazine</a></h4>

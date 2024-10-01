@@ -7,6 +7,7 @@ import { magaCoverPhoto } from '../../../redux/actions/magazineAction';
 export default function UpdateMagaCover() {
    const{id} = useParams()
    const[magazinePhoto, setMagazinePhoto] = useState(false)
+   const[btnText, setBtnText] = useState("UPDATE PHOTO")
    const dispatch = useDispatch()
 
    const handleBookImageUpload = (event) => {
@@ -24,6 +25,13 @@ export default function UpdateMagaCover() {
     formData.append('magazinePhoto', magazinePhoto)
 
     await dispatch(magaCoverPhoto(formData, id))
+
+  }
+
+
+  const chango = () => {
+
+    setBtnText("PHOTO IS UPDATING")
 
   }
 
@@ -51,7 +59,7 @@ export default function UpdateMagaCover() {
             </Form.Group>
 
 
-            <Button type="submit">submit</Button>
+            <Button type="submit" onClick={chango}>{btnText}</Button>
 
 
 

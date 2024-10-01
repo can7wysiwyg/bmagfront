@@ -10,6 +10,8 @@ export default function EditMagIssueName() {
    magazineIssue: ""
     })
 
+    const[btnText, setBtnText] = useState("UPDATE MAGAZINE ISSUE NAME")
+
     const dispatch = useDispatch()
 
     const handleInputChange = (e) => {
@@ -27,6 +29,13 @@ export default function EditMagIssueName() {
 
 
       }
+
+      const chango = () => {
+
+        setBtnText("MAGAZINE NAME IS UPDATING...")
+    
+      }
+    
     
 
 
@@ -56,7 +65,7 @@ export default function EditMagIssueName() {
 
 
 
-            <Button type="submit">Update Magazine Issue</Button>
+            <Button type="submit" onClick={chango}>{btnText}</Button>
             </Form>
             </Col>
             </Row>
