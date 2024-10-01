@@ -1,5 +1,5 @@
 import axios from "axios"
-import { ARTICLE_BY_MAGAZINE_ISSUE, ARTICLES_BY_GENRE, ARTICLES_BY_MAGAZINE_ISSUE, ARTICLES_SHOWING_ALL, DELETE_ARTICLE, DELETE_MAG_ISSUE, EDIT_ARTICLE_AUTHOR, EDIT_ARTICLE_CONTENT, EDIT_ARTICLE_TITLE, ISSUE_SINGLE, MAGAZINE_ARTICLE_GENRE_CREATE, MAGAZINE_ARTICLE_GENRE_VIEW, MAGAZINE_COVER_UPDATE, MAGAZINE_PDF_UPDATE, MAGAZINE_SHOW_ALL, MAGAZINE_SHOW_SINGLE, MAGAZINES_ISSUES_ERROR, NEW_ISSUE_SINGLE, UPDATE_ARTICLE_PHOTO, UPDATE_MAG_ISSUE } from "./types"
+import { ARTICLE_BY_MAGAZINE_ISSUE, ARTICLES_BY_GENRE, ARTICLES_BY_MAGAZINE_ISSUE, ARTICLES_SHOWING_ALL, DELETE_ARTICLE, DELETE_MAG_ISSUE, DELETE_VIDEO, EDIT_ARTICLE_AUTHOR, EDIT_ARTICLE_CONTENT, EDIT_ARTICLE_TITLE, ISSUE_SINGLE, MAGAZINE_ARTICLE_GENRE_CREATE, MAGAZINE_ARTICLE_GENRE_VIEW, MAGAZINE_COVER_UPDATE, MAGAZINE_PDF_UPDATE, MAGAZINE_SHOW_ALL, MAGAZINE_SHOW_SINGLE, MAGAZINES_ISSUES_ERROR, NEW_ISSUE_SINGLE, UPDATE_ARTICLE_PHOTO, UPDATE_MAG_ISSUE, UPDATE_VIDEO } from "./types"
 import { ApiUrl } from "../../helpers/ApiUrl"
 import { bmagtoken } from "../../helpers/Bmag"
 
@@ -540,4 +540,68 @@ export function magaCoverPhoto(data, id) {
 
     }
 
+}
+
+
+export function deleteVideo(id) {
+    return async function(dispatch) {
+        try {
+
+            const response = await axios.delete(`${ApiUrl}/erase_video/${id}`, {
+
+                headers: {
+                    Authorization: `Bearer ${bmagtoken}`
+                }
+
+
+            })
+
+            dispatch({type: DELETE_VIDEO})
+            alert(response.data.msg)
+
+            window.location.href = "/videos_dashboard"
+
+
+            
+        } catch (error) {
+
+            console.error(error)
+                    dispatch({type: MAGAZINES_ISSUES_ERROR})
+                    throw error
+            
+            
+        }
+    }
+}
+
+
+export function updateVideoName(data, id) {
+    return async function(dispatch) {
+        try {
+
+            const response = await axios.put(`${ApiUrl}/update_video_name/${id}`, data, {
+
+                headers: {
+                    Authorization: `Bearer ${bmagtoken}`
+                }
+
+
+            })
+
+            dispatch({type: UPDATE_VIDEO})
+            alert(response.data.msg)
+
+            window.location.href = "/manage_videos"
+
+
+            
+        } catch (error) {
+
+            console.error(error)
+                    dispatch({type: MAGAZINES_ISSUES_ERROR})
+                    throw error
+            
+            
+        }
+    }
 }

@@ -4,6 +4,8 @@ import { publicGetGenres, publicNewMagIssue } from '../../../redux/actions/publi
 import moment from 'moment/moment';
 import { articlesAll, magShowAll } from '../../../redux/actions/magazineAction';
 import Loader from './Loader';
+import { Pagination } from 'react-bootstrap';
+
 
 
 
@@ -16,6 +18,10 @@ export default function Home() {
     const newIssue = useSelector((state) => state.publicRdcr.newIssue)
     const articles = useSelector((state) => state.magRdcr.articles)
     const magIssues = useSelector((state) => state.magRdcr.magIssues)
+
+    const [currentPage, setCurrentPage] = useState(1); // Pagination state
+    const articlesPerPage = 6; // 6 articles per page
+
 
     useEffect(() => {
 
@@ -121,6 +127,15 @@ try {
         dispatch(articlesAll(query)); 
       }
     };
+
+
+    // Pagination logic
+    const indexOfLastArticle = currentPage * articlesPerPage;
+    const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
+    const currentArticles = articles?.slice(indexOfFirstArticle, indexOfLastArticle);
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
    
   
 
@@ -280,43 +295,52 @@ try {
         </div>
 
         <div className="col-lg-8 order-1 order-lg-2 mb-5 mb-lg-0">
-  {
-    articles.length === 0 ? (
-      <Loader /> // You can replace this with your loader component or any other loading indicator
-    ) : (
-      articles.map(article => (
-        <article key={article._id} className="row mb-5">
-          <div className="col-12">
-            <div className="post-slider">
-              <img
-                loading="lazy"
-                src={article.articlePhoto}
-                className="img-fluid panoramic-image"
-                alt="post-thumb"
-              />
-            </div>
-          </div>
-          <div className="col-12 mx-auto">
-            <h3>
-              <a className="post-title" href={`/post-details/${article._id}`}>
-                {article.articleTitle}
-              </a>
-            </h3>
-            <ul className="list-inline post-meta mb-4">
-              <li className="list-inline-item">
-                <i className="ti-user mr-2"></i>
-                <a href="author.html">{article.articleAuthor}</a> 
-              </li>
-              <li className="list-inline-item">
-                Date : {moment(article.createdAt).format("MMM D YYYY")}
-              </li>
-            </ul>
-            <ArticleBody article={article} />
-          </div>
-        </article>
-      ))
-    )
-  }
+
+           {/* Display paginated articles */}
+           {currentArticles.length === 0 ? (
+                                <Loader />
+                            ) : (
+                                currentArticles.map((article) => (
+                                    <article key={article._id} className="row mb-5">
+                                        <div className="col-12">
+                                            <div className="post-slider">
+                                                <img
+                                                    loading="lazy"
+                                                    src={article.articlePhoto}
+                                                    className="img-fluid panoramic-image"
+                                                    alt="post-thumb"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-12 mx-auto">
+                                            <h3>
+                                                <a className="post-title" href={`/post-details/${article._id}`}>
+                                                    {article.articleTitle}
+                                                </a>
+                                            </h3>
+                                            <ul className="list-inline post-meta mb-4">
+                                                <li className="list-inline-item">
+                                                    <i className="ti-user mr-2"></i>
+                                                    <a href="author.html">{article.articleAuthor}</a>
+                                                </li>
+                                                <li className="list-inline-item">
+                                                    Date : {moment(article.createdAt).format("MMM D YYYY")}
+                                                </li>
+                                            </ul>
+                                            <ArticleBody article={article} />
+                                        </div>
+                                    </article>
+                                ))
+                            )}
+                            
+                            {/* Pagination controls */}
+                            <PaginationComponent
+                                articlesPerPage={articlesPerPage}
+                                totalArticles={articles.length}
+                                paginate={paginate}
+                                currentPage={currentPage}
+                            />
+  
 </div>
 
       
@@ -334,6 +358,31 @@ try {
     </>
   )
 }
+
+
+// Pagination component
+const PaginationComponent = ({ articlesPerPage, totalArticles, paginate, currentPage }) => {
+  const pageNumbers = [];
+
+  for (let i = 1; i <= Math.ceil(totalArticles / articlesPerPage); i++) {
+      pageNumbers.push(i);
+  }
+
+  return (
+      <Pagination className="justify-content-center">
+          {pageNumbers.map((number) => (
+              <Pagination.Item
+                  key={number}
+                  active={number === currentPage}
+                  onClick={() => paginate(number)}
+              >
+                  {number}
+              </Pagination.Item>
+          ))}
+      </Pagination>
+  );
+};
+
 
 
 const ArticleBody = ({article}) => {
@@ -373,5 +422,4 @@ const ArticleBody = ({article}) => {
   </>)
 
 }
-
 
