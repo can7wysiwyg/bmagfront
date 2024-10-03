@@ -359,7 +359,7 @@ export function editArticleTitle(data, id) {
 
                dispatch({type: DELETE_ARTICLE}) 
                alert(response.data.msg)
-               window.location.href = "/new_mag_issue"
+               window.location.href = "/articles_dashboard"
                 
             } catch (error) {
 
