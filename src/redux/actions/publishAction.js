@@ -34,13 +34,13 @@ export default function publishMagazine(data) {
 }
 
 
-export function articleCreate(data, id) {
+export function articleCreate(data) {
 
     return async function(dispatch) {
 
         try {
 
-          const response = await axios.post(`${ApiUrl}/adminarticleroute/create_new_article/${id}`, data, {
+          const response = await axios.post(`${ApiUrl}/adminarticleroute/create_new_article`, data, {
         headers: {
             Authorization: `Bearer ${bmagtoken}`
         }

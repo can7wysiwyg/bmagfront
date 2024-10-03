@@ -153,6 +153,7 @@ try {
         return ""
     }
 
+    console.log(articles)
 
     if(!newIssue) {
        return "" 
