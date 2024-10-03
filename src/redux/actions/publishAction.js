@@ -50,7 +50,7 @@ export function articleCreate(data) {
         dispatch({type: MAGAZINE_ARTICLE_CREATE})
         alert(response.data.msg)
         
-        window.location.href = "/new_mag_issue"
+        window.location.href = "/articles_dashboard"
 
             
         } catch (error) {
