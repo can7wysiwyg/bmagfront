@@ -79,17 +79,10 @@ const Magazine = ({magazine}) => {
             style={{ marginTop: "3rem", textAlign: "center", fontFamily: "Helvetica" }}
           >
             <h2>{magazine.magazineIssue}</h2>
-            <img src={magazine.magazinePhoto} alt="Magazine Cover" style={{width: "100%", height: "30vh", objectFit: "contain"}} />
+            <img src={magazine.magazinePhoto} alt="Magazine Cover" style={{width: "100%", height: "100vh", objectFit: "contain"}} />
      
-            <h5>
-              <a href={`/add_article/${magazine._id}`} style={{textDecoration: "none"}} >add articles</a>
-            </h5>
-
-             <p>
-             <a href={`/view_articles/${magazine._id}`} style={{textDecoration: "none"}} >view articles from this issue</a>
-            </p>
-
             
+            <h4><a href={`/edit_mag_issue/${magazine._id}`}>EDIT MAGAZINE </a></h4>
             
             <p>Published On: {moment(magazine.createdAt).format("MMM D YYYY")}</p>
             

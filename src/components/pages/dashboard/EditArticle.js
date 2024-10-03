@@ -19,7 +19,7 @@ export default function EditArticle() {
   }
 
   return (
-    <Container className="mt-3 mb-3 text-center">
+    <Container className="mt-5 mb-5 text-center">
       <h5 style={{ fontFamily: 'Times New Roman' }}>Select Action</h5>
 
       <ListGroup className="mt-3">

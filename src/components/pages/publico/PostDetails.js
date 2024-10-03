@@ -29,6 +29,9 @@ export default function PostDetails() {
 
     }, [dispatch, id])
 
+
+    
+
     if(!articleByIssue) {
         return(<>
         
@@ -65,10 +68,14 @@ export default function PostDetails() {
         </div>
       </div>
       <div className="col-lg-10 mx-auto">
-        <div className="content preserve-whitespace">
-          <p>{articleByIssue.articleContent}</p>
-          
-        </div>
+  <div className="content">
+    <div
+      dangerouslySetInnerHTML={{ __html: articleByIssue.articleContent }}
+    />
+  </div>
+
+
+      
       </div>
     </article>
   </div>

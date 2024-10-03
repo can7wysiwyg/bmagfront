@@ -67,19 +67,19 @@ if(!articleByIssue || articleByIssue === undefined || articleByIssue === null) {
               <ul className="post-meta list-inline">
                 <li className="list-inline-item">
                   <i className="fa fa-user-circle-o"></i> 
-                  <a href="javascript:void(0)" onClick={(e) => e.preventDefault()}>{articleByIssue.articleAuthor}</a>
+                  <a href="!#" onClick={(e) => e.preventDefault()}>{articleByIssue.articleAuthor}</a>
                 </li>
                 <li className="list-inline-item">
                   <i className="fa fa-calendar-o"></i> 
-                  < a href="javascript:void(0)" onClick={(e) => e.preventDefault()}>{moment(articleByIssue.createdAt).format("MMM D YYYY")}</a>
+                  < a href="!#" onClick={(e) => e.preventDefault()}>{moment(articleByIssue.createdAt).format("MMM D YYYY")}</a>
                 </li>
                 <li className="list-inline-item">
                   <i className="fa fa-tags"></i> 
                   <a href={`/edit_article/${articleByIssue._id}`}><i className="bi bi-pen-fill"></i> Edit Article</a>
                 </li>
               </ul>
-              <div className='preserve-whitespace'>
-              <p>{articleByIssue.articleContent}</p>
+              <div className='content' >
+              <div dangerouslySetInnerHTML={{ __html: articleByIssue.articleContent }} />
               </div>
             </div>
           </article>

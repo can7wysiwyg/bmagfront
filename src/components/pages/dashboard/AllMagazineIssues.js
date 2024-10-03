@@ -46,7 +46,7 @@ export default function AllMagazineIssues() {
               <td>
                 <img src={item.magazinePhoto} alt="magazine issue" style={{ width: '50px' }} />
               </td>
-              <td> <a href={`/show_all_mag_issue_articles/${item._id}`}> {item.magazineIssue} </a></td>
+              <td>  {item.magazineIssue} </td>
               
               <td>
                 <Buttons item={item} />

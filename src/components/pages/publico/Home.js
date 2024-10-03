@@ -229,7 +229,7 @@ try {
 
           {
                         magIssues?.map((mag) => (
-                            <li key={mag._id}><a className="d-flex" href={`/show_all_mag_issue_articles/${mag._id}`}>{mag.magazineIssue}</a></li>
+                            <li key={mag._id}><a className="d-flex" href={`/show_mag_issue/${mag._id}`}>{mag.magazineIssue}</a></li>
 
                         ))
                     }
@@ -279,8 +279,8 @@ try {
                 <img loading="lazy" className="mr-3 panoramic-image" src={issue.magazinePhoto} alt="post-thumb" width="70%" />
               
               <div className="media-body">
-                <h2 className="h6 mb-0"><a href={`/show_all_mag_issue_articles/${issue._id}`}>{issue.magazineIssue}</a></h2>
-                <h4 className="h6 mb-0"><a href={`/read_magazine/${issue._id}`}>Read Magazine</a></h4>
+                <p className=" mb-0"><a href={`/show_all_mag_issue_articles/${issue._id}`}>{issue.magazineIssue}</a></p>
+                <h4 className=" mb-0"><a href={`/read_magazine/${issue._id}`}>Read Magazine</a></h4>
                 <small>released on{moment(issue.createdAt).format("MMM D YYYY")}</small>
               </div>
             </li>
@@ -387,41 +387,38 @@ const PaginationComponent = ({ articlesPerPage, totalArticles, paginate, current
 
 
 
-const ArticleBody = ({article}) => {
-
+const ArticleBody = ({ article }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-
-  
 
   const toggleExpansion = () => {
     setIsExpanded(!isExpanded);
   };
 
-  const {articleContent} = article
-  const maxChars = 150
+  const { articleContent } = article;
+  const maxChars = 150;
 
   const shouldShowSeeMore = articleContent.length > maxChars;
 
-
-
-
-  return(<>
-
-<p >
-            
-            {isExpanded ? articleContent : articleContent.slice(0, maxChars)}
-        {shouldShowSeeMore && (
-          <span onClick={toggleExpansion}>
-            {isExpanded ? `` : <a href={`post-details/${article._id}`} className="btn btn-outline-primary">continue reading</a> }
-          </span>
-        )}
-
-            </p>
-
-
-  
-  
-  </>)
-
-}
-
+  return (
+    <>
+      <div
+        dangerouslySetInnerHTML={{
+          __html: isExpanded
+            ? articleContent
+            : articleContent.slice(0, maxChars),
+        }}
+      />
+      {shouldShowSeeMore && (
+        <span onClick={toggleExpansion}>
+          {isExpanded ? (
+            ''
+          ) : (
+            <a href={`post-details/${article._id}`} className="btn btn-outline-primary">
+              continue reading
+            </a>
+          )}
+        </span>
+      )}
+    </>
+  );
+};

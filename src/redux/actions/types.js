@@ -33,4 +33,3 @@ export const WATCH_VIDEOS = "WATCH_VIDEOS"
 export const WATCH_VIDEO = "WATCH_VIDEO"
 export const DELETE_VIDEO = "DELETE_VIDEO"
 export const UPDATE_VIDEO = "UPDATE_VIDEO"
-

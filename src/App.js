@@ -6,7 +6,7 @@ import PublishMagazine from "./components/pages/dashboard/PublishMagazine";
 import NewMagIssue from "./components/pages/dashboard/NewMagIssue";
 import GenreCreate from "./components/pages/dashboard/GenreCreate";
 import ArticlesGenreView from "./components/pages/dashboard/ArticlesGenreView";
-import PublishMagazineArticle from "./components/pages/dashboard/PublishMagazineArticle";
+import PublishArticle from "./components/pages/dashboard/PublishArticle";
 import DashArticlesByIssue from "./components/pages/dashboard/DashArticlesByIssue";
 import DashArticleSingle from "./components/pages/dashboard/DashArticleSingle";
 import EditArticle from "./components/pages/dashboard/EditArticle";
@@ -16,7 +16,7 @@ import EditArticleTitle from "./components/pages/dashboard/EditArticleTitle";
 import Home from "./components/pages/publico/Home";
 import PostDetails from "./components/pages/publico/PostDetails";
 import ArticlesByGenre from "./components/pages/publico/ArticlesByGenre";
-import ShowAllMagIssueArticles from "./components/pages/publico/ShowAllMagIssueArticles";
+import ShowMagIssue from "./components/pages/publico/ShowMagIssue";
 import Footer from "./components/pages/publico/Footer";
 import About from "./components/pages/publico/About";
 import Contact from "./components/pages/publico/Contact";
@@ -38,6 +38,7 @@ import ViewVideo from "./components/pages/publico/ViewVideo";
 import Videos from "./components/pages/publico/Videos";
 import EditVideo from "./components/pages/dashboard/EditVideo";
 import EditVideoName from "./components/pages/dashboard/EditVideoName";
+import ArticleDashboard from "./components/pages/dashboard/ArticleDashboard";
 // import Epl from "./components/pages/publico/tables/Epl";
 
 
@@ -54,7 +55,7 @@ function App() {
         <Route path="/new_mag_issue" element={<NewMagIssue />} />
         <Route path="/genres_create" element={<GenreCreate />} />
         <Route path="/article_genres_view" element={<ArticlesGenreView />} />
-        <Route path="/add_article/:id" element={<PublishMagazineArticle />} />
+        <Route path="/add_article" element={<PublishArticle />} />
         <Route path="/view_articles/:id" element={<DashArticlesByIssue />} />
         <Route path="/article_single/:id" element={<DashArticleSingle />} />
         <Route path="/edit_article/:id" element={<EditArticle />} />
@@ -63,7 +64,7 @@ function App() {
         <Route path="/edit_article_title/:id" element={<EditArticleTitle />} />
         <Route path="/post-details/:id" element={<PostDetails />} />
         <Route path="/article_by_genre/:id" element={<ArticlesByGenre />} />
-        <Route path="/show_all_mag_issue_articles/:id" element={<ShowAllMagIssueArticles />} />
+        <Route path="/show_mag_issue/:id" element={<ShowMagIssue />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/see_magazines" element={<SeeMagazines />} />
@@ -84,6 +85,7 @@ function App() {
         <Route path="/videos" element={<Videos />} />
         <Route path="/edit_video/:id" element={<EditVideo />} />
         <Route path="/edit_video_name/:id" element={<EditVideoName />} />
+        <Route path="/articles_dashboard" element={<ArticleDashboard />} />
         {/* <Route path="/epl_table" element={<Epl />} /> */}
 
 
