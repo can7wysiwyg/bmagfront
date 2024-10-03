@@ -1,140 +1,102 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
 import publishMagazine from '../../../redux/actions/publishAction';
 
 export default function PublishMagazine() {
-    const[formDatta, setFormData] = useState({magazineIssue: ""})
-    const[magazinePhoto, setMagazinePhoto] = useState(false)
-    const[magazinePdfFile, setMagazinePdfFile] = useState(false)
-    const[btnText, setBtnText] = useState("PUBLISH MAGAZINE")
-    const [isSubmitting, setIsSubmitting] = useState(false); // New state for submit status
+    const [formDatta, setFormData] = useState({ magazineIssue: "" });
+    const [magazinePhoto, setMagazinePhoto] = useState(null);
+    const [btnText, setBtnText] = useState("PUBLISH MAGAZINE");
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-
-
-    const dispatch = useDispatch()
-
-
+    const dispatch = useDispatch();
 
     const handleInputChange = (e) => {
         setFormData({
-          ...formDatta,
-          [e.target.name]: e.target.value,
+            ...formDatta,
+            [e.target.name]: e.target.value,
         });
-      };
-    
-      const handleImageUpload = (event) => {
+    };
+
+    const handleImageUpload = (event) => {
         const file = event.target.files[0];
         setMagazinePhoto(file);
-      };
+    };
 
-      const handleBookFileUpload = (event) => {
-        const file = event.target.files[0];
-        setMagazinePdfFile(file);
-      };
     
 
+    const handleSubmit = async (event) => {
+        event.preventDefault();
 
-      const handleSubmit = async(event) => {
-   event.preventDefault()
+        setIsSubmitting(true);
+        setBtnText("MAGAZINE IS PUBLISHING...");
 
-   let formData = new FormData()
+        // Creating formData
+        let formData = new FormData();
+        formData.append('magazineIssue', formDatta.magazineIssue);
+        
+        formData.append('magazinePhoto', magazinePhoto);
 
-   formData.append('magazineIssue', formDatta.magazineIssue)
-   formData.append('magazinePdfFile', magazinePdfFile)
-   formData.append('magazinePhoto', magazinePhoto)
+        
+        // Dispatch the action
+        try {
+            await dispatch(publishMagazine(formData));
+            alert("Magazine Published Successfully!");
+        } catch (error) {
+            console.error("Error publishing magazine", error);
+            alert("An error occurred while publishing the magazine.");
+        } finally {
+            setIsSubmitting(false);
+            setBtnText("PUBLISH MAGAZINE"); // Reset button text after submitting
+        }
+    };
 
+    return (
+        <>
+            <Container style={{ fontFamily: "sans-serif", marginTop: "2rem", marginBottom: "4rem" }}>
+                <h4
+                    style={{
+                        textAlign: "center",
+                        marginBottom: "1rem",
+                        color: "red",
+                        fontStyle: "cursive",
+                    }}
+                >
+                    Publish New Magazine
+                </h4>
+                <Row className="justify-content-md-center">
+                    <Col xs={12} md={6}>
+                        <Form onSubmit={handleSubmit} encType="multipart/form-data">
+                            <Form.Group className="mb-3" controlId="formBasicBookImage">
+                                <Form.Label>Upload Magazine Cover Photo</Form.Label>
+                                <Form.Control
+                                    type="file"
+                                    onChange={handleImageUpload}
+                                    required
+                                    accept=".png, .jpg, .jpeg, .webp"
+                                />
+                            </Form.Group>
 
-   await dispatch(publishMagazine(formData))
+                            
 
+                            <Form.Group className="mb-3" controlId="formBasicBookAuthor">
+                                <Form.Control
+                                    type="text"
+                                    name="magazineIssue"
+                                    value={formDatta.magazineIssue}
+                                    onChange={handleInputChange}
+                                    placeholder="Write month issue of magazine"
+                                    required
+                                />
+                            </Form.Group>
 
-
-      }
-
-
-      const chango = () => {
-        setIsSubmitting(true); // Set submitting to true
-
-        setBtnText("MAGAZINE IS PUBLISHING...")
-    
-      }
-    
-    
-    
-    
-
-
-  return (
-    <>
-     <Container style={{ fontFamily: "sans-serif", marginTop: "2rem" }}>
-        <h4
-          style={{
-            textAlign: "center",
-            marginBottom: "1rem",
-            color: "red",
-            fontStyle: "cursive",
-          }}
-        >
-          Publish New Magazine
-        </h4>
-        <Row className="justify-content-md-center">
-          <Col xs={12} md={6}>
-            <Form onSubmit={handleSubmit} encType="multipart/form-data">
-              <Form.Group className="mb-3" controlId="formBasicBookImage">
-                <Form.Label>Upload Magazine Cover Photo</Form.Label>
-                <Form.Control
-                  type="file"
-                  onChange={handleImageUpload}
-                  required
-                  accept=".png, .jpg, .jpeg, .webp"
-                />
-              </Form.Group>
-
-
-              <Form.Group className="mb-3" controlId="formBasicBookFile">
-                <Form.Label>Upload Magazine pdf file</Form.Label>
-                <Form.Control
-                  type="file"
-                  onChange={handleBookFileUpload}
-                  required
-                  accept=".pdf"
-                />
-              </Form.Group>
-
-
-
-
-              <Form.Group className="mb-3" controlId="formBasicBookAuthor">
-                <Form.Control
-                  type="text"
-                  name="magazineIssue"
-                  value={formDatta.magazineIssue}
-                  onChange={handleInputChange}
-                  placeholder="Write month issue of magazine"
-                  required
-                />
-              </Form.Group>
-
-
-              <Button onClick={chango} disabled={isSubmitting}>{btnText}</Button>
-
-
-
-              </Form>
-              </Col>
-              </Row>
-              </Container>
-              <br></br>
-
-              <br></br>
-              <br></br>
-              <br></br>
-
-
-
-
-
-
-    </>
-  )
+                            <Button type="submit" disabled={isSubmitting}>
+                                {btnText}
+                            </Button>
+                        </Form>
+                    </Col>
+                </Row>
+            </Container>
+        </>
+    );
 }

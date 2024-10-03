@@ -279,7 +279,7 @@ try {
                 <img loading="lazy" className="mr-3 panoramic-image" src={issue.magazinePhoto} alt="post-thumb" width="70%" />
               
               <div className="media-body">
-                <p className=" mb-0"><a href={`/show_all_mag_issue_articles/${issue._id}`}>{issue.magazineIssue}</a></p>
+                <p className=" mb-0">{issue.magazineIssue}</p>
                 <h4 className=" mb-0"><a href={`/read_magazine/${issue._id}`}>Read Magazine</a></h4>
                 <small>released on{moment(issue.createdAt).format("MMM D YYYY")}</small>
               </div>
