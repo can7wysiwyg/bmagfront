@@ -87,11 +87,17 @@ export default function PublishArticle() {
 
             <Form.Group className="mb-3" controlId="formBasicDescription">
               <ReactQuill theme="snow" value={formDatta.articleContent}
+              
               style={{
                 height: "300px"
               }}
                onChange={handleQuillChange} placeholder="Write your article content here" />
             </Form.Group>
+
+            <br>
+            </br>
+            <br>
+            </br>
 
             
             <Form.Group className="mt-5 mb-3" controlId="formBasicBookGenre">

@@ -4,6 +4,9 @@ import { useParams } from 'react-router-dom'
 import { articleByMagIssue } from '../../../redux/actions/magazineAction'
 import { publicGetGenre} from '../../../redux/actions/publicAction'
 import moment from 'moment/moment'
+import SideBar from './SideBar'
+
+
 
 export default function PostDetails() {
     const {id} = useParams()
@@ -40,9 +43,12 @@ export default function PostDetails() {
     }
 
   return (
+
     <>
     <section className="section">
   <div className="container">
+    
+
     <article className="row mb-4">
       <div className="col-lg-10 mx-auto mb-4">
         <h1 className="h2 mb-3">{articleByIssue.articleTitle}</h1>
@@ -78,14 +84,18 @@ export default function PostDetails() {
       
       </div>
     </article>
-  </div>
+
+    </div>
+  
 </section>
+
+
+  
+</>
 
     
     
-    
-    
-    </>
+  
   )
 }
 

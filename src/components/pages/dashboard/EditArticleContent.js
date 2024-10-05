@@ -1,124 +1,111 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
-import { articleByMagIssue, editArticleContent } from '../../../redux/actions/magazineAction'
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { articleByMagIssue, editArticleContent } from '../../../redux/actions/magazineAction';
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
-
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 
 export default function EditArticleContent() {
-    const{id} = useParams()
-     const[formData] = useState({
-        articleContent: ""
-     }) 
+  const { id } = useParams();
+  
+  const [formData] = useState({
+    articleContent: ""
+  });
 
-     const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-     const [checkDesc, setCheckDesc] = useState(""); 
+  const [checkDesc, setCheckDesc] = useState(""); // For ReactQuill content
 
-     const articleByIssue = useSelector((state) => state.magRdcr.articleByIssue)
+  const articleByIssue = useSelector((state) => state.magRdcr.articleByIssue);
 
-     const[btnText, setBtnText] = useState("UPDATE ARTICLE")
+  const [btnText, setBtnText] = useState("UPDATE ARTICLE");
 
-useEffect(() => {
+  useEffect(() => {
+    const fetchArticleByIssue = async () => {
+      try {
+        await dispatch(articleByMagIssue(id));
+      } catch (error) {
+        console.error("there was a problem");
+      }
+    };
 
-    const fetchArticleByIssue = async() => {
+    fetchArticleByIssue();
+  }, [dispatch, id]);
 
-        try {
-
-            await dispatch(articleByMagIssue(id))
-            
-        } catch (error) {
-            console.error("there was a problem")
-        }
-
-
-    }
-
-    fetchArticleByIssue()
-
-
-
-}, [dispatch, id])
-
-const handleInputChange = (e) => {
-    setCheckDesc(e.target.value);
+  const handleInputChange = (value) => {
+    setCheckDesc(value); // Quill editor provides the content directly
   };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  const handleSubmit = async(event) => {
-    event.preventDefault()
+    formData.articleContent = checkDesc; // Set the article content
 
-    formData.articleContent = checkDesc;
-
-
-    await dispatch(editArticleContent(formData, id))
-
-
-  }
-
+    await dispatch(editArticleContent(formData, id));
+  };
 
   const chango = () => {
+    setBtnText("ARTICLE TEXT IS UPDATING...");
+  };
 
-    setBtnText("ARTICLE TEXT IS UPDATING...")
-
+  if (!articleByIssue || articleByIssue === undefined || articleByIssue === null) {
+    return (
+      <>
+        <h4 className="text-center mt-2">articles are loading</h4>
+      </>
+    );
   }
-
-
-
-
-
-
-
-
-if(!articleByIssue || articleByIssue === undefined || articleByIssue === null) {
-
-    return(<>
-    <h4 className='text-center mt-2'>articles are loading</h4>
-    
-    
-    </>)
-
-}
-
-
-
 
   return (
     <>
-<Container style={{marginTop: "2rem"}}>
+      <Container style={{ marginTop: "2rem" }}>
         <Row className="justify-content-md-center">
           <Col xs={12} md={6}>
-            <h6>update article </h6>
+            <h6>Update Article</h6>
 
             <Form onSubmit={handleSubmit}>
-              <Form.Group
-                className="mb-3"
-                controlId="exampleForm.ControlTextarea1"
-              >
-                <textarea
-                  name="articleContent"
-                  defaultValue={articleByIssue.articleContent}
-                  onChange={handleInputChange}
-                  rows="15"
-                  cols="90"
-                ></textarea>
+              <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                <ReactQuill
+                  value={checkDesc || articleByIssue.articleContent} // Initialize with existing content
+                  onChange={handleInputChange} // Update content state
+                  theme="snow"
+                  modules={{
+                    toolbar: [
+                      [{ header: '1'}, { header: '2'}, { font: [] }],
+                      [{ list: 'ordered'}, { list: 'bullet' }],
+                      ['bold', 'italic', 'underline'],
+                      [{ 'color': [] }, { 'background': [] }],
+                      ['link', 'image'],
+                      ['clean']
+                    ]
+                  }}
+                  style={{ height: '300px' }} // Adjust as necessary
+                />
               </Form.Group>
+<br>
 
-              <Button type="submit" variant="danger" onClick={chango}>{btnText}
+</br>
+
+<br>
+
+
+</br>
+              <br>
+              
+              </br>
+
+              <Button type="submit" variant="danger" onClick={chango}>
+                {btnText}
               </Button>
             </Form>
           </Col>
         </Row>
       </Container>
-      <br></br>
 
-      <br></br>
-      <br></br>
-
-
-
-
-
+      <br />
+      <br />
+      <br />
     </>
-  )
+  );
 }

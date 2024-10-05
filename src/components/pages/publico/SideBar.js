@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { articlesAll, magShowAll } from '../../../redux/actions/magazineAction';
-import { publicGetGenres } from '../../../redux/actions/publicAction';
+import { publicGetGenres, watchVideos } from '../../../redux/actions/publicAction';
 import moment from 'moment/moment';
 
 
@@ -15,6 +15,7 @@ export default function SideBar() {
     const newIssue = useSelector((state) => state.publicRdcr.newIssue)
     const magIssues = useSelector((state) => state.magRdcr.magIssues)
     const articles = useSelector((state) => state.magRdcr.articles)
+    const videos = useSelector((state) => state.publicRdcr.videos);
 
     const dispatch = useDispatch()
 
@@ -35,6 +36,20 @@ export default function SideBar() {
         fetchCats()
         
             }, [dispatch])
+
+
+            useEffect(() => {
+                const fetchData = async () => {
+                    try {
+                        await dispatch(watchVideos());
+                    } catch (error) {
+                        console.error("There was a problem fetching videos.");
+                    }
+                };
+        
+                fetchData();
+            }, [dispatch]);
+               
         
 
 
@@ -143,6 +158,30 @@ export default function SideBar() {
         </div>
 
 
+
+
+        
+
+
+
+        <div className="col-lg-8 order-1 order-lg-2 mb-5 mb-lg-0 text-center">
+  <div className="widget">
+    <h5 className="widget-title"><span>Latest Video</span></h5>
+
+    {
+      videos?.slice(0, 1).map((video) => (
+        <div key={video._id}>
+          {/* Replace this with your actual video rendering logic */}
+          <video controls width="300">
+            <source src={video.videoLink} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <p>  <a href={`/view_video/${video._id}`}>{video.videoName}</a></p>
+        </div>
+      ))
+    }
+  </div>
+</div>
 
 
 
