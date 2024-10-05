@@ -955,3 +955,13 @@ body {
   .preserve-whitespace {
     white-space: pre-wrap!important;
 }
+
+.catego-mobile-widget{
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .catego-mobile-widget {
+    display: block; /* Show the widget on small devices */
+  }
+}
