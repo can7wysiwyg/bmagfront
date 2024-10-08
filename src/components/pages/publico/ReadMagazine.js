@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { magShowSingle } from '../../../redux/actions/magazineAction';
+import { readSubMaga } from '../../../redux/actions/subscriptionAction';
 import { Worker, Viewer, SpecialZoomLevel } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import { toolbarPlugin } from '@react-pdf-viewer/toolbar';
 import '@react-pdf-viewer/toolbar/lib/styles/index.css';
 import { fullScreenPlugin } from '@react-pdf-viewer/full-screen';
 import '@react-pdf-viewer/full-screen/lib/styles/index.css';
-import { magShowSingle } from '../../../redux/actions/magazineAction';
 import moment from 'moment/moment';
 
 export default function ReadMagazine() {
     const { id } = useParams();
-    const [pdfVisible, setPdfVisible] = useState(false);
     const dispatch = useDispatch();
     const singleIssue = useSelector((state) => state.magRdcr.singleIssue);
+    const magazine = useSelector((state) => state.subRdcr.magazine); // Assuming you have a subscription reducer
+    const [formData, setFormData] = useState({ token: "" });
+    const [pdfVisible, setPdfVisible] = useState(false);
 
     const toolbarPluginInstance = toolbarPlugin();
     const fullScreenPluginInstance = fullScreenPlugin();
@@ -30,15 +33,26 @@ export default function ReadMagazine() {
         fetchMaga();
     }, [dispatch, id]);
 
-    const handleButtonClick = () => {
-        setPdfVisible(!pdfVisible);
+    const handleInputChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        await dispatch(readSubMaga(formData));
+
+        // Check if the magazine has been updated after token submission
+        if (magazine) {
+            setPdfVisible(true); // Show PDF reader on successful token validation
+        }
     };
 
     if (!singleIssue) {
         return "";
     }
-
-    const named = singleIssue.magazinePdfFile;
 
     return (
         <>
@@ -55,13 +69,31 @@ export default function ReadMagazine() {
                             <p className="card-text">
                                 Released on {moment(singleIssue.createdAt).format('MMM D YYYY')}
                             </p>
-                            <button onClick={handleButtonClick} className="btn btn-primary">
-                                {pdfVisible ? 'Hide Magazine' : 'Read Magazine'}
-                            </button>
 
-                            {pdfVisible && named && (
+                            {/* Token Form */}
+                            <form onSubmit={handleSubmit} style={{ marginTop: '1rem' }}>
+                                <div className="form-group">
+                                    <label htmlFor="token">Enter your token to read this magazine:</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="token"
+                                        placeholder="Enter token"
+                                        name='token'
+                                        value={formData.token}
+                                        onChange={handleInputChange}
+                                        required
+                                    />
+                                </div>
+                                <button type="submit" className="btn btn-primary" style={{ marginTop: '1rem' }}>
+                                    Submit Token
+                                </button>
+                            </form>
+
+                            {/* PDF Viewer */}
+                            {pdfVisible && magazine && (
                                 <PdfViewer
-                                    fileUrl={named}
+                                    fileUrl={magazine.magazinePdfFile} // Accessing the PDF file from the magazine
                                     toolbarPluginInstance={toolbarPluginInstance}
                                     fullScreenPluginInstance={fullScreenPluginInstance}
                                 />
