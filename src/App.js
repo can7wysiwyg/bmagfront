@@ -39,6 +39,7 @@ import Videos from "./components/pages/publico/Videos";
 import EditVideo from "./components/pages/dashboard/EditVideo";
 import EditVideoName from "./components/pages/dashboard/EditVideoName";
 import ArticleDashboard from "./components/pages/dashboard/ArticleDashboard";
+import SubscribeMagazine from "./components/pages/publico/SubscribeMagazine";
 // import Epl from "./components/pages/publico/tables/Epl";
 
 
@@ -86,6 +87,7 @@ function App() {
         <Route path="/edit_video/:id" element={<EditVideo />} />
         <Route path="/edit_video_name/:id" element={<EditVideoName />} />
         <Route path="/articles_dashboard" element={<ArticleDashboard />} />
+        <Route path="/subscribe_magazine/:id" element={<SubscribeMagazine />} />
         {/* <Route path="/epl_table" element={<Epl />} /> */}
 
 

@@ -141,7 +141,8 @@ export default function SideBar() {
               
               <div className="media-body">
                 <p className=" mb-0">{issue.magazineIssue}</p>
-                <h4 className=" mb-0"><a href={`/read_magazine/${issue._id}`}>Read Magazine</a></h4>
+                <p className=" mb-2 text-danger" style={{cursor: "pointer"}}> <a href={`/subscribe_magazine/${issue._id}`}>  read magazine </a></p>
+                {/* <h4 className=" mb-0"><a href={`/read_magazine/${issue._id}`}>Read Magazine</a></h4> */}
                 <small>released on{moment(issue.createdAt).format("MMM D YYYY")}</small>
               </div>
             </li>
