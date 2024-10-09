@@ -21,6 +21,24 @@ export default function Dashboard() {
                 <div className="card border-hover-primary hover-scale">
                     <div className="card-body">
                         <div className="text-primary mb-5">
+                        <i className="bi bi-book" style={{fontSize: "70px"}}></i>
+
+
+                           
+                        </div>
+                        <h6 className="font-weight-bold mb-3">MAGAZINE SUBSCRIPTIONS</h6>
+                        <p className="text-muted mb-0"><a href="/magazine_subscriptions"> check magazine subscriptions</a></p>
+                    </div>
+                </div>
+            </div>
+            {/* user bar end */}
+
+
+
+        <div className="col my-3">
+                <div className="card border-hover-primary hover-scale">
+                    <div className="card-body">
+                        <div className="text-primary mb-5">
                         <i className="bi bi-cloud-upload" style={{fontSize: "70px"}}></i>
 
 
