@@ -1,4 +1,4 @@
-import { ADMIN_CHECK_ALL_SUBSCRIPTIONS, ADMIN_CHECK_SUBSCRIPTION_SINGLE, CREATE_SUBSCRIPTION_DATA, READ_SUBSCRIBED_MAGAZINE, SUBSCRIPTION_ERROR } from "../actions/types";
+import { ADMIN_CHECK_ALL_SUBSCRIPTIONS, ADMIN_CHECK_SUBSCRIPTION_SINGLE, ADMIN_SUB_TOKEN_GENERATE, CREATE_SUBSCRIPTION_DATA, READ_SUBSCRIBED_MAGAZINE, SUBSCRIPTION_ERROR } from "../actions/types";
 
 export function subRdcr(state={}, action) {
 
@@ -8,6 +8,11 @@ export function subRdcr(state={}, action) {
 
         case READ_SUBSCRIBED_MAGAZINE:
             return{...state, magazine: action.payload} 
+
+        case ADMIN_SUB_TOKEN_GENERATE:
+            const { token, expiresAt, magazineId } = action.payload;
+
+            return {...state, token, expiresAt, magazineId }    
             
         case ADMIN_CHECK_ALL_SUBSCRIPTIONS:
             return{...state, subscriptions: action.payload}

@@ -14,7 +14,7 @@ export default function MagazineSubscriptions() {
     useEffect(() => {
         const fetchSubscriptions = async () => {
             try {
-                await dispatch(adminAllSubs);
+                await dispatch(adminAllSubs());
             } catch (error) {
                 console.error(`There was a problem: ${error}`);
             }
@@ -39,7 +39,7 @@ export default function MagazineSubscriptions() {
         );
     }
 
-    // Pagination Logic
+    
     const indexOfLastSub = currentPage * subsPerPage;
     const indexOfFirstSub = indexOfLastSub - subsPerPage;
     const currentSubs = subscriptions.slice(indexOfFirstSub, indexOfLastSub);
@@ -58,22 +58,45 @@ export default function MagazineSubscriptions() {
                             <h2>Magazine Subscriptions</h2>
                         </div>
                         <div className="card-body">
-                            <ul className="list-group list-group-flush">
-                                {currentSubs.map((sub, index) => (
-                                    <li 
-                                        key={index} 
-                                        className="list-group-item d-flex justify-content-between align-items-center stylish-list-item">
-                                        <Link 
-                                            to={`/subscription/${sub._id}`} // Assuming each subscription has an _id field
-                                            className="font-weight-bold stylish-link">
-                                            {sub.username}
-                                        </Link>
-                                        <span><IssueName sub={sub.magazineId} /></span>
-                                        <span className="badge bg-primary rounded-pill">{sub.paymentMethod}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+
+                        <ul className="list-group list-group-flush">
+    {currentSubs.map((sub, index) => (
+        sub.token !== null  ? (
+            <li 
+                key={index} 
+                 className="list-group-item d-flex justify-content-between align-items-center stylish-list-item">
+              <Link 
+                    to={`/check_subscriber/${sub._id}`} 
+                    className="font-weight-bold stylish-link">
+
+<span className="font-weight-bold">
+                    {sub.username} - Already Subscribed
+                </span>
+
+                    </Link>
+                
+                <span><IssueName sub={sub.magazineId} /></span>
+                <span className="badge bg-primary rounded-pill">{sub.paymentMethod}</span>
+            </li>
+        ) : (
+            <li 
+                key={index} 
+                className="list-group-item d-flex justify-content-between align-items-center stylish-list-item">
+                <Link 
+                    to={`/subscription_token/${sub._id}`} 
+                    className="font-weight-bold stylish-link">
+                    {sub.username}
+                </Link>
+                <span><IssueName sub={sub.magazineId} /></span>
+                <span className="badge bg-primary rounded-pill">{sub.paymentMethod}</span>
+            </li>
+        )
+    ))}
+</ul>
+
+
+
+                                                    </div>
                     </div>
 
                     {/* Pagination Component */}

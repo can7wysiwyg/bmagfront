@@ -1,5 +1,5 @@
 import axios from "axios"
-import { ADMIN_CHECK_ALL_SUBSCRIPTIONS, ADMIN_CHECK_SUBSCRIPTION_SINGLE, CREATE_SUBSCRIPTION_DATA, READ_SUBSCRIBED_MAGAZINE, SUBSCRIPTION_ERROR } from "./types"
+import { ADMIN_CHECK_ALL_SUBSCRIPTIONS, ADMIN_CHECK_SUBSCRIPTION_SINGLE, ADMIN_SUB_TOKEN_GENERATE, CREATE_SUBSCRIPTION_DATA, READ_SUBSCRIBED_MAGAZINE, SUBSCRIPTION_ERROR } from "./types"
 import { ApiUrl } from "../../helpers/ApiUrl"
 import { bmagtoken } from "../../helpers/Bmag"
 
@@ -115,4 +115,30 @@ export function adminSingleSubs(id) {
         }
 
     }
+}
+
+
+
+export function adminSubTokGen(data) {
+    return async function(dispatch) {
+        try {
+            const response = await axios.post(`${ApiUrl}/admin_generate_token`, data, {
+                headers: {
+                    Authorization: `Bearer ${bmagtoken}`,
+                },
+            });
+
+            
+            dispatch({
+                type: ADMIN_SUB_TOKEN_GENERATE,
+                payload: response.data, 
+            });
+
+            return response; 
+        } catch (error) {
+            console.error(error);
+            dispatch({ type: SUBSCRIPTION_ERROR });
+            throw error;
+        }
+    };
 }
