@@ -4,6 +4,7 @@ import { AuthComp } from "../../helpers/AuthComp";
 import { useDispatch, useSelector } from "react-redux";
 import { publicGetGenres } from "../../redux/actions/publicAction";
 import Logo from "./Logo.jpg";
+import SubTokenCheck from "../../helpers/SubTokenCheck";
 
 export default function NavMenu() {
   const dispatch = useDispatch();
@@ -55,6 +56,10 @@ export default function NavMenu() {
                   <a className="nav-link" href="/">
                     Home
                   </a>
+                </li>
+                <li>
+
+                  <SubTokenCheck />
                 </li>
 
                 <li>{DashboardComp()}</li>
