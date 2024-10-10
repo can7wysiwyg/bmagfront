@@ -7,7 +7,8 @@ export function subRdcr(state={}, action) {
             return{...state, msg: "successful"}
 
         case READ_SUBSCRIBED_MAGAZINE:
-            return{...state, magazine: action.payload} 
+            const{magazine, readerEntry} = action.payload
+            return{...state, magazine, readerEntry} 
 
         case ADMIN_SUB_TOKEN_GENERATE:
             const { token, expiresAt, magazineId } = action.payload;

@@ -9,7 +9,7 @@ export default function MagazineSubscriptions() {
     const dispatch = useDispatch();
     const subscriptions = useSelector((state) => state.subRdcr.subscriptions);
     const [currentPage, setCurrentPage] = useState(1);
-    const [subsPerPage] = useState(5); // Set the number of subscriptions per page
+    const [subsPerPage] = useState(10); // Set the number of subscriptions per page
 
     useEffect(() => {
         const fetchSubscriptions = async () => {

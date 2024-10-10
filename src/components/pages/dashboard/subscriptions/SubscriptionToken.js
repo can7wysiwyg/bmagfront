@@ -23,7 +23,7 @@ export default function SubscriptionToken() {
     const handleGenerateToken = async () => {
         const transactionId = subscription.transactionId; 
         const response = await dispatch(adminSubTokGen({ transactionId, magazineId: subscription.magazineId }));
-        setGeneratedToken(response.data); // Assuming the response structure has a data property with this payload
+        setGeneratedToken(response.data); 
                
     };
 

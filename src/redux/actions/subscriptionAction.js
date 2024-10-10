@@ -41,9 +41,8 @@ export function readSubMaga(data) {
             
             }
 
-            const magazine = response.data.magazine 
-
-            dispatch({type: READ_SUBSCRIBED_MAGAZINE, payload: magazine})
+            
+            dispatch({type: READ_SUBSCRIBED_MAGAZINE, payload: response.data})
 
             
 

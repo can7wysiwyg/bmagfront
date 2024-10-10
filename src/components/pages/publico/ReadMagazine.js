@@ -15,7 +15,8 @@ export default function ReadMagazine() {
     const { id } = useParams();
     const dispatch = useDispatch();
     const singleIssue = useSelector((state) => state.magRdcr.singleIssue);
-    const magazine = useSelector((state) => state.subRdcr.magazine); // Assuming you have a subscription reducer
+    const magazine = useSelector((state) => state.subRdcr.magazine); 
+    const readerEntry = useSelector((state) => state.subRdcr.readerEntry); 
     const [formData, setFormData] = useState({ token: "" });
     const [pdfVisible, setPdfVisible] = useState(false);
 
@@ -40,16 +41,32 @@ export default function ReadMagazine() {
         });
     };
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         await dispatch(readSubMaga(formData));
-
+    
         // Check if the magazine has been updated after token submission
         if (magazine) {
+            // Store the token and expiration time in localStorage
+            const token = formData.token;
+            const expiresAt = new Date(readerEntry.expiresAt); // Assuming readerEntry includes the expiresAt field
+    
+            // Store in localStorage as an array if there are multiple subscriptions
+            const currentSubscriptions = JSON.parse(localStorage.getItem('subscriptions')) || [];
+            
+            // Add the new subscription to the array
+            currentSubscriptions.push({ token, expiresAt });
+    
+            // Save the updated subscriptions back to localStorage
+            localStorage.setItem('subscriptions', JSON.stringify(currentSubscriptions));
+    
             setPdfVisible(true); // Show PDF reader on successful token validation
         }
     };
+    
 
+    
     if (!singleIssue) {
         return "";
     }
