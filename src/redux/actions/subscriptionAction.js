@@ -1,5 +1,5 @@
 import axios from "axios"
-import { ADMIN_CHECK_ALL_SUBSCRIPTIONS, ADMIN_CHECK_SUBSCRIPTION_SINGLE, ADMIN_SUB_TOKEN_GENERATE, CREATE_SUBSCRIPTION_DATA, READ_SUBSCRIBED_MAGAZINE, SUBSCRIPTION_ERROR } from "./types"
+import { ADMIN_CHECK_ALL_SUBSCRIPTIONS, ADMIN_CHECK_SUBSCRIPTION_SINGLE, ADMIN_SUB_TOKEN_GENERATE, CREATE_SUBSCRIPTION_DATA, FIND_BY_TOKEN, READ_SUBSCRIBED_MAGAZINE, SUBSCRIPTION_ERROR } from "./types"
 import { ApiUrl } from "../../helpers/ApiUrl"
 import { bmagtoken } from "../../helpers/Bmag"
 
@@ -140,4 +140,27 @@ export function adminSubTokGen(data) {
             throw error;
         }
     };
+}
+
+
+export function findByTok(token) {
+    return async function(dispatch) {
+
+        try {
+
+            const response = await axios.get(`${ApiUrl}/find_by_token/${token}`)
+
+            const item = response.data.item
+
+            dispatch({type: FIND_BY_TOKEN, payload: item})
+            
+        } catch (error) {
+
+            console.error(error);
+            dispatch({ type: SUBSCRIPTION_ERROR });
+            throw error;
+            
+        }
+
+    }
 }

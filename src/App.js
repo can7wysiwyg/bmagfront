@@ -44,6 +44,7 @@ import MagazineSubscriptions from "./components/pages/dashboard/subscriptions/Ma
 import SubscriptionToken from "./components/pages/dashboard/subscriptions/SubscriptionToken";
 import CheckSubscriber from "./components/pages/dashboard/subscriptions/CheckSubscriber";
 import MySubscribed from "./components/pages/publico/MySubscrbed";
+import MyMagazines from "./components/pages/publico/MyMagazines";
 // import Epl from "./components/pages/publico/tables/Epl";
 
 
@@ -96,6 +97,7 @@ function App() {
         <Route path="/subscription_token/:id" element={<SubscriptionToken />} />
         <Route path="/check_subscriber/:id" element={<CheckSubscriber />} />
         <Route path="/my_subscribed_magazines" element={<MySubscribed />} />
+        <Route path="/subscribed_magazine/:id" element={<MyMagazines />} />
         {/* <Route path="/epl_table" element={<Epl />} /> */}
 
 

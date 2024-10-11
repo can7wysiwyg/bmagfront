@@ -7,7 +7,20 @@ export default function SubTokenCheck() {
   useEffect(() => {
     // Check if there are any tokens in localStorage
     const storedTokens = JSON.parse(localStorage.getItem('subscriptions')) || [];
-    setHasToken(storedTokens.length > 0); // Set to true if any tokens exist
+    
+    const currentDateTime = new Date().getTime(); // Get the current timestamp in milliseconds
+
+    // Filter out expired tokens and store valid tokens
+    const validTokens = storedTokens.filter(token => {
+      const tokenExpiration = new Date(token.expiresAt).getTime(); // Convert expiresAt to timestamp
+      return tokenExpiration > currentDateTime; // Keep only valid tokens
+    });
+
+    // Update localStorage with only valid tokens
+    localStorage.setItem('subscriptions', JSON.stringify(validTokens));
+
+    // Set hasToken to true if any valid tokens exist
+    setHasToken(validTokens.length > 0);
   }, []);
 
   return (
