@@ -2,9 +2,18 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { findByTok } from '../../../redux/actions/subscriptionAction';
 import { magShowAll } from '../../../redux/actions/magazineAction';
+import Home from './Home';
 
 export default function MySubscribed() {
   const storedTokens = JSON.parse(localStorage.getItem('subscriptions')) || [];
+
+  if(!storedTokens) {
+
+    return(<>
+    <Home />
+    
+    </>)
+  }
 
   return (
     <div className='text-center'>
