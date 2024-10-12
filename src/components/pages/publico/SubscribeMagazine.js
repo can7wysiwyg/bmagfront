@@ -5,11 +5,13 @@ import { magShowSingle } from '../../../redux/actions/magazineAction';
 import moment from 'moment/moment';
 import { Modal, Button, Form } from 'react-bootstrap'; // Import Bootstrap components
 import { sendSubData } from '../../../redux/actions/subscriptionAction';
+import MyMagazines from './MyMagazines';
 
 export default function SubscribeMagazine() {
     const { id } = useParams();
     const dispatch = useDispatch();
     const singleIssue = useSelector((state) => state.magRdcr.singleIssue);
+    const [magazineId, setMagazineId] = useState(null); // Initialize state
 
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({
@@ -33,6 +35,36 @@ export default function SubscribeMagazine() {
         };
         fetchMaga();
     }, [dispatch, id]);
+
+
+
+    useEffect(() => {
+        const storedTokens = JSON.parse(localStorage.getItem('subscriptions')) || [];
+        
+        storedTokens.forEach(subscription => {
+            const token = subscription.token;
+            const id = token.split('-').pop(); // Get the magazine ID
+            setMagazineId(id); // Update the state with the magazine ID
+        });
+
+    }, []);
+
+    
+
+    if(id === magazineId) {
+
+return(<>
+
+<MyMagazines />
+
+</>)
+
+    }
+
+            
+       
+    
+
 
     if (!singleIssue) {
         return "";
