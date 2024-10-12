@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { adminAllSubs } from '../../../../redux/actions/subscriptionAction';
 import { Link } from 'react-router-dom';
 import Pagination from 'react-bootstrap/Pagination';
-import { magShowSingle } from '../../../../redux/actions/magazineAction';
+// import { magShowSingle } from '../../../../redux/actions/magazineAction';
 
 export default function MagazineSubscriptions() {
     const dispatch = useDispatch();
@@ -75,7 +75,7 @@ export default function MagazineSubscriptions() {
 
                     </Link>
                 
-                <span><IssueName sub={sub.magazineId} /></span>
+                {/* <span><IssueName sub={sub.magazineId} /></span> */}
                 <span className="badge bg-primary rounded-pill">{sub.paymentMethod}</span>
             </li>
         ) : (
@@ -87,7 +87,7 @@ export default function MagazineSubscriptions() {
                     className="font-weight-bold stylish-link">
                     {sub.username}
                 </Link>
-                <span><IssueName sub={sub.magazineId} /></span>
+                {/* <span><IssueName sub={sub.magazineId} /></span> */}
                 <span className="badge bg-primary rounded-pill">{sub.paymentMethod}</span>
             </li>
         )
@@ -118,45 +118,45 @@ export default function MagazineSubscriptions() {
 }
 
 
-const IssueName = ({sub}) => {
+// const IssueName = ({sub}) => {
 
-    const dispatch = useDispatch()
+//     const dispatch = useDispatch()
 
-    const singleIssue = useSelector((state) => state.magRdcr.singleIssue)
+//     const singleIssue = useSelector((state) => state.magRdcr.singleIssue)
 
-    useEffect(() => {
+//     useEffect(() => {
 
-        const fetchSingle = async() => {
+//         const fetchSingle = async() => {
 
-            try {
+//             try {
 
-                await dispatch(magShowSingle(sub))
+//                 await dispatch(magShowSingle(sub))
                 
-            } catch (error) {
-                console.error(`there was a problem ${error}`)
-            }
+//             } catch (error) {
+//                 console.error(`there was a problem ${error}`)
+//             }
 
 
-        }
+//         }
 
-        fetchSingle()
-
-
-
-    }, [dispatch, sub])
-
-    if(!singleIssue) {
-        return(<>
-        <h2>loading...</h2>
-        </>)
-    }
+//         fetchSingle()
 
 
 
+//     }, [dispatch, sub])
 
-    return(<>
+//     if(!singleIssue) {
+//         return(<>
+//         <h2>loading...</h2>
+//         </>)
+//     }
+
+
+// console.log(singleIssue)
+
+//     return(<>
     
-    {singleIssue.magazineIssue}
-    </>)
+//     {singleIssue.magazineIssue}
+//     </>)
 
-}
+// }

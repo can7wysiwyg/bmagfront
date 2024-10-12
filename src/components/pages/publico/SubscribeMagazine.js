@@ -5,7 +5,7 @@ import { magShowSingle } from '../../../redux/actions/magazineAction';
 import moment from 'moment/moment';
 import { Modal, Button, Form } from 'react-bootstrap'; // Import Bootstrap components
 import { sendSubData } from '../../../redux/actions/subscriptionAction';
-import MyMagazines from './MyMagazines';
+import MySubscribed from './MySubscrbed';
 
 export default function SubscribeMagazine() {
     const { id } = useParams();
@@ -52,10 +52,11 @@ export default function SubscribeMagazine() {
     
 
     if(id === magazineId) {
+        
 
 return(<>
 
-<MyMagazines />
+<MySubscribed />
 
 </>)
 
