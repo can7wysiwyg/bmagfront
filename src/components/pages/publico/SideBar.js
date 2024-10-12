@@ -142,7 +142,7 @@ export default function SideBar() {
               <div className="media-body">
                 <p className=" mb-0">{issue.magazineIssue}</p>
                 <p className=" mb-2 text-danger" style={{cursor: "pointer"}}> <a href={`/subscribe_magazine/${issue._id}`}>  read magazine </a></p>
-                {/* <h4 className=" mb-0"><a href={`/read_magazine/${issue._id}`}>Read Magazine</a></h4> */}
+                
                 <small>released on{moment(issue.createdAt).format("MMM D YYYY")}</small>
               </div>
             </li>
@@ -215,7 +215,7 @@ export default function SideBar() {
 
           {
                         magIssues?.map((mag) => (
-                            <li key={mag._id}><a className="d-flex" href={`/show_mag_issue/${mag._id}`}>{mag.magazineIssue}</a></li>
+                            <li key={mag._id}><a className="d-flex" href={`/subscribe_magazine/${mag._id}`}>{mag.magazineIssue}</a></li>
 
                         ))
                     }

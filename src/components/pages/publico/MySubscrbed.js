@@ -47,10 +47,10 @@ const MagazineName = ({ tokenId }) => {
   // Split the token to get the magazine ID
   const [_, magazineId] = tokenId.split('-'); // Assuming token is structured as described
 
-  return <IssueName item={item} magazineId={magazineId} />;
+  return <IssueName item={item} magazineId={magazineId} tokenId={tokenId} />;
 };
 
-const IssueName = ({ item, magazineId }) => {
+const IssueName = ({ item, magazineId, tokenId }) => {
   const magIssues = useSelector((state) => state.magRdcr.magIssues);
   const dispatch = useDispatch();
 
@@ -86,7 +86,7 @@ const IssueName = ({ item, magazineId }) => {
         alt={singleIssue.magazineIssue} 
         style={{ width: '50px', height: 'auto', marginRight: '10px' }} 
     />
-    <a href={`/subscribed_magazine/${singleIssue._id}`}>
+    <a href={`/subscribed_magazine/${tokenId}`}>
         {singleIssue.magazineIssue}
     </a>
 </div>

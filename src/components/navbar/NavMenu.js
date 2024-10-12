@@ -64,21 +64,6 @@ export default function NavMenu() {
 
                 <li>{DashboardComp()}</li>
 
-                <li className="nav-item">
-                  <a className="nav-link" href="/search">
-                    Search
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="/about">
-                    About
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="/contact">
-                    Contact
-                  </a>
-                </li>
                 <li className="nav-item dropdown">
                   <p
                     className="nav-link dropdown-toggle"
@@ -148,6 +133,27 @@ export default function NavMenu() {
                   </ul>
                 </li>
               
+
+
+
+                <li className="nav-item">
+
+
+                  <a className="nav-link" href="/search">
+                    Search
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link" href="/about">
+                    About
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link" href="/contact">
+                    Contact
+                  </a>
+                </li>
+                
 
 
 
