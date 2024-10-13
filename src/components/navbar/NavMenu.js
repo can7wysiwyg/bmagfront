@@ -5,15 +5,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { publicGetGenres } from "../../redux/actions/publicAction";
 import Logo from "./Logo.jpg";
 import SubTokenCheck from "../../helpers/SubTokenCheck";
+import { magShowAll } from "../../redux/actions/magazineAction";
 
 export default function NavMenu() {
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.publicRdcr.categories);
+  const magIssues = useSelector((state) => state.magRdcr.magIssues)
 
   useEffect(() => {
     const fetchCats = async () => {
       try {
         await dispatch(publicGetGenres());
+        await dispatch(magShowAll())
       } catch (error) {
         console.error("there was a problem");
       }
@@ -22,13 +25,7 @@ export default function NavMenu() {
     fetchCats();
   }, [dispatch]);
 
-  // if(!categories || categories === undefined || categories === null) {
-  //     return(<>
-  //     <h5 className='text-center mt-5'>categories are loading</h5>
-
-  //     </>)
-  // }
-
+  
   return (
     <>
       <header className="sticky-top bg-white border-bottom border-default">
@@ -89,6 +86,35 @@ export default function NavMenu() {
                   </ul>
                 </li>
 
+                {/*magazines  */}
+
+                <li className="nav-item dropdown">
+                  <p
+                    className="nav-link dropdown-toggle"
+                    id="pagesDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    Magazines <i className="ti-angle-down ms-1"></i>
+                  </p>
+                  <ul className="dropdown-menu" aria-labelledby="pagesDropdown">
+                    {magIssues?.map((magazine) => (
+                      <li key={magazine._id}>
+                        <a
+                          className="dropdown-item"
+                          href={`/subscribe_magazine/${magazine._id}`}
+                        >
+                          {magazine.magazineIssue}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+
+
+               {/*magazines  */}
                 {/* test */}
 
                 <li className="nav-item dropdown">
