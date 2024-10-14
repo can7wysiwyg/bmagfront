@@ -1,20 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { adminAllSubs } from '../../../../redux/actions/subscriptionAction';
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { adminAllVideoSubs } from '../../../../redux/actions/videoSubscriptionAction';
 import { Link } from 'react-router-dom';
-import Pagination from 'react-bootstrap/Pagination';
-// import { magShowSingle } from '../../../../redux/actions/magazineAction';
+import { Pagination } from 'react-bootstrap';
 
-export default function MagazineSubscriptions() {
-    const dispatch = useDispatch();
-    const subscriptions = useSelector((state) => state.subRdcr.subscriptions);
+
+
+export default function VideoSubscriptions() {
+    const dispatch = useDispatch()
+    const subscribedVideos = useSelector((state) => state.vidSubRdcr.subscribedVideos)
     const [currentPage, setCurrentPage] = useState(1);
     const [subsPerPage] = useState(10); // Set the number of subscriptions per page
 
     useEffect(() => {
         const fetchSubscriptions = async () => {
             try {
-                await dispatch(adminAllSubs());
+                await dispatch(adminAllVideoSubs());
             } catch (error) {
                 console.error(`There was a problem: ${error}`);
             }
@@ -23,18 +24,18 @@ export default function MagazineSubscriptions() {
         fetchSubscriptions();
     }, [dispatch]);
 
-    if (!subscriptions) {
+    if (!subscribedVideos) {
         return (
             <>
-                <h3 className="text-center">Magazine subscriptions are loading...</h3>
+                <h3 className="text-center">Video subscriptions are loading...</h3>
             </>
         );
     }
 
-    if (subscriptions.length === 0) {
+    if (subscribedVideos.length === 0) {
         return (
             <>
-                <h3 className="text-center">There are no magazine subscriptions at the moment.</h3>
+                <h3 className="text-center">There are no video subscriptions at the moment.</h3>
             </>
         );
     }
@@ -42,20 +43,24 @@ export default function MagazineSubscriptions() {
     
     const indexOfLastSub = currentPage * subsPerPage;
     const indexOfFirstSub = indexOfLastSub - subsPerPage;
-    const currentSubs = subscriptions?.slice(indexOfFirstSub, indexOfLastSub);
-    const totalPages = Math.ceil(subscriptions.length / subsPerPage);
+    const currentSubs = subscribedVideos?.slice(indexOfFirstSub, indexOfLastSub);
+    const totalPages = Math.ceil(subscribedVideos.length / subsPerPage);
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
 
-    return (
-        <div className="container">
+
+
+
+  return (
+    <>
+    <div className="container">
             <div className="row justify-content-center">
                 <div className="col-md-8">
                     <div className="card shadow-lg my-4">
                         <div className="card-header text-center">
-                            <h2>Magazine Subscriptions</h2>
+                            <h2>Video Subscriptions</h2>
                         </div>
                         <div className="card-body">
 
@@ -66,7 +71,7 @@ export default function MagazineSubscriptions() {
                 key={index} 
                  className="list-group-item d-flex justify-content-between align-items-center stylish-list-item">
               <Link 
-                    to={`/check_subscriber/${sub._id}`} 
+                    to={`/check_video_subscriber/${sub._id}`} 
                     className="font-weight-bold stylish-link">
 
 <span className="font-weight-bold">
@@ -83,7 +88,7 @@ export default function MagazineSubscriptions() {
                 key={index} 
                 className="list-group-item d-flex justify-content-between align-items-center stylish-list-item">
                 <Link 
-                    to={`/subscription_token/${sub._id}`} 
+                    to={`/video_subscription_token/${sub._id}`} 
                     className="font-weight-bold stylish-link">
                     {sub.username}
                 </Link>
@@ -114,49 +119,9 @@ export default function MagazineSubscriptions() {
                 </div>
             </div>
         </div>
-    );
-}
-
-
-// const IssueName = ({sub}) => {
-
-//     const dispatch = useDispatch()
-
-//     const singleIssue = useSelector((state) => state.magRdcr.singleIssue)
-
-//     useEffect(() => {
-
-//         const fetchSingle = async() => {
-
-//             try {
-
-//                 await dispatch(magShowSingle(sub))
-                
-//             } catch (error) {
-//                 console.error(`there was a problem ${error}`)
-//             }
-
-
-//         }
-
-//         fetchSingle()
-
-
-
-//     }, [dispatch, sub])
-
-//     if(!singleIssue) {
-//         return(<>
-//         <h2>loading...</h2>
-//         </>)
-//     }
-
-
-// console.log(singleIssue)
-
-//     return(<>
     
-//     {singleIssue.magazineIssue}
-//     </>)
-
-// }
+    
+    
+    </>
+  )
+}

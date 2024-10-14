@@ -45,6 +45,12 @@ import SubscriptionToken from "./components/pages/dashboard/subscriptions/Subscr
 import CheckSubscriber from "./components/pages/dashboard/subscriptions/CheckSubscriber";
 import MySubscribed from "./components/pages/publico/MySubscrbed";
 import MyMagazines from "./components/pages/publico/MyMagazines";
+import SubscribeVideo from "./components/pages/publico/videosubsciptions/SubscribeVideo";
+import VideoSubscriptions from "./components/pages/dashboard/subscriptions/VideoSubscriptions";
+import VideoSubscriptionToken from "./components/pages/dashboard/subscriptions/VideoSubscriptionToken";
+import WatchSubscribedVideo from "./components/pages/publico/videosubsciptions/WatchSubscribedVideo";
+import CheckVideoSubscriber from "./components/pages/dashboard/subscriptions/CheckVideoSubscriber";
+
 // import Epl from "./components/pages/publico/tables/Epl";
 
 
@@ -98,6 +104,11 @@ function App() {
         <Route path="/check_subscriber/:id" element={<CheckSubscriber />} />
         <Route path="/my_subscribed_magazines" element={<MySubscribed />} />
         <Route path="/subscribed_magazine/:id" element={<MyMagazines />} />
+        <Route path="/subscribe_video/:id" element={<SubscribeVideo />} />
+        <Route path="/video_subscriptions" element={<VideoSubscriptions />} />
+        <Route path="/video_subscription_token/:id" element={<VideoSubscriptionToken />} />
+        <Route path="/watch_subscribed_video/:id" element={<WatchSubscribedVideo />} />
+        <Route path="/check_video_subscriber/:id" element={<CheckVideoSubscriber />} />
         {/* <Route path="/epl_table" element={<Epl />} /> */}
 
 

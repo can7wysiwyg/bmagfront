@@ -45,7 +45,7 @@ export default function ViewVideo() {
 
     <div className="col-12 mb-3">
         <div className="post-slider">
-          <video src={video.videoLink} className=" panoramic-image" controls />
+          <video src={video.videoLink} className=" panoramic-image" controls controlsList="nodownload" />
         </div>
       </div>
 

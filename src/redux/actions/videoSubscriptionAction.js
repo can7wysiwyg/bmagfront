@@ -3,13 +3,15 @@ import { ADMIN_GET_VIDEO_SUBS, ADMIN_SUBSCRIBED_VIDEO_SINGLE, ADMIN_VID_SUB_GENE
 import { ApiUrl } from "../../helpers/ApiUrl"
 import { bmagtoken } from "../../helpers/Bmag"
 
-export function videoSubscribe(data) {
+export function videoSubscribe(data, id) {
     return async function(dispatch) {
         try {
 
             const response = await axios.post(`${ApiUrl}/video_subscriber_credentials_submit`, data)
             dispatch({type: SUBSCRIBE_VIDEO})
             alert(response.data.msg)
+
+            window.location.href = `/watch_subscribed_video/${id}`
             
         } catch (error) {
             console.error(error)
@@ -136,10 +138,15 @@ export function videoSubGenToken(data) {
             })
 
 
+            console.log(response.data)
+
+
             dispatch({
                 type: ADMIN_VID_SUB_GENERATE_TOKEN,
                 payload: response.data, 
             });
+
+            return response
             
         } catch (error) {
             console.error(error)

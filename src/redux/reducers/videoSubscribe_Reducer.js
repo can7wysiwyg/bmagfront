@@ -8,8 +8,8 @@ export function vidSubRdcr(state={}, action) {
             return{...state, msg: "success"}
 
         case WATCH_SUBSCRIBED_VIDEO:
-            const {video, watcherEntry} = action.payload    
-            return{...state, video, watcherEntry} 
+            const {videoSubscribed, watcherEntry} = action.payload    
+            return{...state, videoSubscribed, watcherEntry} 
 
 
         case VIDEO_SUB_BY_TOKEN:

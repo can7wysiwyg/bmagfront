@@ -84,8 +84,7 @@ return(<>
     const handleSubmit = async(e) => {
         e.preventDefault();
     
-        console.log('Form Data Submitted:', formData);
-
+        
         await dispatch(sendSubData(formData, id))
         
           
