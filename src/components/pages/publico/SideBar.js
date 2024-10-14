@@ -173,11 +173,11 @@ export default function SideBar() {
       videos?.slice(0, 1).map((video) => (
         <div key={video._id}>
           {/* Replace this with your actual video rendering logic */}
-          <video controls width="300">
+          <video  width="300">
             <source src={video.videoLink} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <p>  <a href={`/view_video/${video._id}`}>{video.videoName}</a></p>
+          <p>  <a href={`/subscribe_video/${video._id}`}>watch video</a></p>
         </div>
       ))
     }

@@ -4,6 +4,8 @@ import { publishRdcr } from "./reducers/publish_Reducer";
 import { magRdcr } from "./reducers/magazine_Reducer";
 import { publicRdcr } from "./reducers/public_Reducer";
 import { subRdcr } from "./reducers/subscription_Reducer";
+import { vidSubRdcr } from "./reducers/videoSubscribe_Reducer";
+
 
 
 
@@ -16,7 +18,8 @@ export const store = configureStore({
         publishRdcr,
         magRdcr,
         publicRdcr,
-        subRdcr
+        subRdcr,
+        vidSubRdcr
         
     
 
