@@ -121,6 +121,24 @@ export default function Dashboard() {
 {/* categories item ends here */}
 
 
+<div className="col my-3">
+    <div className="card border-hover-primary hover-scale">
+        <div className="card-body">
+            <div className="text-primary mb-5">
+
+            
+            <i className="bi bi-circle" style={{fontSize: "70px"}}></i>
+                
+
+            </div>
+            <h6 className="font-weight-bold mb-3">LOCAL FOOTBALL</h6>
+            <p className="text-muted mb-0"><a href="/local_football_dashboard">Manage local football leagues</a></p>
+        </div>
+    </div>
+</div>
+
+
+
 
 
 
