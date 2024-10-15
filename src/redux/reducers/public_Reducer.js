@@ -1,4 +1,4 @@
-import { PUBLIC_ERROR, PUBLIC_GET_GENRE, PUBLIC_GET_GENRES, PUBLIC_SINGLE_MAG_ISSUE, WATCH_VIDEO, WATCH_VIDEOS } from "../actions/types"
+import { PUBLIC_ERROR, PUBLIC_GET_GENRE, PUBLIC_GET_GENRES, PUBLIC_SINGLE_MAG_ISSUE, VIDEOS_BY_GENRE, WATCH_VIDEO, WATCH_VIDEOS } from "../actions/types"
 
 export function publicRdcr(state={}, action) {
 
@@ -10,7 +10,11 @@ export function publicRdcr(state={}, action) {
             return {...state, videos: action.payload}
             
         case WATCH_VIDEO:
-            return {...state, video: action.payload}    
+            return {...state, video: action.payload} 
+            
+            
+        case VIDEOS_BY_GENRE:
+            return{...state, videosByGenre: action.payload}    
 
         case PUBLIC_GET_GENRE:
             return{...state, category: action.payload}    

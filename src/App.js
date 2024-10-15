@@ -35,7 +35,6 @@ import VideosDashboard from "./components/pages/dashboard/VideosDashboard";
 import UploadVideo from "./components/pages/dashboard/UploadVideo";
 import ManageVideos from "./components/pages/dashboard/ManageVideos";
 import ViewVideo from "./components/pages/publico/ViewVideo";
-import Videos from "./components/pages/publico/Videos";
 import EditVideo from "./components/pages/dashboard/EditVideo";
 import EditVideoName from "./components/pages/dashboard/EditVideoName";
 import ArticleDashboard from "./components/pages/dashboard/ArticleDashboard";
@@ -52,6 +51,7 @@ import WatchSubscribedVideo from "./components/pages/publico/videosubsciptions/W
 import CheckVideoSubscriber from "./components/pages/dashboard/subscriptions/CheckVideoSubscriber";
 import MySubscribedVideos from "./components/pages/publico/videosubsciptions/MySubscribedVideos";
 import MyVideos from "./components/pages/publico/videosubsciptions/MyVideos";
+import VideosByGenre from "./components/pages/publico/VideosByGenre";
 
 // import Epl from "./components/pages/publico/tables/Epl";
 
@@ -96,7 +96,7 @@ function App() {
         <Route path="/upload_video" element={<UploadVideo />} />
         <Route path="/manage_videos" element={<ManageVideos />} />
         <Route path="/view_video/:id" element={<ViewVideo />} />
-        <Route path="/videos" element={<Videos />} />
+        <Route path="/videos/:id" element={<VideosByGenre />} />
         <Route path="/edit_video/:id" element={<EditVideo />} />
         <Route path="/edit_video_name/:id" element={<EditVideoName />} />
         <Route path="/articles_dashboard" element={<ArticleDashboard />} />

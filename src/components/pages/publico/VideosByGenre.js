@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { watchVideos } from '../../../redux/actions/publicAction';
+import { watchByGenre } from '../../../redux/actions/publicAction';
 import { Container, Row, Col, Spinner, Pagination } from 'react-bootstrap'; // Import Bootstrap components
+import { useParams } from 'react-router-dom';
 
-export default function Videos() {
+export default function VideosByGenre() {
+    const {id} = useParams()
     const dispatch = useDispatch();
-    const videos = useSelector((state) => state.publicRdcr.videos); // Adjust the state according to your Redux setup
+    const videosByGenre = useSelector((state) => state.publicRdcr.videosByGenre); // Adjust the state according to your Redux setup
 
     // State for pagination
     const [currentPage, setCurrentPage] = useState(1);
@@ -14,16 +16,16 @@ export default function Videos() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                await dispatch(watchVideos());
+                await dispatch(watchByGenre(id));
             } catch (error) {
                 console.error("There was a problem fetching videos.");
             }
         };
 
         fetchData();
-    }, [dispatch]);
+    }, [dispatch, id]);
 
-    if (!videos) {
+    if (!videosByGenre) {
         return (
             <Container className="text-center" style={{ marginTop: "2rem" }}>
                 <Spinner animation="border" role="status">
@@ -36,7 +38,7 @@ export default function Videos() {
     // Get the current videos for the page
     const indexOfLastVideo = currentPage * videosPerPage;
     const indexOfFirstVideo = indexOfLastVideo - videosPerPage;
-    const currentVideos = videos?.slice(indexOfFirstVideo, indexOfLastVideo);
+    const currentVideos = videosByGenre?.slice(indexOfFirstVideo, indexOfLastVideo);
 
     // Function to handle page change
     const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
@@ -51,12 +53,13 @@ export default function Videos() {
                         <div className="card">
                             <video
                                 src={video.videoLink}
-                                controls
+                            
                                 className="card-img-top panoramic-video" // Bootstrap styling
                             />
                             <div className="card-body">
-                                <a href={`/view_video/${video._id}`} className="card-title">{video.videoName}</a>
-                                <p className="card-text">Click to watch the video.</p>
+                                <p className="card-title">{video.videoName}</p>
+                                <p>  <a href={`/subscribe_video/${video._id}`}>watch video</a></p>
+                                
                             </div>
                         </div>
                     </Col>
@@ -65,7 +68,7 @@ export default function Videos() {
 
             {/* Pagination */}
             <PaginationComponent
-                totalVideos={videos.length}
+                totalVideos={videosByGenre.length}
                 videosPerPage={videosPerPage}
                 currentPage={currentPage}
                 handlePageChange={handlePageChange}
