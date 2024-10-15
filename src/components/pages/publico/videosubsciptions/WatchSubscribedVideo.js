@@ -10,7 +10,7 @@ export default function WatchSubscribedVideo() {
     const dispatch = useDispatch()
    const video = useSelector((state) => state.publicRdcr.video); 
    const videoSubscribed = useSelector((state) => state.vidSubRdcr.videoSubscribed)
-//    const watcherEntry = useSelector((state) => state.vidSubRdcr.watcherEntry)
+   const watcherEntry = useSelector((state) => state.vidSubRdcr.watcherEntry)
    const [formData, setFormData] = useState({ token: "" });
     const [videoVisible, setVideoVisible] = useState(false);
 
@@ -38,15 +38,32 @@ export default function WatchSubscribedVideo() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         await dispatch(watchSubsribedVideo(formData));
+
+        if (videoSubscribed) {
+            
+            const token = formData.token;
+            const expiresAt = new Date(watcherEntry.expiresAt); 
+    
+            
+            const currentVideoSubscriptions = JSON.parse(localStorage.getItem('videoSubscriptions')) || [];
+            
+            
+            currentVideoSubscriptions.push({ token, expiresAt });
+    
+    
+            localStorage.setItem('videoSubscriptions', JSON.stringify(currentVideoSubscriptions));
+    
+            setVideoVisible(true); 
+        
+        }
+
     
         
             
-            setVideoVisible(true); // Show PDF reader on successful token validation
-        
+            
     
 }
     
-
     
     if (!video) {
         return "";

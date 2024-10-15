@@ -5,6 +5,7 @@ import { watchVideo } from '../../../../redux/actions/publicAction'
 import moment from 'moment'
 import { Button, Modal, Form } from 'react-bootstrap'
 import { videoSubscribe } from '../../../../redux/actions/videoSubscriptionAction'
+import MySubscribedVideos from './MySubscribedVideos'
 
 
 
@@ -12,7 +13,7 @@ export default function SubscribeVideo() {
     const {id} = useParams()
     const dispatch = useDispatch()
     const video = useSelector((state) => state.publicRdcr.video)
-    // const [videoId, setVideoId] = useState(null); 
+    const [videoId, setVideoId] = useState(null); 
     const [showModal, setShowModal] = useState(false);
 
 
@@ -48,6 +49,36 @@ export default function SubscribeVideo() {
 
 
     }, [dispatch, id])
+
+
+    useEffect(() => {
+        const storedTokens = JSON.parse(localStorage.getItem('videoSubscriptions')) || [];
+        
+        storedTokens.forEach(subscription => {
+            const token = subscription.token;
+            const id = token.split('-').pop(); 
+            setVideoId(id); 
+        });
+
+    }, []);
+
+    
+
+    if(id === videoId) {
+        
+
+return(<>
+
+<MySubscribedVideos />
+
+</>)
+
+    }
+
+
+
+
+
 
 
     if(!video) {

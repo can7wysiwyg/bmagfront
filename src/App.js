@@ -50,6 +50,8 @@ import VideoSubscriptions from "./components/pages/dashboard/subscriptions/Video
 import VideoSubscriptionToken from "./components/pages/dashboard/subscriptions/VideoSubscriptionToken";
 import WatchSubscribedVideo from "./components/pages/publico/videosubsciptions/WatchSubscribedVideo";
 import CheckVideoSubscriber from "./components/pages/dashboard/subscriptions/CheckVideoSubscriber";
+import MySubscribedVideos from "./components/pages/publico/videosubsciptions/MySubscribedVideos";
+import MyVideos from "./components/pages/publico/videosubsciptions/MyVideos";
 
 // import Epl from "./components/pages/publico/tables/Epl";
 
@@ -109,6 +111,8 @@ function App() {
         <Route path="/video_subscription_token/:id" element={<VideoSubscriptionToken />} />
         <Route path="/watch_subscribed_video/:id" element={<WatchSubscribedVideo />} />
         <Route path="/check_video_subscriber/:id" element={<CheckVideoSubscriber />} />
+        <Route path="/watch_my_subscribed_videos" element={<MySubscribedVideos />} />
+        <Route path="/subscribed_video/:id" element={<MyVideos />} />
         {/* <Route path="/epl_table" element={<Epl />} /> */}
 
 

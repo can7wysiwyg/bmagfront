@@ -6,6 +6,7 @@ import { publicGetGenres } from "../../redux/actions/publicAction";
 import Logo from "./Logo.jpg";
 import SubTokenCheck from "../../helpers/SubTokenCheck";
 import { magShowAll } from "../../redux/actions/magazineAction";
+import VideoSubToken from "../../helpers/VideoSubToken";
 
 export default function NavMenu() {
   const dispatch = useDispatch();
@@ -57,6 +58,11 @@ export default function NavMenu() {
                 <li>
 
                   <SubTokenCheck />
+                </li>
+
+                <li>
+                 <VideoSubToken />
+
                 </li>
 
                 <li>{DashboardComp()}</li>

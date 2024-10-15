@@ -46,22 +46,22 @@ export default function ReadMagazine() {
         e.preventDefault();
         await dispatch(readSubMaga(formData));
     
-        // Check if the magazine has been updated after token submission
+        
         if (magazine) {
-            // Store the token and expiration time in localStorage
+            
             const token = formData.token;
-            const expiresAt = new Date(readerEntry.expiresAt); // Assuming readerEntry includes the expiresAt field
+            const expiresAt = new Date(readerEntry.expiresAt); 
     
-            // Store in localStorage as an array if there are multiple subscriptions
+            
             const currentSubscriptions = JSON.parse(localStorage.getItem('subscriptions')) || [];
             
-            // Add the new subscription to the array
+            
             currentSubscriptions.push({ token, expiresAt });
     
-            // Save the updated subscriptions back to localStorage
+    
             localStorage.setItem('subscriptions', JSON.stringify(currentSubscriptions));
     
-            setPdfVisible(true); // Show PDF reader on successful token validation
+            setPdfVisible(true); 
         }
     };
     

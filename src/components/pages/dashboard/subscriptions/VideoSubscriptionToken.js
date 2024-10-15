@@ -26,15 +26,9 @@ export default function VideoSubscriptionToken() {
     const handleGenerateToken = async () => {
         const transactionId = subscribedVideo.transactionId; 
         const response = await dispatch(videoSubGenToken({ transactionId, videoId: subscribedVideo.videoId }));
-        console.log('Token generation response:', response);
-    
-        if (response && subscribedVideo) {
-            setGeneratedToken(response.data); 
+        setGeneratedToken(response.data); 
             
-        } else {
-            console.error('Token generation failed or returned invalid data');
-        }
-    
+        
                
     };
 
