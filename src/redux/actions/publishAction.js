@@ -87,7 +87,7 @@ export  function publishVideo(data) {
 
             alert(response.data.msg)
 
-            window.location.href = "/videos"
+            
             
         } catch (error) {
             console.error(error)

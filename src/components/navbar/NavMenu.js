@@ -135,46 +135,30 @@ export default function NavMenu() {
                     Videos <i className="ti-angle-down ms-1"></i>
                   </p>
                   <ul className="dropdown-menu" aria-labelledby="pagesDropdown">
-                    
-                      <li>
+                    {categories?.map((cat) => (
+                      <li key={cat._id}>
                         <a
                           className="dropdown-item"
-                          href="/"
+                          href={`/videos/${cat._id}`}
                         >
-                          Interviews
+                          {cat.genreName}
                         </a>
                       </li>
-
-                      <li>
-                        <a
-                          className="dropdown-item"
-                          href="/"
-                        >
-                          Sports
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          className="dropdown-item"
-                          href="/"
-                        >
-                          Entertainment
-                        </a>
-                      </li>
-                    
+                    ))}
                   </ul>
                 </li>
-              
 
 
+                
 
-                <li className="nav-item">
+
+                {/* <li className="nav-item">
 
 
                   <a className="nav-link" href="/search">
                     Search
-                  </a>
-                </li>
+                  </a> */}
+                {/* </li> */}
                 <li className="nav-item">
                   <a className="nav-link" href="/about">
                     About
@@ -186,19 +170,6 @@ export default function NavMenu() {
                   </a>
                 </li>
                 
-
-
-
-                {/* end test */}
-              
-
-                
-                {/* <li className="nav-item">
-                  <a className="nav-link" href="/videos">
-                    Videos
-                  </a>
-                </li> */}
-
                 <li className="nav-item">{AuthComp()}</li>
               </ul>
             </div>

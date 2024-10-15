@@ -1,16 +1,32 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
 import { publishVideo } from '../../../redux/actions/publishAction';
+import { genreView } from '../../../redux/actions/magazineAction';
+
 
 
 export default function UploadVideo() {
-    const [formData, setFormData] = useState({ videoName: "" });
+    const [formData, setFormData] = useState({ videoName: "", videoGenre: "" });
     const [videoFile, setVideoFile] = useState(null);
     const [btnText, setBtnText] = useState("UPLOAD VIDEO");
     const [isUploading, setIsUploading] = useState(false);
     
     const dispatch = useDispatch();
+
+    const genres = useSelector((state) => state.magRdcr.genres);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await dispatch(genreView());
+      } catch (error) {
+        console.error('There was a problem');
+      }
+    };
+    fetchData();
+  }, [dispatch]);
+
 
     const handleInputChange = (e) => {
         setFormData({
@@ -32,6 +48,7 @@ export default function UploadVideo() {
         let videoData = new FormData();
         videoData.append('videoName', formData.videoName);
         videoData.append('videoFile', videoFile);
+        videoData.append('videoGenre', formData.videoGenre)
 
         await dispatch(publishVideo(videoData));
         setIsUploading(false);
@@ -67,6 +84,18 @@ export default function UploadVideo() {
                                 required
                             />
                         </Form.Group>
+
+                        <Form.Group className="mt-5 mb-3" controlId="formBasicBookGenre">
+              <Form.Select name="videoGenre" value={formData.videoGenre} onChange={handleInputChange} required>
+                <option value="">Select Video Category</option>
+                {genres?.map((genre) => (
+                  <option value={genre._id} key={genre._id}>
+                    {genre.genreName}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+
 
                         <Button type="submit" disabled={isUploading}>
                             {btnText}
