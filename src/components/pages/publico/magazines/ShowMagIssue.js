@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import {  magShowSingle } from '../../../redux/actions/magazineAction'
+import {  magShowSingle } from '../../../../redux/actions/magazineAction'
 import moment from 'moment/moment'
 import { Container, Spinner } from 'react-bootstrap'
 

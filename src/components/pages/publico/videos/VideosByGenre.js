@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { watchByGenre } from '../../../redux/actions/publicAction';
+import { watchByGenre } from '../../../../redux/actions/publicAction';
 import { Container, Row, Col, Spinner, Pagination } from 'react-bootstrap'; // Import Bootstrap components
 import { useParams } from 'react-router-dom';
 

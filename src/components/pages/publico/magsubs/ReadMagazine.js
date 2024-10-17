@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { magShowSingle } from '../../../redux/actions/magazineAction';
-import { readSubMaga } from '../../../redux/actions/subscriptionAction';
+import { magShowSingle } from '../../../../redux/actions/magazineAction';
+import { readSubMaga } from '../../../../redux/actions/subscriptionAction';
 import { Worker, Viewer, SpecialZoomLevel } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import { toolbarPlugin } from '@react-pdf-viewer/toolbar';

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { magShowSingle } from '../../../redux/actions/magazineAction';
+import { magShowSingle } from '../../../../redux/actions/magazineAction';
 import moment from 'moment/moment';
 import { Modal, Button, Form } from 'react-bootstrap'; // Import Bootstrap components
-import { sendSubData } from '../../../redux/actions/subscriptionAction';
+import { sendSubData } from '../../../../redux/actions/subscriptionAction';
 import MySubscribed from './MySubscrbed';
 
 export default function SubscribeMagazine() {

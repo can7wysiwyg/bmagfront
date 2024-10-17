@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { ByGenreArticles } from '../../../redux/actions/magazineAction';
-import { publicGetGenre } from '../../../redux/actions/publicAction';
+import { ByGenreArticles } from '../../../../redux/actions/magazineAction';
+import { publicGetGenre } from '../../../../redux/actions/publicAction';
 import { Container, Row, Col, Card, Pagination } from 'react-bootstrap';
 import moment from 'moment';
 

@@ -7,7 +7,7 @@ import { toolbarPlugin } from '@react-pdf-viewer/toolbar';
 import '@react-pdf-viewer/toolbar/lib/styles/index.css';
 import { fullScreenPlugin } from '@react-pdf-viewer/full-screen';
 import '@react-pdf-viewer/full-screen/lib/styles/index.css';
-import { readSubMaga } from '../../../redux/actions/subscriptionAction';
+import { readSubMaga } from '../../../../redux/actions/subscriptionAction';
 
 
 export default function MyMagazines() {

@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { articleByMagIssue } from '../../../redux/actions/magazineAction'
-import { publicGetGenre} from '../../../redux/actions/publicAction'
+import { articleByMagIssue } from '../../../../redux/actions/magazineAction'
+import { publicGetGenre} from '../../../../redux/actions/publicAction'
 import moment from 'moment/moment'
-import SideBar from './SideBar'
 
 
 

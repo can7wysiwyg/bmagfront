@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { watchVideo } from '../../../redux/actions/publicAction';
+import { watchVideo } from '../../../../redux/actions/publicAction';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
