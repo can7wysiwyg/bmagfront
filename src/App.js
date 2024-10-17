@@ -56,6 +56,8 @@ import LocalFootball from "./components/pages/dashboard/soccer/LocalFootball";
 import CreateLeague from "./components/pages/dashboard/soccer/CreateLeague";
 import CreateTeam from "./components/pages/dashboard/soccer/CreateTeam";
 import CreateMatch from "./components/pages/dashboard/soccer/CreateMatch";
+import Teams from "./components/pages/dashboard/soccer/Teams";
+import Leagues from "./components/pages/dashboard/soccer/Leagues";
 
 // import Epl from "./components/pages/publico/tables/Epl";
 
@@ -121,6 +123,8 @@ function App() {
         <Route path="/create_league" element={<CreateLeague />} />
         <Route path="/create_team" element={<CreateTeam />} />
         <Route path="/create_match" element={<CreateMatch />} />
+        <Route path="/teams" element={<Teams />} />
+        <Route path="/leagues" element={<Leagues />} />
         {/* <Route path="/epl_table" element={<Epl />} /> */}
 
 
