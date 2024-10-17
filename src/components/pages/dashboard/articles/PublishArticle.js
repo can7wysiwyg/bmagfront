@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { genreView } from '../../../redux/actions/magazineAction';
+import { genreView } from '../../../../redux/actions/magazineAction';
 import { Container, Form, Row, Col, Button } from 'react-bootstrap';
-import { articleCreate } from '../../../redux/actions/publishAction';
+import { articleCreate } from '../../../../redux/actions/publishAction';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 

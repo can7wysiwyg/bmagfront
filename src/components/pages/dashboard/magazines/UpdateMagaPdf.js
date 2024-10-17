@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
-import { magaPdfUpdate } from '../../../redux/actions/magazineAction';
+import { magaPdfUpdate } from '../../../../redux/actions/magazineAction';
 
 export default function UpdateMagaPdf() {
     const {id} = useParams()

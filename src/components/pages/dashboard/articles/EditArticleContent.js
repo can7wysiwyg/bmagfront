@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { articleByMagIssue, editArticleContent } from '../../../redux/actions/magazineAction';
+import { articleByMagIssue, editArticleContent } from '../../../../redux/actions/magazineAction';
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import Quill styles

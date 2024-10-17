@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { articlesAll } from '../../../redux/actions/magazineAction';
-import { bmagtoken } from '../../../helpers/Bmag';
+import { articlesAll } from '../../../../redux/actions/magazineAction';
+import { bmagtoken } from '../../../../helpers/Bmag';
 
 export default function ViewAllArticles() {
     const dispatch = useDispatch();

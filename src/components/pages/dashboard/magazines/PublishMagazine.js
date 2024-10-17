@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
-import publishMagazine from '../../../redux/actions/publishAction';
+import publishMagazine from '../../../../redux/actions/publishAction';
 
 export default function PublishMagazine() {
     const [formDatta, setFormData] = useState({ magazineIssue: "" });

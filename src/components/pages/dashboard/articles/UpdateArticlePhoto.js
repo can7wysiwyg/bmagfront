@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { updatePhotoArticle } from '../../../redux/actions/magazineAction'
+import { updatePhotoArticle } from '../../../../redux/actions/magazineAction'
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
 
 export default function UpdateArticlePhoto() {

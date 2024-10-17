@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getIssueAdmin } from '../../../redux/actions/magazineAction'
+import { getIssueAdmin } from '../../../../redux/actions/magazineAction'
 import moment from "moment/moment"
 
 export default function NewMagIssue() {

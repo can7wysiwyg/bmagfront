@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Table, Button, OverlayTrigger, Tooltip, Pagination } from 'react-bootstrap';
-import { watchVideos } from '../../../redux/actions/publicAction';
-import { deleteVideo } from '../../../redux/actions/magazineAction';
+import { watchVideos } from '../../../../redux/actions/publicAction';
+import { deleteVideo } from '../../../../redux/actions/magazineAction';
 
 export default function ManageVideos() {
     const dispatch = useDispatch();

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
-import { publishVideo } from '../../../redux/actions/publishAction';
-import { genreView } from '../../../redux/actions/magazineAction';
+import { publishVideo } from '../../../../redux/actions/publishAction';
+import { genreView } from '../../../../redux/actions/magazineAction';
 
 
 

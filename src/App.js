@@ -2,17 +2,17 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import NavMenu from "./components/navbar/NavMenu";
 import Login from "./components/autho/Login";
 import Dashboard from "./components/pages/dashboard/Dashboard";
-import PublishMagazine from "./components/pages/dashboard/PublishMagazine";
-import NewMagIssue from "./components/pages/dashboard/NewMagIssue";
-import GenreCreate from "./components/pages/dashboard/GenreCreate";
-import ArticlesGenreView from "./components/pages/dashboard/ArticlesGenreView";
-import PublishArticle from "./components/pages/dashboard/PublishArticle";
-import DashArticlesByIssue from "./components/pages/dashboard/DashArticlesByIssue";
-import DashArticleSingle from "./components/pages/dashboard/DashArticleSingle";
-import EditArticle from "./components/pages/dashboard/EditArticle";
-import EditArticleContent from "./components/pages/dashboard/EditArticleContent";
-import EditArticleAuthor from "./components/pages/dashboard/EditArticleAuthor";
-import EditArticleTitle from "./components/pages/dashboard/EditArticleTitle";
+import PublishMagazine from "./components/pages/dashboard/magazines/PublishMagazine";
+import NewMagIssue from "./components/pages/dashboard/magazines/NewMagIssue";
+import GenreCreate from "./components/pages/dashboard/categories/GenreCreate";
+import ArticlesGenreView from "./components/pages/dashboard/articles/ArticlesGenreView";
+import PublishArticle from "./components/pages/dashboard/articles/PublishArticle";
+import DashArticlesByIssue from "./components/pages/dashboard/articles/DashArticlesByIssue";
+import DashArticleSingle from "./components/pages/dashboard/articles/DashArticleSingle";
+import EditArticle from "./components/pages/dashboard/articles/EditArticle";
+import EditArticleContent from "./components/pages/dashboard/articles/EditArticleContent";
+import EditArticleAuthor from "./components/pages/dashboard/articles/EditArticleAuthor";
+import EditArticleTitle from "./components/pages/dashboard/articles/EditArticleTitle";
 import Home from "./components/pages/publico/Home";
 import PostDetails from "./components/pages/publico/PostDetails";
 import ArticlesByGenre from "./components/pages/publico/ArticlesByGenre";
@@ -20,24 +20,24 @@ import ShowMagIssue from "./components/pages/publico/ShowMagIssue";
 import Footer from "./components/pages/publico/Footer";
 import About from "./components/pages/publico/About";
 import Contact from "./components/pages/publico/Contact";
-import SeeMagazines from "./components/pages/dashboard/SeeMagazines";
-import AllMagazineIssues from "./components/pages/dashboard/AllMagazineIssues";
-import EditMagIssue from "./components/pages/dashboard/EditMagIssue";
+import SeeMagazines from "./components/pages/dashboard/magazines/SeeMagazines";
+import AllMagazineIssues from "./components/pages/dashboard/magazines/AllMagazineIssues";
+import EditMagIssue from "./components/pages/dashboard/magazines/EditMagIssue";
 import Search from "./components/pages/publico/Search";
-import EditMagIssueName from "./components/pages/dashboard/EditMagIssueName";
-import UpdateMagaPdf from "./components/pages/dashboard/UpdateMagaPdf";
-import UpdateMagaCover from "./components/pages/dashboard/UpdateMagaCover";
-import ChooseActionCategory from "./components/pages/dashboard/ChooseActionCategory";
-import ViewAllArticles from "./components/pages/dashboard/ViewAllArticles";
-import UpdateArticlePhoto from "./components/pages/dashboard/UpdateArticlePhoto";
+import EditMagIssueName from "./components/pages/dashboard/magazines/EditMagIssueName";
+import UpdateMagaPdf from "./components/pages/dashboard/magazines/UpdateMagaPdf";
+import UpdateMagaCover from "./components/pages/dashboard/magazines/UpdateMagaCover";
+import ChooseActionCategory from "./components/pages/dashboard/categories/ChooseActionCategory";
+import ViewAllArticles from "./components/pages/dashboard/articles/ViewAllArticles";
+import UpdateArticlePhoto from "./components/pages/dashboard/articles/UpdateArticlePhoto";
 import ReadMagazine from "./components/pages/publico/ReadMagazine";
-import VideosDashboard from "./components/pages/dashboard/VideosDashboard";
-import UploadVideo from "./components/pages/dashboard/UploadVideo";
-import ManageVideos from "./components/pages/dashboard/ManageVideos";
+import VideosDashboard from "./components/pages/dashboard/videos/VideosDashboard";
+import UploadVideo from "./components/pages/dashboard/videos/UploadVideo";
+import ManageVideos from "./components/pages/dashboard/videos/ManageVideos";
 import ViewVideo from "./components/pages/publico/ViewVideo";
-import EditVideo from "./components/pages/dashboard/EditVideo";
-import EditVideoName from "./components/pages/dashboard/EditVideoName";
-import ArticleDashboard from "./components/pages/dashboard/ArticleDashboard";
+import EditVideo from "./components/pages/dashboard/videos/EditVideo";
+import EditVideoName from "./components/pages/dashboard/videos/EditVideoName";
+import ArticleDashboard from "./components/pages/dashboard/articles/ArticleDashboard";
 import SubscribeMagazine from "./components/pages/publico/SubscribeMagazine";
 import MagazineSubscriptions from "./components/pages/dashboard/subscriptions/MagazineSubscriptions";
 import SubscriptionToken from "./components/pages/dashboard/subscriptions/SubscriptionToken";
@@ -52,6 +52,8 @@ import CheckVideoSubscriber from "./components/pages/dashboard/subscriptions/Che
 import MySubscribedVideos from "./components/pages/publico/videosubsciptions/MySubscribedVideos";
 import MyVideos from "./components/pages/publico/videosubsciptions/MyVideos";
 import VideosByGenre from "./components/pages/publico/VideosByGenre";
+import LocalFootball from "./components/pages/dashboard/soccer/LocalFootball";
+import CreateLeague from "./components/pages/dashboard/soccer/CreateLeague";
 
 // import Epl from "./components/pages/publico/tables/Epl";
 
@@ -113,6 +115,8 @@ function App() {
         <Route path="/check_video_subscriber/:id" element={<CheckVideoSubscriber />} />
         <Route path="/watch_my_subscribed_videos" element={<MySubscribedVideos />} />
         <Route path="/subscribed_video/:id" element={<MyVideos />} />
+        <Route path="/local_football_dashboard" element={<LocalFootball />} />
+        <Route path="/create_league" element={<CreateLeague />} />
         {/* <Route path="/epl_table" element={<Epl />} /> */}
 
 

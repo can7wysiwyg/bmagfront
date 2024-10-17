@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Container, ListGroup, Button, Modal } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { deleteArticle } from '../../../redux/actions/magazineAction';
+import { deleteArticle } from '../../../../redux/actions/magazineAction';
 
 export default function EditArticle() {
   const { id } = useParams();

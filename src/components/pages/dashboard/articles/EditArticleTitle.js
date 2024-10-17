@@ -2,16 +2,12 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
-import { updateMagIssue } from '../../../redux/actions/magazineAction';
+import { editArticleTitle } from '../../../../redux/actions/magazineAction';
 
-export default function EditMagIssueName() {
+
+export default function EditArticleTitle() {
     const {id} = useParams()
-    const[formData, setFormData] = useState({
-   magazineIssue: ""
-    })
-
-    const[btnText, setBtnText] = useState("UPDATE MAGAZINE ISSUE NAME")
-
+    const[formData, setFormData] = useState({articleTitle: ""})
     const dispatch = useDispatch()
 
     const handleInputChange = (e) => {
@@ -25,27 +21,18 @@ export default function EditMagIssueName() {
       const handleSubmit = async(event) => {
         event.preventDefault()
 
-        await dispatch(updateMagIssue(formData, id))
+        await dispatch(editArticleTitle(formData, id))
 
 
       }
-
-      const chango = () => {
-
-        setBtnText("MAGAZINE NAME IS UPDATING...")
     
-      }
-    
-    
-
-
-
 
 
   return (
-    <>
-    <Container style={{marginTop: "4rem", fontFamily: "Times New Roman"}}>
-        <h4 className="text-center">Update Magazine Issue</h4>
+    <> 
+
+<Container style={{marginTop: "4rem", fontFamily: "Times New Roman"}}>
+        <h4 className="text-center">Update Article Title</h4>
         <Row className="justify-content-md-center">
           <Col xs={12} md={6}>
       
@@ -54,34 +41,30 @@ export default function EditMagIssueName() {
                 
                 <Form.Control
                   type="text"
-                  name="magazineIssue"
-                  value={ formData.magazineIssue }
+                  name="articleTitle"
+                  value={ formData.articleTitle }
                   onChange={handleInputChange}
 
-                  placeholder="Magazine Issue"
+                  placeholder="Article Title"
                   required
                 />
               </Form.Group>
 
 
 
-            <Button type="submit" onClick={chango}>{btnText}</Button>
+            <Button type="submit">Update Article Title</Button>
             </Form>
             </Col>
             </Row>
             </Container>
-
-            <br></br>
-            <br></br>
-<br></br>
-
-<br></br>
-
     
 
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
 
 
-        
-   </>
+    </>
   )
 }

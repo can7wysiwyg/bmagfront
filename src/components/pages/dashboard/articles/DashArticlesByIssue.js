@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { articlesByMagIssue, getSingleIssueAdmin } from '../../../redux/actions/magazineAction'
+import { articlesByMagIssue, getSingleIssueAdmin } from '../../../../redux/actions/magazineAction'
 
 export default function DashArticlesByIssue() {
 const {id} = useParams()

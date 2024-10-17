@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { genreCreate } from '../../../redux/actions/magazineAction';
+import { genreCreate } from '../../../../redux/actions/magazineAction';
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
 
 export default function GenreCreate() {

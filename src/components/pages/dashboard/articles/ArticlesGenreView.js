@@ -2,7 +2,7 @@ import React from 'react'
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { motion } from 'framer-motion';
-import { genreView } from '../../../redux/actions/magazineAction';
+import { genreView } from '../../../../redux/actions/magazineAction';
 
 
 

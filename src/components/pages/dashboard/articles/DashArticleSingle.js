@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { articleByMagIssue } from '../../../redux/actions/magazineAction'
+import { articleByMagIssue } from '../../../../redux/actions/magazineAction'
 import moment from 'moment/moment'
 
 

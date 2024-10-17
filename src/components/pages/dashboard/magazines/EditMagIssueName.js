@@ -2,11 +2,16 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
-import { editArticleAuthor } from '../../../redux/actions/magazineAction';
+import { updateMagIssue } from '../../../../redux/actions/magazineAction';
 
-export default function EditArticleAuthor() {
+export default function EditMagIssueName() {
     const {id} = useParams()
-    const[formData, setFormData] = useState({articleAuthor: ""})
+    const[formData, setFormData] = useState({
+   magazineIssue: ""
+    })
+
+    const[btnText, setBtnText] = useState("UPDATE MAGAZINE ISSUE NAME")
+
     const dispatch = useDispatch()
 
     const handleInputChange = (e) => {
@@ -20,18 +25,27 @@ export default function EditArticleAuthor() {
       const handleSubmit = async(event) => {
         event.preventDefault()
 
-        await dispatch(editArticleAuthor(formData, id))
+        await dispatch(updateMagIssue(formData, id))
 
 
       }
+
+      const chango = () => {
+
+        setBtnText("MAGAZINE NAME IS UPDATING...")
     
+      }
+    
+    
+
+
 
 
 
   return (
     <>
     <Container style={{marginTop: "4rem", fontFamily: "Times New Roman"}}>
-        <h4 className="text-center">Update Article Author</h4>
+        <h4 className="text-center">Update Magazine Issue</h4>
         <Row className="justify-content-md-center">
           <Col xs={12} md={6}>
       
@@ -40,18 +54,18 @@ export default function EditArticleAuthor() {
                 
                 <Form.Control
                   type="text"
-                  name="articleAuthor"
-                  value={ formData.articleAuthor }
+                  name="magazineIssue"
+                  value={ formData.magazineIssue }
                   onChange={handleInputChange}
 
-                  placeholder="Article Author"
+                  placeholder="Magazine Issue"
                   required
                 />
               </Form.Group>
 
 
 
-            <Button type="submit">Update Article Author</Button>
+            <Button type="submit" onClick={chango}>{btnText}</Button>
             </Form>
             </Col>
             </Row>
@@ -61,11 +75,13 @@ export default function EditArticleAuthor() {
             <br></br>
 <br></br>
 
+<br></br>
+
     
 
 
 
-
-    </>
+        
+   </>
   )
 }

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { deletingMagIssue, magShowAll } from '../../../redux/actions/magazineAction';
+import { deletingMagIssue, magShowAll } from '../../../../redux/actions/magazineAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { Table, Button, OverlayTrigger, Tooltip, } from 'react-bootstrap';
 

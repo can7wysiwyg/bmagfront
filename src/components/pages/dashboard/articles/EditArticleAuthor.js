@@ -2,12 +2,11 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
-import { editArticleTitle } from '../../../redux/actions/magazineAction';
+import { editArticleAuthor } from '../../../../redux/actions/magazineAction';
 
-
-export default function EditArticleTitle() {
+export default function EditArticleAuthor() {
     const {id} = useParams()
-    const[formData, setFormData] = useState({articleTitle: ""})
+    const[formData, setFormData] = useState({articleAuthor: ""})
     const dispatch = useDispatch()
 
     const handleInputChange = (e) => {
@@ -21,18 +20,18 @@ export default function EditArticleTitle() {
       const handleSubmit = async(event) => {
         event.preventDefault()
 
-        await dispatch(editArticleTitle(formData, id))
+        await dispatch(editArticleAuthor(formData, id))
 
 
       }
     
 
 
-  return (
-    <> 
 
-<Container style={{marginTop: "4rem", fontFamily: "Times New Roman"}}>
-        <h4 className="text-center">Update Article Title</h4>
+  return (
+    <>
+    <Container style={{marginTop: "4rem", fontFamily: "Times New Roman"}}>
+        <h4 className="text-center">Update Article Author</h4>
         <Row className="justify-content-md-center">
           <Col xs={12} md={6}>
       
@@ -41,28 +40,30 @@ export default function EditArticleTitle() {
                 
                 <Form.Control
                   type="text"
-                  name="articleTitle"
-                  value={ formData.articleTitle }
+                  name="articleAuthor"
+                  value={ formData.articleAuthor }
                   onChange={handleInputChange}
 
-                  placeholder="Article Title"
+                  placeholder="Article Author"
                   required
                 />
               </Form.Group>
 
 
 
-            <Button type="submit">Update Article Title</Button>
+            <Button type="submit">Update Article Author</Button>
             </Form>
             </Col>
             </Row>
             </Container>
-    
 
             <br></br>
             <br></br>
-            <br></br>
-            <br></br>
+<br></br>
+
+    
+
+
 
 
     </>
