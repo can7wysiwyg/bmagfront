@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Container, Form, Row, Col, Button } from 'react-bootstrap';
-import { createLeague } from '../../../../redux/actions/soccerAction';
+import {  createTeam } from '../../../../redux/actions/soccerAction';
 
-export default function CreateLeague() {
+export default function CreateTeam() {
   const [formData, setFormData] = useState({
-    leagueName: '',
-    startDate: '', // Start date of the league
-    endDate: ''    // End date of the league
+    teamName: '',
+    teamLocation: '', 
+    
   });
 
-  const [btnText, setBtnText] = useState('CREATE NEW LEAGUE');
+  const [btnText, setBtnText] = useState('CREATE NEW TEAM');
   const dispatch = useDispatch();
 
   const handleInputChange = (e) => {
@@ -24,57 +24,48 @@ export default function CreateLeague() {
     event.preventDefault();
     
     // Dispatch the createLeague action with the form data (startDate and endDate)
-    await dispatch(createLeague(formData));
+    await dispatch(createTeam(formData));
   };
 
   const chango = () => {
-    setBtnText('CREATING NEW LEAGUE...');
+    setBtnText('CREATING NEW TEAM...');
   };
 
   return (
     <Container style={{ fontFamily: 'sans-serif', marginTop: '2rem', marginBottom: '4rem' }}>
       <h4 style={{ textAlign: 'center', marginBottom: '1rem', color: 'red', fontStyle: 'cursive' }}>
-        CREATE NEW LEAGUE
+        CREATE NEW TEAM
       </h4>
       <Row className="justify-content-md-center">
         <Col xs={12} md={6}>
           <Form onSubmit={handleSubmit}>
-            {/* League Name */}
+            
             <Form.Group className="mb-3" controlId="formBasicName">
               <Form.Control
                 type="text"
-                name="leagueName"
-                value={formData.leagueName}
+                name="teamName"
+                value={formData.teamName}
                 onChange={handleInputChange}
-                placeholder="League Name"
+                placeholder="Team Name"
                 required
               />
             </Form.Group>
 
-            {/* Start Date */}
-            <Form.Group className="mb-3" controlId="formStartDate">
-              <Form.Label>Start Date Of League</Form.Label>
+
+            <Form.Group className="mb-3" controlId="formBasicName">
               <Form.Control
-                type="date"
-                name="startDate"
-                value={formData.startDate}
+                type="text"
+                name="teamLocation"
+                value={formData.teamLocation}
                 onChange={handleInputChange}
+                placeholder="Team Location"
                 required
               />
             </Form.Group>
 
-            {/* End Date */}
-            <Form.Group className="mb-3" controlId="formEndDate">
-              <Form.Label>End Date Of League</Form.Label>
-              <Form.Control
-                type="date"
-                name="endDate"
-                value={formData.endDate}
-                onChange={handleInputChange}
-                required
-              />
-            </Form.Group>
 
+            
+            
             <Button type="submit" onClick={chango}>
               {btnText}
             </Button>

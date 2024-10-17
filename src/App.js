@@ -54,6 +54,8 @@ import MyVideos from "./components/pages/publico/videosubsciptions/MyVideos";
 import VideosByGenre from "./components/pages/publico/VideosByGenre";
 import LocalFootball from "./components/pages/dashboard/soccer/LocalFootball";
 import CreateLeague from "./components/pages/dashboard/soccer/CreateLeague";
+import CreateTeam from "./components/pages/dashboard/soccer/CreateTeam";
+import CreateMatch from "./components/pages/dashboard/soccer/CreateMatch";
 
 // import Epl from "./components/pages/publico/tables/Epl";
 
@@ -117,6 +119,8 @@ function App() {
         <Route path="/subscribed_video/:id" element={<MyVideos />} />
         <Route path="/local_football_dashboard" element={<LocalFootball />} />
         <Route path="/create_league" element={<CreateLeague />} />
+        <Route path="/create_team" element={<CreateTeam />} />
+        <Route path="/create_match" element={<CreateMatch />} />
         {/* <Route path="/epl_table" element={<Epl />} /> */}
 
 

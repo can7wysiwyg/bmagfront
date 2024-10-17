@@ -179,7 +179,7 @@ export function getGame(id) {
 }
 
 
-export function getGame(id) {
+export function getTeam(id) {
 
     return async function(dispatch) {
         try {

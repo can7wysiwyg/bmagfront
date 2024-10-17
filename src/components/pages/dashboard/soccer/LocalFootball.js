@@ -21,6 +21,21 @@ export default function LocalFootball() {
           <a href="/create_match">ADD FOOTBALL FIXTURE</a>
         </ListGroup.Item>
 
+        <ListGroup.Item className="text-center">
+          <a href="/teams">TEAMS</a>
+        </ListGroup.Item>
+
+        <ListGroup.Item className="text-center">
+          <a href="/games">GAMES</a>
+        </ListGroup.Item>
+
+        <ListGroup.Item className="text-center">
+          <a href="/leagues">leagues</a>
+        </ListGroup.Item>
+
+
+
+
         
       </ListGroup>
 
