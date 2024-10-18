@@ -11,16 +11,22 @@ export default function Game() {
   const leagues = useSelector((state) => state.soccerRdcr.leagues);
   const dispatch = useDispatch();
 
-  const [liveGame, setLiveGame] = useState(null); // For live updates
-  const [isGameStarted, setIsGameStarted] = useState(false); // Game state
-  const [timer, setTimer] = useState(0); // Timer state (in seconds)
+  const [liveGame, setLiveGame] = useState(null);
+  const [isGameStarted, setIsGameStarted] = useState(false);
+  const [timer, setTimer] = useState(0);
+  const [ws, setWs] = useState(null);
+  
+  // New state variables to hold the current game details
+  const [currentTeamOne, setCurrentTeamOne] = useState('');
+  const [currentTeamTwo, setCurrentTeamTwo] = useState('');
+  const [currentLeague, setCurrentLeague] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await dispatch(getGame(id)); // Fetch single game
-        await dispatch(getTeams());  // Fetch teams
-        await dispatch(getLeagues()); // Fetch leagues
+        await dispatch(getGame(id));
+        await dispatch(getTeams());
+        await dispatch(getLeagues());
       } catch (error) {
         console.log(error);
       }
@@ -28,89 +34,125 @@ export default function Game() {
     fetchData();
   }, [dispatch, id]);
 
-  // Handle start of game, open WebSocket for real-time updates, and start the timer
-  const handleStartGame = () => {
-    console.log("Starting Game...");  // Debugging start
-    const socket = new WebSocket('ws://localhost:3001'); // WebSocket URL
-    
+  useEffect(() => {
+    const socket = new WebSocket('ws://localhost:5000');
+
     socket.onopen = () => {
       console.log('WebSocket Connected');
-      socket.send(JSON.stringify({ action: 'startGame', gameId: id }));
-
-      // Start the timer and update game state
-      setIsGameStarted(true); // Game has started
-      console.log("Game has started: ", isGameStarted);  // Check state
-      startTimer(); // Start the timer when the game starts
     };
 
-    // Receive real-time updates
     socket.onmessage = (event) => {
-      console.log('WebSocket Message Received:', event.data); // Log incoming data
-      const updatedGame = JSON.parse(event.data);
-      setLiveGame(updatedGame); // Update local state with new game info
+      const message = JSON.parse(event.data);
+      if (message.action === 'gameState') {
+        setLiveGame(message.game);
+      } else if (message.action === 'gameUpdate') {
+        setLiveGame(message.game);
+      }
     };
 
-    // Cleanup function to close the socket when the component unmounts
+    socket.onclose = () => {
+      console.log('WebSocket connection closed');
+    };
+
+    setWs(socket);
+
     return () => {
       socket.close();
     };
-  };
+  }, [id]);
 
-  // Timer logic
+  const handleStartGame = () => {
+    if (ws) {
+        ws.send(JSON.stringify({ action: 'startGame', gameId: id }));
+        setIsGameStarted(true);
+        startTimer(); // Start the timer when the game starts
+
+        // Fetch the updated game details
+        dispatch(getGame(id)).then((updatedGame) => {
+            // Ensure updatedGame is not null before accessing its properties
+            if (updatedGame) {
+                setCurrentTeamOne(updatedGame.teamOne); // Set current team one
+                setCurrentTeamTwo(updatedGame.teamTwo); // Set current team two
+                setCurrentLeague(updatedGame.leagueName); // Set current league name
+            }
+        }).catch((error) => {
+            console.log('Error fetching updated game details:', error);
+        });
+    }
+};
+
+
+
   const startTimer = () => {
-    console.log('Starting timer...');  // Debugging startTimer
-    const interval = setInterval(() => {
-      setTimer(prevTime => {
-        console.log('Timer updated:', prevTime + 1); // Log timer updates
-        return prevTime + 1;
-      });
+    const timerInterval = setInterval(() => {
+      setTimer(prevTime => prevTime + 1);
     }, 1000);
 
-    return () => clearInterval(interval); // Clean up the interval on component unmount
+    return () => clearInterval(timerInterval);
   };
 
-  // Helper function to format time in MM:SS
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
-  if (!game || !teams || !leagues) {
+  const currentGame = liveGame || game;
+
+  if (!currentGame || !teams || !leagues) {
     return <h3 className='text-center'>LOADING....</h3>;
   }
-
-  // Use liveGame state if it exists, otherwise fall back to the original game data
-  const currentGame = liveGame || game;
 
   return (
     <Container className="mt-5 mb-5">
       <h5 style={{ fontFamily: 'Times New Roman', textAlign: 'center' }}>GAME DETAILS</h5>
+
       <Card className="mt-4 text-center">
-        <Card.Body>
-          <Card.Title>
-            <TeamName teamId={currentGame.teamOne} teams={teams} /> vs{" "}
-            <TeamName teamId={currentGame.teamTwo} teams={teams} />
-          </Card.Title>
-          <Card.Subtitle className="mb-2 text-muted">
-            <LeagueName leagueId={currentGame.leagueName} leagues={leagues} />
-          </Card.Subtitle>
-          <ListGroup variant="flush">
-            <ListGroup.Item>Time: {currentGame.gameTime}</ListGroup.Item>
-            <ListGroup.Item>Venue: {currentGame.gameVenue}</ListGroup.Item>
-            <ListGroup.Item>Score: {currentGame.score || "0-0"}</ListGroup.Item> {/* Live Score */}
-            {isGameStarted && (
-              <ListGroup.Item>Live Game Time: {formatTime(timer)}</ListGroup.Item>  // Timer display
-            )}
-          </ListGroup>
-          <Button variant="success" onClick={handleStartGame} disabled={isGameStarted}>
-            {isGameStarted ? "Game In Progress" : "Start Game"}
-          </Button>
-        </Card.Body>
-      </Card>
+  {/* Card for initial page state */}
+  {!isGameStarted ? (
+    <Card.Body>
+      <Card.Title><SampleT gameId={game.teamOne} teams={teams} /> vs {" "} <SampleT gameId={game.teamTwo} teams={teams} /> </Card.Title>
+      <Card.Subtitle className="mb-2 text-muted">
+        <SampleLeague leagueId={game.leagueName} leagues={leagues} />
+      </Card.Subtitle>
+      <ListGroup variant="flush">
+        <ListGroup.Item>Time: {game.gameTime}</ListGroup.Item>
+        <ListGroup.Item>Venue: {game.gameVenue}</ListGroup.Item>
+        
+      </ListGroup>
+
+      <Button variant="success" onClick={handleStartGame} disabled={isGameStarted}>
+        Start Game
+      </Button>
+    </Card.Body>
+  ) : (
+    // Card for game details after starting the game
+    <Card.Body>
+      <Card.Title>
+        <TeamName teamId={currentTeamOne} teams={teams} /> vs{" "}
+        <TeamName teamId={currentTeamTwo} teams={teams} />
+      </Card.Title>
+      <Card.Subtitle className="mb-2 text-muted">
+        <LeagueName leagueId={currentLeague} leagues={leagues} />
+      </Card.Subtitle>
+      <ListGroup variant="flush">
+        <ListGroup.Item>Time: {currentGame.gameTime}</ListGroup.Item>
+        <ListGroup.Item>Venue: {currentGame.gameVenue}</ListGroup.Item>
+        <ListGroup.Item>Score: {currentGame.score || "0-0"}</ListGroup.Item>
+        <ListGroup.Item>Live Game Time: {formatTime(timer)}</ListGroup.Item>
+      </ListGroup>
+    </Card.Body>
+  )}
+</Card>
+
+      
     </Container>
   );
+  
+ 
 }
+
+// TeamName and LeagueName components remain unchanged
 
 // Component to display the team name
 const TeamName = ({ teamId, teams }) => {
@@ -125,6 +167,37 @@ const TeamName = ({ teamId, teams }) => {
 
 // Component to display the league name
 const LeagueName = ({ leagueId, leagues }) => {
+  const league = useMemo(() => leagues.find((l) => l._id === leagueId), [leagues, leagueId]);
+
+  if (!league) {
+    return <span>Loading league...</span>;
+  }
+
+  return <span>{league.leagueName}</span>;
+};
+
+
+const SampleT = ({gameId, teams}) => {
+
+  
+
+  const team = useMemo(() => teams.find((t) => t._id === gameId), [teams, gameId]);
+
+  
+
+
+  if (!team) {
+    return <span>Loading team...</span>;
+  }
+
+  return <span>{team.teamName}</span>;
+  
+
+}
+
+
+
+const SampleLeague = ({ leagueId, leagues }) => {
   const league = useMemo(() => leagues.find((l) => l._id === leagueId), [leagues, leagueId]);
 
   if (!league) {

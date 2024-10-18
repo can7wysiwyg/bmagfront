@@ -158,22 +158,39 @@ export function getGames() {
 // SINGULAR GETS
 
 
-export function getGame(id) {
+// export function getGame(id) {
 
+//     return async function(dispatch) {
+//         try {
+
+//             const response = await axios.get(`${ApiUrl}/public_show_game/${id}`)
+//             const game = response.data.game
+
+//             dispatch({type: GET_GAME, payload: game })
+            
+//         } catch (error) {
+
+//             console.log("there was a problem " + error)
+//             dispatch({type: SOCCER_ERROR})
+//             throw error
+            
+//         }
+//     }
+// }
+
+
+
+export function getGame(id) {
     return async function(dispatch) {
         try {
-
-            const response = await axios.get(`${ApiUrl}/public_show_game/${id}`)
-            const game = response.data.game
-
-            dispatch({type: GET_GAME, payload: game })
-            
+            const response = await axios.get(`${ApiUrl}/public_show_game/${id}`);
+            const game = response.data.game;
+            dispatch({type: GET_GAME, payload: game });
+            return game; // Return the fetched game data
         } catch (error) {
-
-            console.log("there was a problem " + error)
-            dispatch({type: SOCCER_ERROR})
-            throw error
-            
+            console.log("there was a problem " + error);
+            dispatch({type: SOCCER_ERROR});
+            throw error;
         }
     }
 }
