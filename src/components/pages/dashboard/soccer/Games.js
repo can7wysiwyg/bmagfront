@@ -8,6 +8,9 @@ export default function Games() {
   const teams = useSelector((state) => state.soccerRdcr.teams);
   const leagues = useSelector((state) => state.soccerRdcr.leagues);
   const dispatch = useDispatch();
+  
+  // State to hold updated game details
+  const [updatedGames, setUpdatedGames] = useState([]);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,22 +30,63 @@ export default function Games() {
     fetchItems();
   }, [dispatch]);
 
+  useEffect(() => {
+    const socketUrl = 'ws://localhost:5000'; // Ensure this matches your server port
+    const socket = new WebSocket(socketUrl);
+
+    
+
+    socket.onopen = () => {
+      console.log('WebSocket Connected now');
+    };
+
+    
+
+    socket.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      
+      if (message.action === 'gameUpdate') {
+        console.log(message.game)
+        setUpdatedGames((prevGames) => {
+          return prevGames.map((game) => {
+            if (game._id === message.game._id) { // Ensure you're using the right identifier
+              return { ...game, ...message.game }; // Update the game with new data
+            }
+            return game;
+          });
+        });
+      }
+    };
+
+    socket.onclose = () => {
+      console.log('WebSocket connection closed');
+    };
+
+    return () => {
+      socket.close();
+    };
+  }, []);
+
+  
+
   if (!games || !teams || !leagues) {
     return <h3 className="text-center">LOADING....</h3>;
   }
 
+  // Combine initial games with updated games
+  const allGames = [...games, ...updatedGames]; // Merging initial games and updated games
+
   // Pagination logic
   const indexOfLastGame = currentPage * gamesPerPage;
   const indexOfFirstGame = indexOfLastGame - gamesPerPage;
-  const currentGames = games.slice(indexOfFirstGame, indexOfLastGame);
+  const currentGames = allGames.slice(indexOfFirstGame, indexOfLastGame);
 
-  const totalPages = Math.ceil(games.length / gamesPerPage);
+  const totalPages = Math.ceil(allGames.length / gamesPerPage);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  // Map the games to show fixtures
   return (
     <Container className="mt-5 mb-5">
       <h5 style={{ fontFamily: "Times New Roman", textAlign: "center" }}>
