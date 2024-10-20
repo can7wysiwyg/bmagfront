@@ -1,21 +1,21 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Container, Card, Row, Col, ListGroup, Pagination } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { getGames, getTeams, getLeagues } from "../../../../redux/actions/soccerAction"; 
+import { getGames, getTeams, getLeagues } from "../../../../redux/actions/soccerAction";
+import { ApiUrl } from "../../../../helpers/ApiUrl";
 
 export default function Games() {
+  const dispatch = useDispatch();
   const games = useSelector((state) => state.soccerRdcr.games);
   const teams = useSelector((state) => state.soccerRdcr.teams);
   const leagues = useSelector((state) => state.soccerRdcr.leagues);
-  const dispatch = useDispatch();
-  
-  // State to hold updated game details
-  const [updatedGames, setUpdatedGames] = useState([]);
 
-  // Pagination state
+  const [localGames, setLocalGames] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const gamesPerPage = 5; // Show 5 games per page
+  const [goalUpdates, setGoalUpdates] = useState(null); // State for the latest goal update
+  const gamesPerPage = 5;
 
+  // Fetch initial data
   useEffect(() => {
     const fetchItems = async () => {
       try {
@@ -23,75 +23,62 @@ export default function Games() {
         await dispatch(getTeams());
         await dispatch(getLeagues());
       } catch (error) {
-        console.log(`${error}`);
+        console.error('Error fetching data:', error);
       }
     };
 
     fetchItems();
   }, [dispatch]);
 
+  // Fetch log messages from the API
   useEffect(() => {
-    const socketUrl = 'ws://localhost:5000'; // Ensure this matches your server port
-    const socket = new WebSocket(socketUrl);
-
-    
-
-    socket.onopen = () => {
-      console.log('WebSocket Connected now');
-    };
-
-    
-
-    socket.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      
-      if (message.action === 'gameUpdate') {
-        console.log(message.game)
-        setUpdatedGames((prevGames) => {
-          return prevGames.map((game) => {
-            if (game._id === message.game._id) { // Ensure you're using the right identifier
-              return { ...game, ...message.game }; // Update the game with new data
-            }
-            return game;
-          });
-        });
+    const fetchLogs = async () => {
+      try {
+        const response = await fetch(`${ApiUrl}/api/logs`); // Update with your actual log API endpoint
+        const data = await response.json();
+        setGoalUpdates(getLatestGoalUpdate(data)); // Extract the latest goal update
+      } catch (error) {
+        console.error('Error fetching logs:', error);
       }
     };
 
-    socket.onclose = () => {
-      console.log('WebSocket connection closed');
-    };
+    fetchLogs();
+  }, []); // This runs only once when the component mounts
 
-    return () => {
-      socket.close();
-    };
-  }, []);
+  // Function to get the latest goal update
+  const getLatestGoalUpdate = (logs) => {
+    const updates = logs.filter(log => log.includes("updateGoals"));
+    if (updates.length > 0) {
+      const lastUpdate = updates[updates.length - 1]; // Get the last goal update
+      const parsedUpdate = JSON.parse(lastUpdate.split(": ")[1]);
+      return parsedUpdate; // Return the parsed score update
+    }
+    return null; // Return null if there are no goal updates
+  };
 
-  
+  // Initialize localGames with Redux games when they're first loaded
+  useEffect(() => {
+    if (games && games.length > 0) {
+      setLocalGames(games);
+    }
+  }, [games]);
 
-  if (!games || !teams || !leagues) {
+  if (!teams || !leagues) {
     return <h3 className="text-center">LOADING....</h3>;
   }
-
-  // Combine initial games with updated games
-  const allGames = [...games, ...updatedGames]; // Merging initial games and updated games
 
   // Pagination logic
   const indexOfLastGame = currentPage * gamesPerPage;
   const indexOfFirstGame = indexOfLastGame - gamesPerPage;
-  const currentGames = allGames.slice(indexOfFirstGame, indexOfLastGame);
-
-  const totalPages = Math.ceil(allGames.length / gamesPerPage);
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+  const currentGames = localGames.slice(indexOfFirstGame, indexOfLastGame);
+  const totalPages = Math.ceil(localGames.length / gamesPerPage);
 
   return (
     <Container className="mt-5 mb-5">
       <h5 style={{ fontFamily: "Times New Roman", textAlign: "center" }}>
         FOOTBALL FIXTURES
       </h5>
+
       <Row className="mt-4">
         {currentGames.length > 0 ? (
           currentGames.map((game) => (
@@ -108,6 +95,11 @@ export default function Games() {
                   <ListGroup variant="flush">
                     <ListGroup.Item>Time: {game.gameTime}</ListGroup.Item>
                     <ListGroup.Item>Venue: {game.gameVenue}</ListGroup.Item>
+                    {goalUpdates && game._id === goalUpdates.gameId && ( // Check if the game matches the goal update
+                      <ListGroup.Item>
+                        Score: {goalUpdates.teamOneScore} - {goalUpdates.teamTwoScore}
+                      </ListGroup.Item>
+                    )}
                   </ListGroup>
                   <Card.Link href={`/game/${game._id}`}>View Details</Card.Link>
                 </Card.Body>
@@ -119,40 +111,35 @@ export default function Games() {
         )}
       </Row>
 
-      {/* Pagination */}
-      <Pagination className="justify-content-center mt-4">
-        {[...Array(totalPages)].map((_, index) => (
-          <Pagination.Item 
-            key={index + 1} 
-            active={index + 1 === currentPage} 
-            onClick={() => handlePageChange(index + 1)}
-          >
-            {index + 1}
-          </Pagination.Item>
-        ))}
-      </Pagination>
+      {totalPages > 1 && (
+        <Pagination className="justify-content-center mt-4">
+          {[...Array(totalPages)].map((_, index) => (
+            <Pagination.Item
+              key={index + 1}
+              active={index + 1 === currentPage}
+              onClick={() => setCurrentPage(index + 1)}
+            >
+              {index + 1}
+            </Pagination.Item>
+          ))}
+        </Pagination>
+      )}
+
+      {/* Log messages section */}
+      <div className="mt-4">
+        {goalUpdates && <h6>Latest Goal Update: {goalUpdates.teamOneScore} - {goalUpdates.teamTwoScore}</h6>}
+      </div>
     </Container>
   );
 }
 
-// Memoized TeamName component
-const TeamName = ({ teamId, teams }) => {
+// Memoized components remain the same
+const TeamName = React.memo(({ teamId, teams }) => {
   const team = useMemo(() => teams.find((t) => t._id === teamId), [teams, teamId]);
+  return team ? <span>{team.teamName}</span> : <span>Loading team...</span>;
+});
 
-  if (!team) {
-    return <span>Loading team...</span>;
-  }
-
-  return <span>{team.teamName}</span>;
-};
-
-// Memoized LeagueName component
-const LeagueName = ({ leagueId, leagues }) => {
+const LeagueName = React.memo(({ leagueId, leagues }) => {
   const league = useMemo(() => leagues.find((l) => l._id === leagueId), [leagues, leagueId]);
-
-  if (!league) {
-    return <span>Loading league...</span>;
-  }
-
-  return <span>{league.leagueName}</span>;
-};
+  return league ? <span>{league.leagueName}</span> : <span>Loading league...</span>;
+});

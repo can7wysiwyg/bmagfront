@@ -39,35 +39,7 @@ export default function Game() {
     fetchData();
   }, [dispatch, id]);
 
-  // useEffect(() => {
-  //   const socket = new WebSocket('ws://localhost:5000');
-
-  //   socket.onopen = () => {
-  //     console.log('WebSocket Connected');
-  //   };
-
-  //   socket.onmessage = (event) => {
-  //     const message = JSON.parse(event.data);
-  //     if (message.action === 'gameState') {
-  //       setLiveGame(message.game);
-  //     } else if (message.action === 'gameUpdate') {
-  //       setLiveGame(message.game);
-  //     }
-  //   };
-
-  //   socket.onclose = () => {
-  //     console.log('WebSocket connection closed');
-  //   };
-
-  //   setWs(socket);
-
-  //   return () => {
-  //     socket.close();
-  //   };
-  // }, [id]);
-
-
-
+  
   // Update the `useEffect` that listens to WebSocket messages
 useEffect(() => {
   const socket = new WebSocket('ws://localhost:5000');
@@ -149,6 +121,10 @@ useEffect(() => {
         teamOneScore: teamOneScore + parseInt(tempTeamOneScore, 10), // Add temporary scores to current scores
         teamTwoScore: teamTwoScore + parseInt(tempTeamTwoScore, 10),
       }));
+
+
+      console.log(ws.readyState);
+      
       
       // Update the actual scores after sending the update
       setTeamOneScore(prevScore => prevScore + parseInt(tempTeamOneScore, 10));
