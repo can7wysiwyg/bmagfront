@@ -12,7 +12,7 @@ export default function Games() {
 
   const [localGames, setLocalGames] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [goalUpdates, setGoalUpdates] = useState(null); // State for the latest goal update
+  const [goalUpdates, setGoalUpdates] = useState({}); // Change to an object
   const gamesPerPage = 5;
 
   // Fetch initial data
@@ -30,32 +30,48 @@ export default function Games() {
     fetchItems();
   }, [dispatch]);
 
+
   // Fetch log messages from the API
-  useEffect(() => {
-    const fetchLogs = async () => {
-      try {
-        const response = await fetch(`${ApiUrl}/api/logs`); // Update with your actual log API endpoint
-        const data = await response.json();
-        setGoalUpdates(getLatestGoalUpdate(data)); // Extract the latest goal update
-      } catch (error) {
-        console.error('Error fetching logs:', error);
-      }
-    };
+useEffect(() => {
+  const fetchLogs = async () => {
+    try {
+      const response = await fetch(`${ApiUrl}/api/logs`); // Update with your actual log API endpoint
+      const textData = await response.json(); // Fetch as plain text
+      // const logMessages = textData.split('\n'); 
 
-    fetchLogs();
-  }, []); // This runs only once when the component mounts
+      console.log(textData)
 
-  // Function to get the latest goal update
-  const getLatestGoalUpdate = (logs) => {
-    const updates = logs.filter(log => log.includes("updateGoals"));
-    if (updates.length > 0) {
-      const lastUpdate = updates[updates.length - 1]; // Get the last goal update
-      const parsedUpdate = JSON.parse(lastUpdate.split(": ")[1]);
-      return parsedUpdate; // Return the parsed score update
+      textData.forEach(log => {
+        const match = log.match(/Received message: (.*)/); // Use regex to extract the JSON part
+        if (match) {
+          const jsonString = match[1]; // Extract the matched JSON string
+          try {
+            const messageData = JSON.parse(jsonString); // Parse JSON
+            if (messageData.action === "updateGoals") {
+              const { gameId, teamOneScore, teamTwoScore } = messageData;
+              // Update state for the specific gameId
+              setGoalUpdates(prev => ({
+                ...prev,
+                [gameId]: { teamOneScore, teamTwoScore }
+              }));
+            }
+          } catch (error) {
+            console.error('Error parsing JSON:', error); // Handle JSON parsing errors
+          }
+        }
+      });
+    } catch (error) {
+      console.error('Error fetching logs:', error);
     }
-    return null; // Return null if there are no goal updates
   };
 
+  fetchLogs();
+}, []); // This runs only once when the component mounts
+
+
+  
+
+  
   // Initialize localGames with Redux games when they're first loaded
   useEffect(() => {
     if (games && games.length > 0) {
@@ -95,9 +111,10 @@ export default function Games() {
                   <ListGroup variant="flush">
                     <ListGroup.Item>Time: {game.gameTime}</ListGroup.Item>
                     <ListGroup.Item>Venue: {game.gameVenue}</ListGroup.Item>
-                    {goalUpdates && game._id === goalUpdates.gameId && ( // Check if the game matches the goal update
+                    {/* Display scores from goalUpdates */}
+                    {goalUpdates[game._id] && (
                       <ListGroup.Item>
-                        Score: {goalUpdates.teamOneScore} - {goalUpdates.teamTwoScore}
+                        Score: {goalUpdates[game._id].teamOneScore} - {goalUpdates[game._id].teamTwoScore}
                       </ListGroup.Item>
                     )}
                   </ListGroup>
@@ -124,11 +141,6 @@ export default function Games() {
           ))}
         </Pagination>
       )}
-
-      {/* Log messages section */}
-      <div className="mt-4">
-        {goalUpdates && <h6>Latest Goal Update: {goalUpdates.teamOneScore} - {goalUpdates.teamTwoScore}</h6>}
-      </div>
     </Container>
   );
 }
