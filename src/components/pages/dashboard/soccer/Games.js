@@ -3,6 +3,7 @@ import { Container, Card, Row, Col, ListGroup, Pagination } from "react-bootstra
 import { useDispatch, useSelector } from "react-redux";
 import { getGames, getTeams, getLeagues } from "../../../../redux/actions/soccerAction";
 import { ApiUrl } from "../../../../helpers/ApiUrl";
+import moment from "moment";
 
 export default function Games() {
   const dispatch = useDispatch();
@@ -12,10 +13,11 @@ export default function Games() {
 
   const [localGames, setLocalGames] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [goalUpdates, setGoalUpdates] = useState({}); // Change to an object
+  const [goalUpdates, setGoalUpdates] = useState({});
+  const [timers, setTimers] = useState({}); // Store timer values as strings
+
   const gamesPerPage = 5;
 
-  // Fetch initial data
   useEffect(() => {
     const fetchItems = async () => {
       try {
@@ -30,49 +32,83 @@ export default function Games() {
     fetchItems();
   }, [dispatch]);
 
+  useEffect(() => {
+    const fetchLogs = async () => {
+      try {
+        const response = await fetch(`${ApiUrl}/api/logs`);
+        const textData = await response.json();
 
-  // Fetch log messages from the API
-useEffect(() => {
-  const fetchLogs = async () => {
-    try {
-      const response = await fetch(`${ApiUrl}/api/logs`); // Update with your actual log API endpoint
-      const textData = await response.json(); // Fetch as plain text
-      // const logMessages = textData.split('\n'); 
+        textData.forEach(log => {
+          const match = log.match(/Received message: (.*)/);
+          if (match) {
+            const jsonString = match[1];
+            try {
+              const messageData = JSON.parse(jsonString);
 
-      console.log(textData)
+              // Start the timer when "startGame" is received
+              if (messageData.action === "startGame") {
+                const { gameId } = messageData;
 
-      textData.forEach(log => {
-        const match = log.match(/Received message: (.*)/); // Use regex to extract the JSON part
-        if (match) {
-          const jsonString = match[1]; // Extract the matched JSON string
-          try {
-            const messageData = JSON.parse(jsonString); // Parse JSON
-            if (messageData.action === "updateGoals") {
-              const { gameId, teamOneScore, teamTwoScore } = messageData;
-              // Update state for the specific gameId
-              setGoalUpdates(prev => ({
-                ...prev,
-                [gameId]: { teamOneScore, teamTwoScore }
-              }));
+                // Start the timer for the game
+                startTimerForGame(gameId);
+              }
+
+              // Handle goal updates
+              if (messageData.action === "updateGoals") {
+                const { gameId, teamOneScore, teamTwoScore } = messageData;
+                setGoalUpdates(prev => ({
+                  ...prev,
+                  [gameId]: {
+                    ...prev[gameId],
+                    teamOneScore,
+                    teamTwoScore
+                  }
+                }));
+              }
+            } catch (error) {
+              console.error('Error parsing JSON:', error);
             }
-          } catch (error) {
-            console.error('Error parsing JSON:', error); // Handle JSON parsing errors
           }
-        }
-      });
-    } catch (error) {
-      console.error('Error fetching logs:', error);
+        });
+      } catch (error) {
+        console.error('Error fetching logs:', error);
+      }
+    };
+
+    fetchLogs();
+    const pollingInterval = setInterval(fetchLogs, 10000);
+
+    return () => {
+      clearInterval(pollingInterval);
+      // Clear all timers on unmount
+      Object.values(timers).forEach(timer => clearInterval(timer.intervalId));
+    };
+  }, [timers]); // Depend on timers to clear intervals correctly
+
+  const startTimerForGame = (gameId) => {
+    if (!timers[gameId]) { // Check if the timer is already running for the game
+      const gameStart = moment(); // Store the start time
+      const intervalId = setInterval(() => {
+        const now = moment();
+        const duration = moment.duration(now.diff(gameStart));
+        const minutes = Math.floor(duration.asMinutes());
+        const seconds = duration.seconds();
+
+        // Update timer state as a string
+        setTimers(prev => ({
+          ...prev,
+          [gameId]: `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
+        }));
+      }, 1000);
+
+      // Store the interval ID to clear it later if necessary
+      setTimers(prev => ({
+        ...prev,
+        [gameId]: { intervalId } // Store the interval ID for cleanup
+      }));
     }
   };
 
-  fetchLogs();
-}, []); // This runs only once when the component mounts
-
-
-  
-
-  
-  // Initialize localGames with Redux games when they're first loaded
   useEffect(() => {
     if (games && games.length > 0) {
       setLocalGames(games);
@@ -83,7 +119,6 @@ useEffect(() => {
     return <h3 className="text-center">LOADING....</h3>;
   }
 
-  // Pagination logic
   const indexOfLastGame = currentPage * gamesPerPage;
   const indexOfFirstGame = indexOfLastGame - gamesPerPage;
   const currentGames = localGames.slice(indexOfFirstGame, indexOfLastGame);
@@ -111,10 +146,15 @@ useEffect(() => {
                   <ListGroup variant="flush">
                     <ListGroup.Item>Time: {game.gameTime}</ListGroup.Item>
                     <ListGroup.Item>Venue: {game.gameVenue}</ListGroup.Item>
-                    {/* Display scores from goalUpdates */}
                     {goalUpdates[game._id] && (
                       <ListGroup.Item>
                         Score: {goalUpdates[game._id].teamOneScore} - {goalUpdates[game._id].teamTwoScore}
+                      </ListGroup.Item>
+                    )}
+                    {/* Display the timer */}
+                    {timers[game._id] && typeof timers[game._id] === 'string' && (
+                      <ListGroup.Item>
+                        Timer: {timers[game._id]} {/* Display timer directly */}
                       </ListGroup.Item>
                     )}
                   </ListGroup>
