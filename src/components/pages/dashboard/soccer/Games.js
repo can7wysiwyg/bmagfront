@@ -32,6 +32,22 @@ export default function Games() {
     fetchItems();
   }, [dispatch]);
 
+  // Function to fetch game timers from the API
+  const fetchGameTimers = async () => {
+    try {
+      const response = await fetch(`${ApiUrl}/api/game_times`);
+      const timerData = await response.json();
+      // Update timers based on the fetched data
+      const newTimers = {};
+      timerData.forEach(({ gameId, elapsedTime }) => {
+        newTimers[gameId] = elapsedTime; // Update timer state
+      });
+      setTimers(prevTimers => ({ ...prevTimers, ...newTimers }));
+    } catch (error) {
+      console.error('Error fetching game timers:', error);
+    }
+  };
+
   useEffect(() => {
     const fetchLogs = async () => {
       try {
@@ -77,9 +93,11 @@ export default function Games() {
 
     fetchLogs();
     const pollingInterval = setInterval(fetchLogs, 10000);
+    const timerPollingInterval = setInterval(fetchGameTimers, 1000); // Poll for timers
 
     return () => {
       clearInterval(pollingInterval);
+      clearInterval(timerPollingInterval); // Clear timer polling on unmount
       // Clear all timers on unmount
       Object.values(timers).forEach(timer => clearInterval(timer.intervalId));
     };
