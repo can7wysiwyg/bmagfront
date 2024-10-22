@@ -14,6 +14,7 @@ export default function Games() {
   const [localGames, setLocalGames] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [goalUpdates, setGoalUpdates] = useState({});
+  const [goalScorers, setGoalScorers] = useState({}); // New state for goal scorers
   const [timers, setTimers] = useState({}); // Store timer values as strings
 
   const gamesPerPage = 5;
@@ -64,20 +65,26 @@ export default function Games() {
               // Start the timer when "startGame" is received
               if (messageData.action === "startGame") {
                 const { gameId } = messageData;
-
-                // Start the timer for the game
                 startTimerForGame(gameId);
               }
 
               // Handle goal updates
               if (messageData.action === "updateGoals") {
-                const { gameId, teamOneScore, teamTwoScore } = messageData;
+                const { gameId, teamOneScore, teamTwoScore, teamOneScorers, teamTwoScorers } = messageData;
                 setGoalUpdates(prev => ({
                   ...prev,
                   [gameId]: {
-                    ...prev[gameId],
                     teamOneScore,
                     teamTwoScore
+                  }
+                }));
+
+                // Set the goal scorers in state
+                setGoalScorers(prev => ({
+                  ...prev,
+                  [gameId]: {
+                    teamOneScorers,
+                    teamTwoScorers
                   }
                 }));
               }
@@ -167,6 +174,12 @@ export default function Games() {
                     {goalUpdates[game._id] && (
                       <ListGroup.Item>
                         Score: {goalUpdates[game._id].teamOneScore} - {goalUpdates[game._id].teamTwoScore}
+                      </ListGroup.Item>
+                    )}
+                    {/* Display goal scorers */}
+                    {goalScorers[game._id] && (
+                      <ListGroup.Item>
+                        Goal Scorers: {goalScorers[game._id].teamOneScorers.join(', ') || 'None'} (Home) | {goalScorers[game._id].teamTwoScorers.join(', ') || 'None'} (Away)
                       </ListGroup.Item>
                     )}
                     {/* Display the timer */}

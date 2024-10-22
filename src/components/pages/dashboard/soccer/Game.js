@@ -25,6 +25,9 @@ export default function Game() {
   const [tempTeamOneScore, setTempTeamOneScore] = useState(0);
   const [tempTeamTwoScore, setTempTeamTwoScore] = useState(0);
   const [timer, setTimer] = useState(0);
+  const [teamOneScorers, setTeamOneScorers] = useState(['']);
+const [teamTwoScorers, setTeamTwoScorers] = useState(['']);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -135,20 +138,93 @@ export default function Game() {
  
   const currentGame = liveGame || game;
 
+
+
+  const handleTeamOneScorerChange = (index, value) => {
+    const updatedScorers = [...teamOneScorers];
+    updatedScorers[index] = value;
+    setTeamOneScorers(updatedScorers);
+  };
+  
+  const handleTeamTwoScorerChange = (index, value) => {
+    const updatedScorers = [...teamTwoScorers];
+    updatedScorers[index] = value;
+    setTeamTwoScorers(updatedScorers);
+  };
+  
+  // Modify the goal update function to send scorer data
   const handleGoalUpdate = () => {
     if (ws) {
       ws.send(JSON.stringify({
         action: 'updateGoals',
         gameId: id,
-        teamOneScore: teamOneScore + parseInt(tempTeamOneScore, 10), // Add temporary scores to current scores
+        teamOneScore: teamOneScore + parseInt(tempTeamOneScore, 10),
         teamTwoScore: teamTwoScore + parseInt(tempTeamTwoScore, 10),
+        teamOneScorers: teamOneScorers.filter(scorer => scorer), // Filter out empty strings
+        teamTwoScorers: teamTwoScorers.filter(scorer => scorer),
       }));
-      
+  
       // Update the actual scores after sending the update
       setTeamOneScore(prevScore => prevScore + parseInt(tempTeamOneScore, 10));
       setTeamTwoScore(prevScore => prevScore + parseInt(tempTeamTwoScore, 10));
+      
+      // Reset the temporary score inputs
+      setTempTeamOneScore(0);
+      setTempTeamTwoScore(0);
     }
   };
+  
+  
+
+
+  // const handleGoalUpdate = () => {
+  //   if (ws) {
+  //     // Capture the goal scorer's name and the team
+  //     const teamOneScorer = prompt(`Enter the scorer's name for ${currentTeamOne}:`);
+  //     const teamTwoScorer = prompt(`Enter the scorer's name for ${currentTeamTwo}:`);
+  
+  //     const scorers = [];
+      
+  //     if (teamOneScorer) {
+  //       scorers.push({ name: teamOneScorer, team: currentTeamOne });
+  //       setGoalScorers(prev => [...prev, { name: teamOneScorer, team: currentTeamOne }]);
+  //     }
+      
+  //     if (teamTwoScorer) {
+  //       scorers.push({ name: teamTwoScorer, team: currentTeamTwo });
+  //       setGoalScorers(prev => [...prev, { name: teamTwoScorer, team: currentTeamTwo }]);
+  //     }
+  
+  //     ws.send(JSON.stringify({
+  //       action: 'updateGoals',
+  //       gameId: id,
+  //       teamOneScore: teamOneScore + parseInt(tempTeamOneScore, 10),
+  //       teamTwoScore: teamTwoScore + parseInt(tempTeamTwoScore, 10),
+  //       goalScorers: scorers, // Send the goal scorers array to the backend
+  //     }));
+  
+  //     // Update the actual scores after sending the update
+  //     setTeamOneScore(prevScore => prevScore + parseInt(tempTeamOneScore, 10));
+  //     setTeamTwoScore(prevScore => prevScore + parseInt(tempTeamTwoScore, 10));
+  //   }
+  // };
+  
+
+
+  // const handleGoalUpdate = () => {
+  //   if (ws) {
+  //     ws.send(JSON.stringify({
+  //       action: 'updateGoals',
+  //       gameId: id,
+  //       teamOneScore: teamOneScore + parseInt(tempTeamOneScore, 10), // Add temporary scores to current scores
+  //       teamTwoScore: teamTwoScore + parseInt(tempTeamTwoScore, 10),
+  //     }));
+      
+  //     // Update the actual scores after sending the update
+  //     setTeamOneScore(prevScore => prevScore + parseInt(tempTeamOneScore, 10));
+  //     setTeamTwoScore(prevScore => prevScore + parseInt(tempTeamTwoScore, 10));
+  //   }
+  // };
 
   if (!currentGame || !teams || !leagues) {
     return <h3 className='text-center'>LOADING....</h3>;
@@ -190,29 +266,67 @@ export default function Game() {
               <ListGroup.Item>Live Game Time: {timer}</ListGroup.Item>
             </ListGroup>
 
+
             <Form>
-              <Form.Group>
-                <Form.Label>{currentGame.teamOneName} Goals</Form.Label>
-                <Form.Control
-                  type="number"
-                  value={tempTeamOneScore}
-                  onChange={(e) => setTempTeamOneScore(e.target.value)}
-                />
-              </Form.Group>
+  <Form.Group>
+    <Form.Label>Home Team Goals</Form.Label>
+    <Form.Control
+      type="number"
+      value={tempTeamOneScore}
+      onChange={(e) => setTempTeamOneScore(e.target.value)}
+    />
+  </Form.Group>
 
-              <Form.Group>
-                <Form.Label>{currentGame.teamTwoName} Goals</Form.Label>
-                <Form.Control
-                  type="number"
-                  value={tempTeamTwoScore}
-                  onChange={(e) => setTempTeamTwoScore(e.target.value)}
-                />
-              </Form.Group>
+  <Form.Group>
+    <Form.Label>Home Team Scorers (default to zero after submitting)</Form.Label>
+    {teamOneScorers.map((scorer, index) => (
+      <Form.Control
+        key={index}
+        type="text"
+        value={scorer}
+        onChange={(e) => handleTeamOneScorerChange(index, e.target.value)}
+        placeholder={`Scorer ${index + 1}`}
+      />
+    ))}
+    <Button variant="link" onClick={() => setTeamOneScorers([...teamOneScorers, ''])}>
+      Add Scorer
+    </Button>
+  </Form.Group>
 
-              <Button variant="primary" onClick={handleGoalUpdate}>
-                Update Goals
-              </Button>
-            </Form>
+  <Form.Group>
+    <Form.Label>Away Team Goal Select (default to zero after submitting)</Form.Label>
+    <Form.Control
+      type="number"
+      value={tempTeamTwoScore}
+      onChange={(e) => setTempTeamTwoScore(e.target.value)}
+    />
+  </Form.Group>
+
+  <Form.Group>
+    <Form.Label>Away Team Scorers</Form.Label>
+    {teamTwoScorers.map((scorer, index) => (
+      <Form.Control
+        key={index}
+        type="text"
+        value={scorer}
+        onChange={(e) => handleTeamTwoScorerChange(index, e.target.value)}
+        placeholder={`Scorer ${index + 1}`}
+      />
+    ))}
+    <Button variant="link" onClick={() => setTeamTwoScorers([...teamTwoScorers, ''])}>
+      Add Scorer
+    </Button>
+  </Form.Group>
+
+  <Button variant="primary" onClick={handleGoalUpdate}>
+    Update Goals
+  </Button>
+</Form>
+
+            
+
+
+            
           </Card.Body>
         )}
       </Card>
