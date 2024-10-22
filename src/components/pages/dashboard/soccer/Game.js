@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getGame, getTeams, getLeagues } from '../../../../redux/actions/soccerAction';
 import { Container, Card, ListGroup, Button, Form } from 'react-bootstrap';
+import { ApiUrl } from '../../../../helpers/ApiUrl';
 
 export default function Game() {
   const { id } = useParams();
@@ -13,10 +14,9 @@ export default function Game() {
 
   const [liveGame, setLiveGame] = useState(null);
   const [isGameStarted, setIsGameStarted] = useState(false);
-  const [timer, setTimer] = useState(0);
   const [ws, setWs] = useState(null);
   
-  // New state variables to hold the current game details
+  // New state variables to hold the current game details and timer
   const [currentTeamOne, setCurrentTeamOne] = useState('');
   const [currentTeamTwo, setCurrentTeamTwo] = useState('');
   const [currentLeague, setCurrentLeague] = useState('');
@@ -24,7 +24,7 @@ export default function Game() {
   const [teamTwoScore, setTeamTwoScore] = useState(0);
   const [tempTeamOneScore, setTempTeamOneScore] = useState(0);
   const [tempTeamTwoScore, setTempTeamTwoScore] = useState(0);
-
+  const [timer, setTimer] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,49 +39,84 @@ export default function Game() {
     fetchData();
   }, [dispatch, id]);
 
-  
-  // Update the `useEffect` that listens to WebSocket messages
-useEffect(() => {
-  const socket = new WebSocket('ws://localhost:5000');
-
-  socket.onopen = () => {
-    console.log('WebSocket Connected');
-  };
-
-
-  socket.onmessage = (event) => {
-    const message = JSON.parse(event.data);
-    if (message.action === 'gameState') {
-        setLiveGame(message.game);
-        setTempTeamOneScore(message.game.teamOneScore || 0); // Set initial temp score
-        setTempTeamTwoScore(message.game.teamTwoScore || 0); // Set initial temp score
-    } else if (message.action === 'gameUpdate') {
-        setLiveGame(message.game);
-        setTempTeamOneScore(message.game.teamOneScore || 0); // Update temp score
-        setTempTeamTwoScore(message.game.teamTwoScore || 0); // Update temp score
+  const fetchGameTimers = async () => {
+    try {
+      const response = await fetch(`${ApiUrl}/api/game_times`);
+      const timerData = await response.json();
+      // Update timer based on the fetched data
+      const gameTimer = timerData.find(timer => timer.gameId === id);
+      if (gameTimer) {
+        setTimer(gameTimer.elapsedTime); // Set the timer from backend
+      }
+    } catch (error) {
+      console.error('Error fetching game timers:', error);
     }
-};
-
-
-
-
-  socket.onclose = () => {
-    console.log('WebSocket connection closed');
   };
 
-  setWs(socket);
+  useEffect(() => {
+    fetchGameTimers(); // Initial fetch for the timer
 
-  return () => {
-    socket.close();
-  };
-}, [id]);
+    const interval = setInterval(() => {
+      fetchGameTimers(); // Fetch timer every 10 seconds
+    }, 1000);
+
+    return () => clearInterval(interval); // Clear interval on component unmount
+  }, [id]);
+
+  useEffect(() => {
+    const socket = new WebSocket('ws://localhost:5000');
+
+    socket.onopen = () => {
+      console.log('WebSocket Connected');
+    };
+
+    socket.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      if (message.action === 'gameState') {
+          setLiveGame(message.game);
+          setTempTeamOneScore(message.game.teamOneScore || 0); // Set initial temp score
+          setTempTeamTwoScore(message.game.teamTwoScore || 0); // Set initial temp score
+      } else if (message.action === 'gameUpdate') {
+          setLiveGame(message.game);
+          setTempTeamOneScore(message.game.teamOneScore || 0); // Update temp score
+          setTempTeamTwoScore(message.game.teamTwoScore || 0); // Update temp score
+      }
+    };
+
+    socket.onclose = () => {
+      console.log('WebSocket connection closed');
+    };
+
+    setWs(socket);
+
+    return () => {
+      socket.close();
+    };
+  }, [id]);
+
+
+    // Prompt user when they try to leave the page
+    useEffect(() => {
+      const handleBeforeUnload = (event) => {
+        const confirmationMessage = 'Are you sure you want to leave this page? Your game progress may not be saved.';
+        event.returnValue = confirmationMessage; // For most browsers
+        return confirmationMessage; // For older browsers
+      };
+  
+      window.addEventListener('beforeunload', handleBeforeUnload);
+  
+      return () => {
+        window.removeEventListener('beforeunload', handleBeforeUnload);
+      };
+    }, []);
+  
+
 
 
   const handleStartGame = () => {
     if (ws) {
       ws.send(JSON.stringify({ action: 'startGame', gameId: id }));
       setIsGameStarted(true);
-      startTimer(); // Start the timer when the game starts
 
       // Fetch the updated game details
       dispatch(getGame(id)).then((updatedGame) => {
@@ -97,20 +132,7 @@ useEffect(() => {
     }
   };
 
-  const startTimer = () => {
-    const timerInterval = setInterval(() => {
-      setTimer(prevTime => prevTime + 1);
-    }, 1000);
-
-    return () => clearInterval(timerInterval);
-  };
-
-  const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-  };
-
+ 
   const currentGame = liveGame || game;
 
   const handleGoalUpdate = () => {
@@ -121,19 +143,12 @@ useEffect(() => {
         teamOneScore: teamOneScore + parseInt(tempTeamOneScore, 10), // Add temporary scores to current scores
         teamTwoScore: teamTwoScore + parseInt(tempTeamTwoScore, 10),
       }));
-
-
-      console.log(ws.readyState);
-      
       
       // Update the actual scores after sending the update
       setTeamOneScore(prevScore => prevScore + parseInt(tempTeamOneScore, 10));
       setTeamTwoScore(prevScore => prevScore + parseInt(tempTeamTwoScore, 10));
     }
   };
-  
-
-  
 
   if (!currentGame || !teams || !leagues) {
     return <h3 className='text-center'>LOADING....</h3>;
@@ -171,39 +186,33 @@ useEffect(() => {
             <ListGroup variant="flush">
               <ListGroup.Item>Time: {currentGame.gameTime}</ListGroup.Item>
               <ListGroup.Item>Venue: {currentGame.gameVenue}</ListGroup.Item>
-              {/* <ListGroup.Item>Score: {currentGame.score || "0-0"}</ListGroup.Item> */}
               <ListGroup.Item>Score: {`${teamOneScore}-${teamTwoScore}`}</ListGroup.Item>
-
-              <ListGroup.Item>Live Game Time: {formatTime(timer)}</ListGroup.Item>
+              <ListGroup.Item>Live Game Time: {timer}</ListGroup.Item>
             </ListGroup>
 
             <Form>
-      <Form.Group>
-        <Form.Label>{currentGame.teamOneName} Goals</Form.Label>
-        <Form.Control
-          type="number"
-          value={tempTeamOneScore}
-          onChange={(e) => setTempTeamOneScore(e.target.value)}
-        />
-      </Form.Group>
+              <Form.Group>
+                <Form.Label>{currentGame.teamOneName} Goals</Form.Label>
+                <Form.Control
+                  type="number"
+                  value={tempTeamOneScore}
+                  onChange={(e) => setTempTeamOneScore(e.target.value)}
+                />
+              </Form.Group>
 
-      <Form.Group>
-        <Form.Label>{currentGame.teamTwoName} Goals</Form.Label>
-        <Form.Control
-          type="number"
-          value={tempTeamTwoScore}
-          onChange={(e) => setTempTeamTwoScore(e.target.value)}
-        />
-      </Form.Group>
+              <Form.Group>
+                <Form.Label>{currentGame.teamTwoName} Goals</Form.Label>
+                <Form.Control
+                  type="number"
+                  value={tempTeamTwoScore}
+                  onChange={(e) => setTempTeamTwoScore(e.target.value)}
+                />
+              </Form.Group>
 
-      <Button variant="primary" onClick={handleGoalUpdate}>
-        Update Goals
-      </Button>
-    </Form>
-
-
-
-            
+              <Button variant="primary" onClick={handleGoalUpdate}>
+                Update Goals
+              </Button>
+            </Form>
           </Card.Body>
         )}
       </Card>
@@ -233,24 +242,30 @@ const LeagueName = ({ leagueId, leagues }) => {
   }
 
   return <span>{league.leagueName}</span>;
-};
 
-const SampleT = ({ gameId, teams }) => {
-  const team = useMemo(() => teams.find((t) => t._id === gameId), [teams, gameId]);
 
-  if (!team) {
-    return <span>Loading team...</span>;
-  }
-
-  return <span>{team.teamName}</span>;
 }
 
-const SampleLeague = ({ leagueId, leagues }) => {
-  const league = useMemo(() => leagues.find((l) => l._id === leagueId), [leagues, leagueId]);
 
-  if (!league) {
-    return <span>Loading league...</span>;
+
+  const SampleT = ({ gameId, teams }) => {
+    const team = useMemo(() => teams.find((t) => t._id === gameId), [teams, gameId]);
+  
+    if (!team) {
+      return <span>Loading team...</span>;
+    }
+  
+    return <span>{team.teamName}</span>;
   }
+  
+  const SampleLeague = ({ leagueId, leagues }) => {
+    const league = useMemo(() => leagues.find((l) => l._id === leagueId), [leagues, leagueId]);
+  
+    if (!league) {
+      return <span>Loading league...</span>;
+    }
+  
+    return <span>{league.leagueName}</span>;
+  };
 
-  return <span>{league.leagueName}</span>;
-};
+  
