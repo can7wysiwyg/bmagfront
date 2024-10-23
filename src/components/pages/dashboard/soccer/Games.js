@@ -53,46 +53,49 @@ export default function Games() {
     const fetchLogs = async () => {
       try {
         const response = await fetch(`${ApiUrl}/api/logs`);
-        const textData = await response.json();
+const textData = await response.json();
 
-        textData.forEach(log => {
-          const match = log.match(/Received message: (.*)/);
-          if (match) {
-            const jsonString = match[1];
-            try {
-              const messageData = JSON.parse(jsonString);
+console.log(textData);
 
-              // Start the timer when "startGame" is received
-              if (messageData.action === "startGame") {
-                const { gameId } = messageData;
-                startTimerForGame(gameId);
-              }
+textData.forEach(log => {
+  try {
+    const messageData = JSON.parse(log); // Parse the JSON directly since it no longer has the prefix
 
-              // Handle goal updates
-              if (messageData.action === "updateGoals") {
-                const { gameId, teamOneScore, teamTwoScore, teamOneScorers, teamTwoScorers } = messageData;
-                setGoalUpdates(prev => ({
-                  ...prev,
-                  [gameId]: {
-                    teamOneScore,
-                    teamTwoScore
-                  }
-                }));
+    // Start the timer when "startGame" is received
+    if (messageData.action === "startGame") {
+      const { gameId } = messageData;
+      startTimerForGame(gameId);
+    }
 
-                // Set the goal scorers in state
-                setGoalScorers(prev => ({
-                  ...prev,
-                  [gameId]: {
-                    teamOneScorers,
-                    teamTwoScorers
-                  }
-                }));
-              }
-            } catch (error) {
-              console.error('Error parsing JSON:', error);
-            }
-          }
-        });
+    // Handle goal updates
+    if (messageData.action === "updateGoals") {
+      const { gameId, teamOneScore, teamTwoScore, teamOneScorers, teamTwoScorers } = messageData;
+      setGoalUpdates(prev => ({
+        ...prev,
+        [gameId]: {
+          teamOneScore,
+          teamTwoScore
+        }
+      }));
+
+      // Set the goal scorers in state
+      setGoalScorers(prev => ({
+        ...prev,
+        [gameId]: {
+          teamOneScorers,
+          teamTwoScorers
+        }
+      }));
+    }
+
+  } catch (error) {
+    console.error('Error parsing JSON:', error);
+  }
+});
+
+  
+
+
       } catch (error) {
         console.error('Error fetching logs:', error);
       }
@@ -148,6 +151,9 @@ export default function Games() {
   const indexOfFirstGame = indexOfLastGame - gamesPerPage;
   const currentGames = localGames.slice(indexOfFirstGame, indexOfLastGame);
   const totalPages = Math.ceil(localGames.length / gamesPerPage);
+
+
+  
 
   return (
     <Container className="mt-5 mb-5">

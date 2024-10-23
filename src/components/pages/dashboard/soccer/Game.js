@@ -5,6 +5,7 @@ import { getGame, getTeams, getLeagues } from '../../../../redux/actions/soccerA
 import { Container, Card, ListGroup, Button, Form } from 'react-bootstrap';
 import { ApiUrl } from '../../../../helpers/ApiUrl';
 
+
 export default function Game() {
   const { id } = useParams();
   const game = useSelector((state) => state.soccerRdcr.game);
@@ -28,6 +29,7 @@ export default function Game() {
   const [teamOneScorers, setTeamOneScorers] = useState(['']);
 const [teamTwoScorers, setTeamTwoScorers] = useState(['']);
 const[isBtn, setIsBtn] = useState(false)
+const[disAb, setDisabled] = useState(false)
 
 
 
@@ -127,26 +129,7 @@ const btnState = () => {
   
 
 
-
-  // const handleStartGame = () => {
-  //   if (ws) {
-  //     ws.send(JSON.stringify({ action: 'startGame', gameId: id }));
-  //     setIsGameStarted(true);
-
-  //     // Fetch the updated game details
-  //     dispatch(getGame(id)).then((updatedGame) => {
-  //       // Ensure updatedGame is not null before accessing its properties
-  //       if (updatedGame) {
-  //         setCurrentTeamOne(updatedGame.teamOne); // Set current team one
-  //         setCurrentTeamTwo(updatedGame.teamTwo); // Set current team two
-  //         setCurrentLeague(updatedGame.leagueName); // Set current league name
-  //       }
-  //     }).catch((error) => {
-  //       console.log('Error fetching updated game details:', error);
-  //     });
-  //   }
-  // };
-
+  
 
   const handleStartGame = (action) => {
     if (ws) {
@@ -154,12 +137,15 @@ const btnState = () => {
       
       if (action === 'startGame') {
         setIsGameStarted(true);
+        setDisabled(true)
       } else if (action === 'pauseGame') {
         setIsGameStarted(false);
       } else if (action === 'resumeGame') {
         setIsGameStarted(true);
       } else if (action === 'endGame') {
-        setIsGameStarted(false);
+
+   window.location.href = "/admin_games"
+  
       }
       
       // Fetch the updated game details
@@ -249,10 +235,10 @@ const btnState = () => {
               Start Game
             </Button> */}
 
-<button onClick={() => handleStartGame('startGame')}>Start Game</button>
-<button onClick={() => handleStartGame('pauseGame')}>Pause Game</button>
-<button onClick={() => handleStartGame('resumeGame')}>Resume Game</button>
-<button onClick={() => handleStartGame('endGame')}>End Game</button>
+<button className='success' onClick={() => handleStartGame('startGame')} disabled={disAb}>Start Game</button>
+<button className='primary' onClick={() => handleStartGame('pauseGame')}>Pause Game</button>
+<button className='secondary' onClick={() => handleStartGame('resumeGame')}>Resume Game</button>
+<button className='danger' onClick={() => handleStartGame('endGame')}>End Game</button>
 
 
             <Card.Title>
