@@ -33,6 +33,17 @@ export default function Games() {
     fetchItems();
   }, [dispatch]);
 
+
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      dispatch(getGames()); // Fetch the latest games
+    }, 1000); // Poll every second
+
+    return () => clearInterval(interval); // Clean up on unmount
+  }, [dispatch]);
+
+
   // Function to fetch game timers from the API
   const fetchGameTimers = async () => {
     try {
@@ -55,7 +66,6 @@ export default function Games() {
         const response = await fetch(`${ApiUrl}/api/logs`);
 const textData = await response.json();
 
-console.log(textData);
 
 textData.forEach(log => {
   try {
@@ -152,7 +162,12 @@ textData.forEach(log => {
   const currentGames = localGames.slice(indexOfFirstGame, indexOfLastGame);
   const totalPages = Math.ceil(localGames.length / gamesPerPage);
 
-
+if(games.length === 0) {
+  return(<>
+  
+  <h3>NO FIXTURES AT THE MOMENT</h3>
+  </>)
+}
   
 
   return (
