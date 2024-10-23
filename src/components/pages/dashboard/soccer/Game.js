@@ -27,6 +27,15 @@ export default function Game() {
   const [timer, setTimer] = useState(0);
   const [teamOneScorers, setTeamOneScorers] = useState(['']);
 const [teamTwoScorers, setTeamTwoScorers] = useState(['']);
+const[isBtn, setIsBtn] = useState(false)
+
+
+
+const btnState = () => {
+  setIsBtn(true)
+}
+ 
+
 
 
   useEffect(() => {
@@ -55,6 +64,9 @@ const [teamTwoScorers, setTeamTwoScorers] = useState(['']);
       console.error('Error fetching game timers:', error);
     }
   };
+
+
+  
 
   useEffect(() => {
     fetchGameTimers(); // Initial fetch for the timer
@@ -116,24 +128,55 @@ const [teamTwoScorers, setTeamTwoScorers] = useState(['']);
 
 
 
-  const handleStartGame = () => {
-    if (ws) {
-      ws.send(JSON.stringify({ action: 'startGame', gameId: id }));
-      setIsGameStarted(true);
+  // const handleStartGame = () => {
+  //   if (ws) {
+  //     ws.send(JSON.stringify({ action: 'startGame', gameId: id }));
+  //     setIsGameStarted(true);
 
+  //     // Fetch the updated game details
+  //     dispatch(getGame(id)).then((updatedGame) => {
+  //       // Ensure updatedGame is not null before accessing its properties
+  //       if (updatedGame) {
+  //         setCurrentTeamOne(updatedGame.teamOne); // Set current team one
+  //         setCurrentTeamTwo(updatedGame.teamTwo); // Set current team two
+  //         setCurrentLeague(updatedGame.leagueName); // Set current league name
+  //       }
+  //     }).catch((error) => {
+  //       console.log('Error fetching updated game details:', error);
+  //     });
+  //   }
+  // };
+
+
+  const handleStartGame = (action) => {
+    if (ws) {
+      ws.send(JSON.stringify({ action, gameId: id }));
+      
+      if (action === 'startGame') {
+        setIsGameStarted(true);
+      } else if (action === 'pauseGame') {
+        setIsGameStarted(false);
+      } else if (action === 'resumeGame') {
+        setIsGameStarted(true);
+      } else if (action === 'endGame') {
+        setIsGameStarted(false);
+      }
+      
       // Fetch the updated game details
-      dispatch(getGame(id)).then((updatedGame) => {
-        // Ensure updatedGame is not null before accessing its properties
-        if (updatedGame) {
-          setCurrentTeamOne(updatedGame.teamOne); // Set current team one
-          setCurrentTeamTwo(updatedGame.teamTwo); // Set current team two
-          setCurrentLeague(updatedGame.leagueName); // Set current league name
-        }
-      }).catch((error) => {
-        console.log('Error fetching updated game details:', error);
-      });
+      dispatch(getGame(id))
+        .then((updatedGame) => {
+          if (updatedGame) {
+            setCurrentTeamOne(updatedGame.teamOne);
+            setCurrentTeamTwo(updatedGame.teamTwo);
+            setCurrentLeague(updatedGame.leagueName);
+          }
+        })
+        .catch((error) => {
+          console.log(`Error handling ${action} for the game:`, error);
+        });
     }
   };
+  
 
  
   const currentGame = liveGame || game;
@@ -176,56 +219,6 @@ const [teamTwoScorers, setTeamTwoScorers] = useState(['']);
   
   
 
-
-  // const handleGoalUpdate = () => {
-  //   if (ws) {
-  //     // Capture the goal scorer's name and the team
-  //     const teamOneScorer = prompt(`Enter the scorer's name for ${currentTeamOne}:`);
-  //     const teamTwoScorer = prompt(`Enter the scorer's name for ${currentTeamTwo}:`);
-  
-  //     const scorers = [];
-      
-  //     if (teamOneScorer) {
-  //       scorers.push({ name: teamOneScorer, team: currentTeamOne });
-  //       setGoalScorers(prev => [...prev, { name: teamOneScorer, team: currentTeamOne }]);
-  //     }
-      
-  //     if (teamTwoScorer) {
-  //       scorers.push({ name: teamTwoScorer, team: currentTeamTwo });
-  //       setGoalScorers(prev => [...prev, { name: teamTwoScorer, team: currentTeamTwo }]);
-  //     }
-  
-  //     ws.send(JSON.stringify({
-  //       action: 'updateGoals',
-  //       gameId: id,
-  //       teamOneScore: teamOneScore + parseInt(tempTeamOneScore, 10),
-  //       teamTwoScore: teamTwoScore + parseInt(tempTeamTwoScore, 10),
-  //       goalScorers: scorers, // Send the goal scorers array to the backend
-  //     }));
-  
-  //     // Update the actual scores after sending the update
-  //     setTeamOneScore(prevScore => prevScore + parseInt(tempTeamOneScore, 10));
-  //     setTeamTwoScore(prevScore => prevScore + parseInt(tempTeamTwoScore, 10));
-  //   }
-  // };
-  
-
-
-  // const handleGoalUpdate = () => {
-  //   if (ws) {
-  //     ws.send(JSON.stringify({
-  //       action: 'updateGoals',
-  //       gameId: id,
-  //       teamOneScore: teamOneScore + parseInt(tempTeamOneScore, 10), // Add temporary scores to current scores
-  //       teamTwoScore: teamTwoScore + parseInt(tempTeamTwoScore, 10),
-  //     }));
-      
-  //     // Update the actual scores after sending the update
-  //     setTeamOneScore(prevScore => prevScore + parseInt(tempTeamOneScore, 10));
-  //     setTeamTwoScore(prevScore => prevScore + parseInt(tempTeamTwoScore, 10));
-  //   }
-  // };
-
   if (!currentGame || !teams || !leagues) {
     return <h3 className='text-center'>LOADING....</h3>;
   }
@@ -235,7 +228,7 @@ const [teamTwoScorers, setTeamTwoScorers] = useState(['']);
       <h5 style={{ fontFamily: 'Times New Roman', textAlign: 'center' }}>GAME DETAILS</h5>
 
       <Card className="mt-4 text-center">
-        {!isGameStarted ? (
+        {!isBtn ? (
           <Card.Body>
             <Card.Title><SampleT gameId={game.teamOne} teams={teams} /> vs {" "} <SampleT gameId={game.teamTwo} teams={teams} /> </Card.Title>
             <Card.Subtitle className="mb-2 text-muted">
@@ -246,12 +239,22 @@ const [teamTwoScorers, setTeamTwoScorers] = useState(['']);
               <ListGroup.Item>Venue: {game.gameVenue}</ListGroup.Item>
             </ListGroup>
 
-            <Button variant="success" onClick={handleStartGame} disabled={isGameStarted}>
-              Start Game
+            <Button variant="success" onClick={btnState} >
+              Start The Game Game
             </Button>
           </Card.Body>
         ) : (
           <Card.Body>
+            {/* <Button variant="success" onClick={handleStartGame} disabled={isGameStarted}>
+              Start Game
+            </Button> */}
+
+<button onClick={() => handleStartGame('startGame')}>Start Game</button>
+<button onClick={() => handleStartGame('pauseGame')}>Pause Game</button>
+<button onClick={() => handleStartGame('resumeGame')}>Resume Game</button>
+<button onClick={() => handleStartGame('endGame')}>End Game</button>
+
+
             <Card.Title>
               <TeamName teamId={currentTeamOne} teams={teams} /> vs{" "}
               <TeamName teamId={currentTeamTwo} teams={teams} />
