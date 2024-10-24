@@ -26,7 +26,7 @@ export default function LocalFootball() {
         </ListGroup.Item>
 
         <ListGroup.Item className="text-center">
-          <a href="/games">GAMES</a>
+          <a href="/admin_games">GAMES</a>
         </ListGroup.Item>
 
         <ListGroup.Item className="text-center">

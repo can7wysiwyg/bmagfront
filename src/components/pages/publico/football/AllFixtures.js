@@ -1,13 +1,15 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Container, Card, Row, Col, ListGroup, Pagination } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { getGames, getTeams, getLeagues } from "../../../../redux/actions/soccerAction";
+import { getTeams, getLeagues, getGamesByLeague } from "../../../../redux/actions/soccerAction";
 import { ApiUrl } from "../../../../helpers/ApiUrl";
 import moment from "moment";
+import { useParams } from "react-router-dom";
 
-export default function Games() {
+export default function AllFixtures() {
+    const {id} = useParams()
   const dispatch = useDispatch();
-  const games = useSelector((state) => state.soccerRdcr.games);
+  const games = useSelector((state) => state.soccerRdcr.gamesFromLeague);
   const teams = useSelector((state) => state.soccerRdcr.teams);
   const leagues = useSelector((state) => state.soccerRdcr.leagues);
 
@@ -22,7 +24,7 @@ export default function Games() {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        await dispatch(getGames());
+        await dispatch(getGamesByLeague(id));
         await dispatch(getTeams());
         await dispatch(getLeagues());
       } catch (error) {
@@ -31,17 +33,17 @@ export default function Games() {
     };
 
     fetchItems();
-  }, [dispatch]);
+  }, [dispatch, id]);
 
 
 
   useEffect(() => {
     const interval = setInterval(() => {
-      dispatch(getGames()); // Fetch the latest games
+      dispatch(getGamesByLeague(id)); // Fetch the latest games
     }, 1000); // Poll every second
 
     return () => clearInterval(interval); // Clean up on unmount
-  }, [dispatch]);
+  }, [dispatch, id]);
 
 
   // Function to fetch game timers from the API
@@ -162,7 +164,7 @@ textData.forEach(log => {
   const currentGames = localGames.slice(indexOfFirstGame, indexOfLastGame);
   const totalPages = Math.ceil(localGames.length / gamesPerPage);
 
-if(games.length === 0) {
+if(games?.length === 0) {
   return(<>
   
   <h3>NO FIXTURES AT THE MOMENT</h3>
@@ -210,7 +212,7 @@ if(games.length === 0) {
                       </ListGroup.Item>
                     )}
                   </ListGroup>
-                  <Card.Link href={`/game/${game._id}`}>View Details</Card.Link>
+                
                 </Card.Body>
               </Card>
             </Col>

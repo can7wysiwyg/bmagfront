@@ -7,17 +7,20 @@ import Logo from "./Logo.jpg";
 import SubTokenCheck from "../../helpers/SubTokenCheck";
 import { magShowAll } from "../../redux/actions/magazineAction";
 import VideoSubToken from "../../helpers/VideoSubToken";
+import { getLeagues } from "../../redux/actions/soccerAction";
 
 export default function NavMenu() {
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.publicRdcr.categories);
   const magIssues = useSelector((state) => state.magRdcr.magIssues)
+  const leagues = useSelector((state) => state.soccerRdcr.leagues)
 
   useEffect(() => {
     const fetchCats = async () => {
       try {
         await dispatch(publicGetGenres());
         await dispatch(magShowAll())
+        await dispatch(getLeagues())
       } catch (error) {
         console.error("there was a problem");
       }
@@ -122,6 +125,33 @@ export default function NavMenu() {
 
                {/*magazines  */}
                 {/* test */}
+
+                <li className="nav-item dropdown">
+                  <p
+                    className="nav-link dropdown-toggle"
+                    id="pagesDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                  Football   <i className="ti-angle-down ms-1"></i>
+                  </p>
+                  <ul className="dropdown-menu" aria-labelledby="pagesDropdown">
+                    {leagues?.map((league) => (
+                      <li key={league._id}>
+                        <a
+                          className="dropdown-item"
+                          href={`/all_fixtures/${league._id}`}
+                        >
+                          {league.leagueName}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+
+
 
                 <li className="nav-item dropdown">
                   <p

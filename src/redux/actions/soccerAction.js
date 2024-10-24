@@ -1,5 +1,5 @@
 import axios from "axios"
-import { CREATE_GAME, CREATE_LEAGUE, CREATE_TEAM, GET_GAME, GET_GAMES, GET_LEAGUE, GET_LEAGUES, GET_TEAM, GET_TEAMS, SOCCER_ERROR, UPDATE_GAME, UPDATE_LEAGUE, UPDATE_TEAM } from "./types"
+import { CREATE_GAME, CREATE_LEAGUE, CREATE_TEAM, GAMES_BY_LEAGUE, GET_GAME, GET_GAMES, GET_LEAGUE, GET_LEAGUES, GET_TEAM, GET_TEAMS, SOCCER_ERROR, UPDATE_GAME, UPDATE_LEAGUE, UPDATE_TEAM } from "./types"
 import { ApiUrl } from "../../helpers/ApiUrl"
 import { bmagtoken } from "../../helpers/Bmag"
 
@@ -194,6 +194,23 @@ export function getGame(id) {
         }
     }
 }
+
+
+export function getGamesByLeague(id) {
+    return async function(dispatch) {
+        try {
+            const response = await axios.get(`${ApiUrl}/public_show_games_by_league/${id}`);
+            const gamesFromLeague = response.data.gamesFromLeague;
+            dispatch({type: GAMES_BY_LEAGUE, payload: gamesFromLeague });
+            return gamesFromLeague; // Return the fetched game data
+        } catch (error) {
+            console.log("there was a problem " + error);
+            dispatch({type: SOCCER_ERROR});
+            throw error;
+        }
+    }
+}
+
 
 
 export function getTeam(id) {
