@@ -11,6 +11,7 @@ export default function Games() {
   const teams = useSelector((state) => state.soccerRdcr.teams);
   const leagues = useSelector((state) => state.soccerRdcr.leagues);
 
+  const [searchTerm, setSearchTerm] = useState('');
   const [localGames, setLocalGames] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [goalUpdates, setGoalUpdates] = useState({});
@@ -153,6 +154,21 @@ textData.forEach(log => {
     }
   }, [games]);
 
+
+  // search games
+  const filteredGames = useMemo(() => {
+    if (!searchTerm) return localGames;
+    return localGames.filter(game => {
+      const teamOne = teams.find(t => t._id === game.teamOne)?.teamName.toLowerCase() || '';
+      const teamTwo = teams.find(t => t._id === game.teamTwo)?.teamName.toLowerCase() || '';
+      const league = leagues.find(l => l._id === game.leagueName)?.leagueName.toLowerCase() || '';
+      const term = searchTerm.toLowerCase();
+      return teamOne.includes(term) || teamTwo.includes(term) || league.includes(term);
+    });
+  }, [searchTerm, localGames, teams, leagues]);
+  
+
+
   if (!teams || !leagues) {
     return <h3 className="text-center">LOADING....</h3>;
   }
@@ -176,9 +192,21 @@ if(games.length === 0) {
         FOOTBALL FIXTURES
       </h5>
 
+      <div className="text-center mb-4">
+    <input
+      type="text"
+      placeholder="Search games..."
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      className="form-control"
+      style={{ maxWidth: "400px", margin: "0 auto" }}
+    />
+  </div>
+
+
       <Row className="mt-4">
-        {currentGames.length > 0 ? (
-          currentGames.map((game) => (
+        {filteredGames?.length > 0 ? (
+          filteredGames?.map((game) => (
             <Col lg={12} key={game._id} className="mb-4">
               <Card className="text-center">
                 <Card.Body>
