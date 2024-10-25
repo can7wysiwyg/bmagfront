@@ -1,5 +1,5 @@
 import axios from "axios"
-import { CREATE_GAME, CREATE_LEAGUE, CREATE_TEAM, GAMES_BY_LEAGUE, GET_GAME, GET_GAMES, GET_LEAGUE, GET_LEAGUES, GET_TEAM, GET_TEAMS, SOCCER_ERROR, SOCCER_TABLE_CREATE, UPDATE_GAME, UPDATE_LEAGUE, UPDATE_TEAM } from "./types"
+import { CREATE_GAME, CREATE_LEAGUE, CREATE_TEAM, GAMES_BY_LEAGUE, GET_GAME, GET_GAMES, GET_LEAGUE, GET_LEAGUE_RESULTS, GET_LEAGUES, GET_TABLE, GET_TEAM, GET_TEAMS, SOCCER_ERROR, SOCCER_TABLE_CREATE, UPDATE_GAME, UPDATE_LEAGUE, UPDATE_TEAM } from "./types"
 import { ApiUrl } from "../../helpers/ApiUrl"
 import { bmagtoken } from "../../helpers/Bmag"
 
@@ -187,25 +187,47 @@ export function getGames() {
 // SINGULAR GETS
 
 
-// export function getGame(id) {
+export function getTable(id) {
 
-//     return async function(dispatch) {
-//         try {
+    return async function(dispatch) {
+        try {
 
-//             const response = await axios.get(`${ApiUrl}/public_show_game/${id}`)
-//             const game = response.data.game
+            const response = await axios.get(`${ApiUrl}/table_get_single/${id}`)
+            const table = response.data.table
 
-//             dispatch({type: GET_GAME, payload: game })
+            dispatch({type: GET_TABLE, payload: table })
             
-//         } catch (error) {
+        } catch (error) {
 
-//             console.log("there was a problem " + error)
-//             dispatch({type: SOCCER_ERROR})
-//             throw error
+            console.log("there was a problem " + error)
+            dispatch({type: SOCCER_ERROR})
+            throw error
             
-//         }
-//     }
-// }
+        }
+    }
+}
+
+
+export function getLeagueResults(id) {
+    return async function(dispatch) {
+
+        try {
+
+            const response = await axios.get(`${ApiUrl}/results_by_league_name/${id}`)
+            const results = response.data.results
+
+            dispatch({type: GET_LEAGUE_RESULTS, payload: results})
+            
+        } catch (error) {
+
+            console.log("there was a problem " + error)
+            dispatch({type: SOCCER_ERROR})
+            throw error
+            
+        }
+
+    }
+}
 
 
 

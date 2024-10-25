@@ -4,31 +4,31 @@ import { Container, Form, Row, Col, Button } from 'react-bootstrap';
 import { createLeague } from '../../../../redux/actions/soccerAction';
 
 export default function CreateLeague() {
-  const [formData, setFormData] = useState({
-    leagueName: '',
-    startDate: '', // Start date of the league
-    endDate: ''    // End date of the league
-  });
-
   const [btnText, setBtnText] = useState('CREATE NEW LEAGUE');
   const dispatch = useDispatch();
 
+  const [formData, setFormData] = useState({
+    leagueName: '',
+    startDate: '', // Start date of the league
+    endDate: '',   // End date of the league
+    hasLogTable: '', // Change to string to handle select options
+  });
+
   const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value } = e.target;
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value === 'true' ? true : value === 'false' ? false : value,
+    }));
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
-    // Dispatch the createLeague action with the form data (startDate and endDate)
-    await dispatch(createLeague(formData));
-  };
-
-  const chango = () => {
     setBtnText('CREATING NEW LEAGUE...');
+    
+    // Dispatch the createLeague action with the form data
+    await dispatch(createLeague(formData));
   };
 
   return (
@@ -49,6 +49,21 @@ export default function CreateLeague() {
                 placeholder="League Name"
                 required
               />
+            </Form.Group>
+
+            {/* Log Table Dropdown */}
+            <Form.Group className="mb-3" controlId="formHasLogTable">
+              <Form.Label>Does the league have a log table?</Form.Label>
+              <Form.Select
+                name="hasLogTable"
+                value={formData.hasLogTable}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="">Select Item</option>
+                <option value="true">True</option>
+                <option value="false">False</option>
+              </Form.Select>
             </Form.Group>
 
             {/* Start Date */}
@@ -75,7 +90,7 @@ export default function CreateLeague() {
               />
             </Form.Group>
 
-            <Button type="submit" onClick={chango}>
+            <Button type="submit">
               {btnText}
             </Button>
           </Form>
