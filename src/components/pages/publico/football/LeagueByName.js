@@ -33,7 +33,7 @@ export default function LeagueByName() {
     const handlePageChange = (pageNumber) => setActivePage(pageNumber);
 
 
-    if(!league) {
+    if(!league || !gamesFromLeague || !results || !table || !teams) {
  return(<>
  
  <h4>LOADING....</h4>
