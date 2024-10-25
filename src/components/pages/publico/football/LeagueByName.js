@@ -32,8 +32,17 @@ export default function LeagueByName() {
     // Pagination handlers
     const handlePageChange = (pageNumber) => setActivePage(pageNumber);
 
+
+    if(!league) {
+ return(<>
+ 
+ <h4>LOADING....</h4>
+ </>)
+
+    }
+
     // Paginate results
-    const paginatedResults = results.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage);
+    const paginatedResults = results?.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage);
     const paginatedFixtures = gamesFromLeague.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage);
 
     return (
@@ -83,7 +92,7 @@ export default function LeagueByName() {
             <Row>
                 <Col xs={12} md={6}>
                     <h3>Results</h3>
-                    {paginatedResults.map((result, index) => (
+                    {paginatedResults?.map((result, index) => (
                         <Card key={index} className="mb-3">
                             <Card.Body>
                                 <Card.Title>
@@ -106,7 +115,7 @@ export default function LeagueByName() {
                 {/* Fixtures Section */}
                 <Col xs={12} md={6}>
                     <h3>Fixtures</h3>
-                    {paginatedFixtures.map((fixture, index) => (
+                    {paginatedFixtures?.map((fixture, index) => (
                         <Card key={index} className="mb-3">
                             <Card.Body>
                                 <Card.Title>
