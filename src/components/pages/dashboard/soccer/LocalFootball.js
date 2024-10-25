@@ -12,6 +12,11 @@ export default function LocalFootball() {
           <a href="/create_league">CREATE LEAGUE</a>
         </ListGroup.Item>
 
+        <ListGroup.Item className="text-center">
+          <a href="/create_table">CREATE TABLE</a>
+        </ListGroup.Item>
+
+
 
         <ListGroup.Item className="text-center">
           <a href="/create_team">CREATE TEAM</a>

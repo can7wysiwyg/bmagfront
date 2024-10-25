@@ -1,11 +1,40 @@
 import axios from "axios"
-import { CREATE_GAME, CREATE_LEAGUE, CREATE_TEAM, GAMES_BY_LEAGUE, GET_GAME, GET_GAMES, GET_LEAGUE, GET_LEAGUES, GET_TEAM, GET_TEAMS, SOCCER_ERROR, UPDATE_GAME, UPDATE_LEAGUE, UPDATE_TEAM } from "./types"
+import { CREATE_GAME, CREATE_LEAGUE, CREATE_TEAM, GAMES_BY_LEAGUE, GET_GAME, GET_GAMES, GET_LEAGUE, GET_LEAGUES, GET_TEAM, GET_TEAMS, SOCCER_ERROR, SOCCER_TABLE_CREATE, UPDATE_GAME, UPDATE_LEAGUE, UPDATE_TEAM } from "./types"
 import { ApiUrl } from "../../helpers/ApiUrl"
 import { bmagtoken } from "../../helpers/Bmag"
 
 
 
 // POST ACTIONS
+
+
+export function createTable(teams) {
+
+    return async function(dispatch) {
+
+        try {
+
+            const response = await axios.post(`${ApiUrl}/admin_soccer_table_create`, teams, {
+                headers: {
+                    Authorization: `Bearer ${bmagtoken}`
+                }
+
+            })
+
+            dispatch({type: SOCCER_TABLE_CREATE})
+            alert(response.data.msg)
+            
+        } catch (error) {
+
+            console.log("there was a problem " + error)
+            dispatch({type: SOCCER_ERROR})
+            throw error
+            
+        }
+
+    }
+
+}
 
 
 export function createTeam(data) {
