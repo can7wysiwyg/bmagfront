@@ -104,7 +104,7 @@ export function createGame(data) {
 
             dispatch({type: CREATE_GAME})
             alert(response.data.msg)
-            window.location.href = "/games"
+            window.location.href = "/admin_games"
             
         } catch (error) {
             console.log("there was a problem " + error)

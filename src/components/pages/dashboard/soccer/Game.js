@@ -231,10 +231,7 @@ const btnState = () => {
           </Card.Body>
         ) : (
           <Card.Body>
-            {/* <Button variant="success" onClick={handleStartGame} disabled={isGameStarted}>
-              Start Game
-            </Button> */}
-
+            
 <button className='success' onClick={() => handleStartGame('startGame')} disabled={disAb}>Start Game</button>
 <button className='primary' onClick={() => handleStartGame('pauseGame')}>Pause Game</button>
 <button className='secondary' onClick={() => handleStartGame('resumeGame')}>Resume Game</button>
