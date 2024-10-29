@@ -70,7 +70,7 @@ export default function Teams() {
           {currentTeams.length > 0 ? (
             currentTeams.map((team) => (
               <ListGroup.Item className="text-center" key={team._id}>
-                <a href={`/single_team/${team._id}`}>{team.teamName}</a>
+                {team.teamName}
               </ListGroup.Item>
             ))
           ) : (

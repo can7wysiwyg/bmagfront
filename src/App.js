@@ -63,6 +63,9 @@ import Game from "./components/pages/dashboard/soccer/Game";
 import AllFixtures from "./components/pages/publico/football/AllFixtures";
 import LeagueByName from "./components/pages/publico/football/LeagueByName";
 import CreateTable from "./components/pages/dashboard/soccer/CreateTable";
+import SingleLeague from "./components/pages/dashboard/soccer/SingleLeague";
+import ManageTables from "./components/pages/dashboard/soccer/ManageTables";
+import ManageTable from "./components/pages/dashboard/soccer/ManageTable";
 
 // import Epl from "./components/pages/publico/tables/Epl";
 
@@ -135,6 +138,9 @@ function App() {
         <Route path="/all_fixtures/:id" element={<AllFixtures />} />
         <Route path="/league_by_name/:id" element={<LeagueByName />} />
         <Route path="/create_table" element={<CreateTable />} />
+        <Route path="/single_league/:id" element={<SingleLeague />} />
+        <Route path="/manage_tables" element={<ManageTables />} />
+        <Route path="/view_league_table/:id" element={<ManageTable />} />
         {/* <Route path="/epl_table" element={<Epl />} /> */}
 
 

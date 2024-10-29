@@ -27,6 +27,11 @@ export default function LocalFootball() {
         </ListGroup.Item>
 
         <ListGroup.Item className="text-center">
+          <a href="/manage_tables">MANAGE FOOTBALL TABLES</a>
+        </ListGroup.Item>
+
+
+        <ListGroup.Item className="text-center">
           <a href="/teams">TEAMS</a>
         </ListGroup.Item>
 
@@ -35,7 +40,7 @@ export default function LocalFootball() {
         </ListGroup.Item>
 
         <ListGroup.Item className="text-center">
-          <a href="/leagues">leagues</a>
+          <a href="/leagues">LEAGUES</a>
         </ListGroup.Item>
 
 
