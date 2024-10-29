@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Dropdown, Button, ListGroup } from 'react-bootstrap';
-import { createTable, getLeagues, getTeams } from '../../../../redux/actions/soccerAction';
+import {  getLeagues, getTeams } from '../../../../redux/actions/soccerAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { bmagtoken } from '../../../../helpers/Bmag';
 import { ApiUrl } from '../../../../helpers/ApiUrl';
@@ -42,9 +42,7 @@ export default function CreateTable() {
 
 
    const handleSubmit = async () => {
-    // Call the API to save the leagueId and selectedTeams
-    // Make sure to format the data appropriately for your backend
-    try {
+        try {
       const response = await fetch(`${ApiUrl}/admin_soccer_table_create`, {
         method: 'POST',
         headers: {

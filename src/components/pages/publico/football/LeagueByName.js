@@ -9,15 +9,12 @@ export default function LeagueByName() {
     const dispatch = useDispatch();
     const league = useSelector((state) => state.soccerRdcr.league);
     const gamesFromLeague = useSelector((state) => state.soccerRdcr.gamesFromLeague);
-    const table = useSelector((state) => state.soccerRdcr.table);
     const results = useSelector((state) => state.soccerRdcr.results);
     const teams = useSelector((state) => state.soccerRdcr.teams);
 
 
     // Pagination states
-    const [activePage, setActivePage] = useState(1);
-    const itemsPerPage = 10;
-
+    
     useEffect(() => {
         const fetchData = async () => {
             await dispatch(getLeague(id));
@@ -29,11 +26,9 @@ export default function LeagueByName() {
         fetchData();
     }, [dispatch, id]);
 
-    // Pagination handlers
-    const handlePageChange = (pageNumber) => setActivePage(pageNumber);
+    
 
-
-    if(!league || !gamesFromLeague || !results || !table || !teams) {
+    if(!league) {
  return(<>
  
  <h4>LOADING....</h4>
@@ -41,17 +36,134 @@ export default function LeagueByName() {
 
     }
 
-    // Paginate results
-    const paginatedResults = results?.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage);
-    const paginatedFixtures = gamesFromLeague.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage);
+    
 
+   
     return (
         <Container>
-            <h2>{league?.leagueName}</h2>
+            <h2 style={{fontFamily: "Times New Roman"}}>{league?.leagueName}</h2>
 
-            {/* Table Section */}
-            {league?.hasLogTable && (
-                <Row>
+            {
+                league.hasLogTable === false ? <WithoutTable />   : <WithTable />
+            }
+
+            
+        </Container>
+    );
+}
+
+
+const WithoutTable = () => {
+
+    const tournamentData = [
+        {
+          roundName: 'Quarter-Finals',
+          matches: [
+            { teamOne: { name: 'Team A', score: 2 }, teamTwo: { name: 'Team B', score: 1 } },
+            { teamOne: { name: 'Team C', score: 3 }, teamTwo: { name: 'Team D', score: 2 } },
+            { teamOne: { name: 'Team E', score: 1 }, teamTwo: { name: 'Team F', score: 2 } },
+            { teamOne: { name: 'Team G', score: 0 }, teamTwo: { name: 'Team H', score: 1 } }
+          ]
+        },
+        {
+          roundName: 'Semi-Finals',
+          matches: [
+            { teamOne: { name: 'Team A', score: 3 }, teamTwo: { name: 'Team C', score: 2 } },
+            { teamOne: { name: 'Team F', score: 1 }, teamTwo: { name: 'Team H', score: 2 } }
+          ]
+        },
+        {
+          roundName: 'Final',
+          matches: [
+            { teamOne: { name: 'Team A', score: 1 }, teamTwo: { name: 'Team H', score: 3 } }
+          ]
+        }
+      ];
+      
+
+    return(<>
+    
+    <Container>
+            <h1>Tournament Tree</h1>
+            <Row className="justify-content-center">
+                {tournamentData?.map((round, roundIndex) => (
+                    <Col key={roundIndex} md={3} className="mb-4">
+                        <h4>{round.roundName}</h4>
+                        {round.matches?.map((match, matchIndex) => (
+                            <Card key={matchIndex} className="mb-3 text-center">
+                                <Card.Body>
+                                    <div>{match.teamOne.name} vs {match.teamTwo.name}</div>
+                                    <div>
+                                        {match.teamOne.score} - {match.teamTwo.score}
+                                    </div>
+                                </Card.Body>
+                            </Card>
+                        ))}
+                    </Col>
+                ))}
+            </Row>
+        </Container>
+
+
+
+
+    </>)
+
+}
+
+
+
+
+const WithTable = () => {
+
+    const { id } = useParams();
+    const table = useSelector((state) => state.soccerRdcr.table);
+    const gamesFromLeague = useSelector((state) => state.soccerRdcr.gamesFromLeague);
+    const results = useSelector((state) => state.soccerRdcr.results);
+    const teams = useSelector((state) => state.soccerRdcr.teams);
+
+
+    const dispatch = useDispatch()
+
+    const [activePage, setActivePage] = useState(1);
+    const itemsPerPage = 10;
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await dispatch(getGamesByLeague(id));
+            await dispatch(getTable(id));
+            await dispatch(getLeagueResults(id));
+            await dispatch(getTeams())
+        };
+        fetchData();
+    }, [dispatch, id]);
+
+
+
+
+    // Pagination handlers
+    const handlePageChange = (pageNumber) => setActivePage(pageNumber);
+
+
+    // Paginate results
+    const paginatedResults = results?.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage);
+    const paginatedFixtures = gamesFromLeague?.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage);
+
+
+    if(!table || !gamesFromLeague || !results || !teams) {
+        return(<>
+        <h3 className='text-center'>DATA IS LOADING...</h3>
+        </>)
+    }
+
+
+
+return(<>
+<Container>
+
+
+<Row>
                     <Col xs={12}>
                         <h3>League Table</h3>
                         <Table striped bordered hover>
@@ -86,10 +198,9 @@ export default function LeagueByName() {
                         </Table>
                     </Col>
                 </Row>
-            )}
 
-            {/* Results Section */}
-            <Row>
+
+                <Row>
                 <Col xs={12} md={6}>
                     <h3>Results</h3>
                     {paginatedResults?.map((result, index) => (
@@ -141,8 +252,18 @@ export default function LeagueByName() {
                     </Pagination.Item>
                 ))}
             </Pagination>
-        </Container>
-    );
+
+
+
+
+
+</Container>
+    
+    
+    
+    
+    </>)
+
 }
 
 

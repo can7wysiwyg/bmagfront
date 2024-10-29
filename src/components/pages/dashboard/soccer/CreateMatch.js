@@ -4,13 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { createGame, getLeagues, getTeams } from "../../../../redux/actions/soccerAction";
 
 export default function CreateMatch() {
-  const [formData, setFormData] = useState({
-    gameTime: '',
-    gameVenue: '',
-    teamOne: '',
-    teamTwo: '',
-    leagueName: '' 
-  });
+  const [fixtures, setFixtures] = useState([
+    { gameTime: '', gameVenue: '', teamOne: '', teamTwo: '', leagueName: '' }
+  ]);
+  const [leagueLocked, setLeagueLocked] = useState(false);
 
   const teams = useSelector((state) => state.soccerRdcr.teams);
   const leagues = useSelector((state) => state.soccerRdcr.leagues);
@@ -25,132 +22,122 @@ export default function CreateMatch() {
         console.log(`${error}`);
       }
     };
-
     fetchItems();
   }, [dispatch]);
 
-  const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+  const handleFixtureChange = (index, field, value) => {
+    const updatedFixtures = [...fixtures];
+    updatedFixtures[index][field] = value;
+    setFixtures(updatedFixtures);
+
+    if (field === "leagueName") {
+      setLeagueLocked(true);
+      // Update all fixtures with the selected league
+      setFixtures(updatedFixtures.map(fixture => ({ ...fixture, leagueName: value })));
+    }
+  };
+
+  const handleAddFixture = () => {
+    setFixtures([...fixtures, { gameTime: '', gameVenue: '', teamOne: '', teamTwo: '', leagueName: fixtures[0].leagueName }]);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await dispatch(createGame(formData));
+    await dispatch(createGame(fixtures));  // Dispatch action to create multiple games
   };
 
   if (!teams || !leagues) {
-   return(<>
-   
-   <h3 className="text-center">LOADING....</h3>
-   </>)
+    return <h3 className="text-center">LOADING....</h3>;
   }
-  
-
 
   return (
     <div>
       <div className="container mt-4">
-        <h4
-          style={{
-            textAlign: "center",
-            marginBottom: "1rem",
-            color: "red",
-            fontStyle: "cursive",
-          }}
-        >
-          MAKE FOOTBALL FIXTURE
+        <h4 style={{ textAlign: "center", marginBottom: "1rem", color: "red", fontStyle: "cursive" }}>
+          MAKE FOOTBALL FIXTURES
         </h4>
 
         <form onSubmit={handleSubmit}>
-          {/* Two side-by-side select boxes */}
-          <div className="row mb-3">
-            <div className="col-md-6">
-              <select
-                className="form-select"
-                name="teamOne"
-                value={formData.teamOne}
-                onChange={handleInputChange}
-                required
-              >
-                <option value="" disabled>
-                  Team One/Home Team
-                </option>
-                {teams?.map((team) => (
-                  <option key={team._id} value={team._id}>
-                    {team.teamName}
-                  </option>
-                ))}
-              </select>
+          {fixtures.map((fixture, index) => (
+            <div key={index}>
+              <div className="row mb-3">
+                <div className="col-md-6">
+                  <select
+                    className="form-select"
+                    value={fixture.teamOne}
+                    onChange={(e) => handleFixtureChange(index, "teamOne", e.target.value)}
+                    required
+                  >
+                    <option value="" disabled>Team One/Home Team</option>
+                    {teams.map((team) => (
+                      <option key={team._id} value={team._id}>{team.teamName}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="col-md-6">
+                  <select
+                    className="form-select"
+                    value={fixture.teamTwo}
+                    onChange={(e) => handleFixtureChange(index, "teamTwo", e.target.value)}
+                    required
+                  >
+                    <option value="" disabled>Team Two/Away Team</option>
+                    {teams.map((team) => (
+                      <option key={team._id} value={team._id}>{team.teamName}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="mb-3">
+                <select
+                  className="form-select"
+                  value={fixture.leagueName}
+                  onChange={(e) => handleFixtureChange(index, "leagueName", e.target.value)}
+                  required
+                  disabled={leagueLocked}  // Disable after initial selection
+                >
+                  <option value="" disabled>League Name</option>
+                  {leagues.map((league) => (
+                    <option key={league._id} value={league._id}>{league.leagueName}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="mb-3">
+                <Form.Control
+                  type="text"
+                  value={fixture.gameTime}
+                  onChange={(e) => handleFixtureChange(index, "gameTime", e.target.value)}
+                  placeholder="Match Starting Time"
+                  required
+                />
+              </div>
+
+              <div className="mb-3">
+                <Form.Control
+                  type="text"
+                  value={fixture.gameVenue}
+                  onChange={(e) => handleFixtureChange(index, "gameVenue", e.target.value)}
+                  placeholder="Match Stadium"
+                  required
+                />
+              </div>
             </div>
-            <div className="col-md-6">
-              <select
-                className="form-select"
-                name="teamTwo"
-                value={formData.teamTwo}
-                onChange={handleInputChange}
-                required
-              >
-                <option value="" disabled>
-                  Team Two/Away Team
-                </option>
-                {teams?.map((team) => (
-                  <option key={team._id} value={team._id}>
-                    {team.teamName}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
+          ))}
+<div>
+          <button type="button" onClick={handleAddFixture} className="btn btn-secondary mb-3">
+            Add Another Fixture
+          </button>
 
-          {/* One select box below for League */}
-          <div className="mb-3">
-            <select
-              className="form-select"
-              name="leagueName"
-              value={formData.leagueName}
-              onChange={handleInputChange}
-              required
-            >
-              <option value="" disabled>
-                League Name
-              </option>
-              {leagues?.map((league) => (
-                <option key={league._id} value={league._id}>
-                  {league.leagueName}
-                </option>
-              ))}
-            </select>
           </div>
-
-          {/* Game Time and Venue */}
-          <div className="mb-3">
-            <Form.Control
-              type="text"
-              name="gameTime"
-              value={formData.gameTime}
-              onChange={handleInputChange}
-              placeholder="Match Starting Time"
-              required
-            />
-          </div>
-
-          <div className="mb-3">
-            <Form.Control
-              type="text"
-              name="gameVenue"
-              value={formData.gameVenue}
-              onChange={handleInputChange}
-              placeholder="Match Stadium"
-              required
-            />
-          </div>
-
+<div>
           <button type="submit" className="btn btn-primary">
             Submit
           </button>
+
+          </div>
+          <br></br>
         </form>
       </div>
     </div>

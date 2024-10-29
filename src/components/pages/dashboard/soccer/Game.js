@@ -81,7 +81,7 @@ const btnState = () => {
   }, [id]);
 
   useEffect(() => {
-    const socket = new WebSocket('wss://apibmag.onrender.com');
+    const socket = new WebSocket('ws://localhost:5000');
 
     socket.onopen = () => {
       console.log('WebSocket Connected');

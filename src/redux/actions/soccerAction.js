@@ -89,17 +89,16 @@ export function createLeague(data) {
 }
 
 
-
-export function createGame(data) {
+export function createGame(fixtures) {
     return async function(dispatch) {
 
         try {
 
-            const response = await axios.post(`${ApiUrl}/admin_create_game`, data, {
-                headers: {
-                    Authorization: `Bearer ${bmagtoken}`
-                }
-            })
+            const response = await axios.post(`${ApiUrl}/admin_create_game`, fixtures,  {
+                headers: {         Authorization: `Bearer ${bmagtoken}`
+                 }
+             }
+            ) 
 
 
             dispatch({type: CREATE_GAME})
