@@ -53,6 +53,8 @@ const btnState = () => {
     fetchData();
   }, [dispatch, id]);
 
+  
+
   const fetchGameTimers = async () => {
     try {
       const response = await fetch(`${ApiUrl}/api/game_times`);

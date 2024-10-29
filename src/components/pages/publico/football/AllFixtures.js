@@ -171,7 +171,6 @@ if(games?.length === 0) {
   </>)
 }
   
-
   return (
     <Container className="mt-5 mb-5">
       <h5 style={{ fontFamily: "Times New Roman", textAlign: "center" }}>
@@ -179,48 +178,52 @@ if(games?.length === 0) {
       </h5>
 
       <Row className="mt-4">
-        {currentGames.length > 0 ? (
-          currentGames.map((game) => (
-            <Col lg={12} key={game._id} className="mb-4">
-              <Card className="text-center">
-                <Card.Body>
-                  <Card.Title>
-                    <TeamName teamId={game.teamOne} teams={teams} /> vs{" "}
-                    <TeamName teamId={game.teamTwo} teams={teams} />
-                  </Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">
-                    <LeagueName leagueId={game.leagueName} leagues={leagues} />
-                  </Card.Subtitle>
-                  <ListGroup variant="flush">
-                    <ListGroup.Item>Time: {game.gameTime}</ListGroup.Item>
-                    <ListGroup.Item>Venue: {game.gameVenue}</ListGroup.Item>
-                    {goalUpdates[game._id] && (
-                      <ListGroup.Item>
-                        Score: {goalUpdates[game._id].teamOneScore} - {goalUpdates[game._id].teamTwoScore}
-                      </ListGroup.Item>
-                    )}
-                    {/* Display goal scorers */}
-                    {goalScorers[game._id] && (
-                      <ListGroup.Item>
-                        Goal Scorers: {goalScorers[game._id].teamOneScorers.join(', ') || 'None'} (Home) | {goalScorers[game._id].teamTwoScorers.join(', ') || 'None'} (Away)
-                      </ListGroup.Item>
-                    )}
-                    {/* Display the timer */}
-                    {timers[game._id] && typeof timers[game._id] === 'string' && (
-                      <ListGroup.Item>
-                        Timer: {timers[game._id]} {/* Display timer directly */}
-                      </ListGroup.Item>
-                    )}
-                  </ListGroup>
-                
-                </Card.Body>
-              </Card>
-            </Col>
-          ))
-        ) : (
-          <h6 className="text-center">No fixtures available at the moment.</h6>
-        )}
-      </Row>
+  {currentGames?.length > 0 ? (
+    currentGames.map((game) => (
+      // Loop through each item in game.games and create a separate card for each
+      game.games?.map((item, index) => (
+        <Col lg={12} key={item._id || index} className="mb-4">
+          <Card className="text-center">
+            <Card.Body>
+              <Card.Title>
+                <TeamName teamId={item.teamOne} teams={teams} /> vs{" "}
+                <TeamName teamId={item.teamTwo} teams={teams} />
+              </Card.Title>
+              <Card.Subtitle className="mb-2 text-muted">
+                <LeagueName leagueId={game.leagueName} leagues={leagues} />
+              </Card.Subtitle>
+              <ListGroup variant="flush">
+                <ListGroup.Item>Time: {item.gameTime}</ListGroup.Item>
+                <ListGroup.Item>Venue: {item.gameVenue}</ListGroup.Item>
+                {goalUpdates[item._id] && (
+                  <ListGroup.Item>
+                    Score: {goalUpdates[item._id].teamOneScore} - {goalUpdates[item._id].teamTwoScore}
+                  </ListGroup.Item>
+                )}
+                {/* Display goal scorers */}
+                {goalScorers[item._id] && (
+                  <ListGroup.Item>
+                    Goal Scorers: {goalScorers[item._id].teamOneScorers.join(', ') || 'None'} (Home) |{" "}
+                    {goalScorers[item._id].teamTwoScorers.join(', ') || 'None'} (Away)
+                  </ListGroup.Item>
+                )}
+                {/* Display the timer */}
+                {timers[item._id] && typeof timers[item._id] === 'string' && (
+                  <ListGroup.Item>Timer: {timers[item._id]}</ListGroup.Item>
+                )}
+              </ListGroup>
+              
+            </Card.Body>
+          </Card>
+        </Col>
+      ))
+    ))
+  ) : (
+    <h6 className="text-center">No fixtures available at the moment.</h6>
+  )}
+</Row>
+
+
 
       {totalPages > 1 && (
         <Pagination className="justify-content-center mt-4">

@@ -226,21 +226,27 @@ return(<>
                 {/* Fixtures Section */}
                 <Col xs={12} md={6}>
                     <h3>Fixtures</h3>
-                    {paginatedFixtures?.map((fixture, index) => (
-                        <Card key={index} className="mb-3">
-                            <Card.Body>
-                                <Card.Title>
-                                <TeamName teamId={fixture.teamOne} teams={teams} /> vs <TeamName teamId={fixture.teamTwo} teams={teams} />
+                    
+{paginatedFixtures?.map((fixture, index) => (
+    <Card key={index} className="mb-3">
+        <Card.Body>
+            <Card.Title>
+                {/* Loop through the games array for each fixture */}
+                {fixture.games.map((game, gameIndex) => (
+                    <div key={gameIndex}>
+                        <TeamName teamId={game.teamOne} teams={teams} /> vs <TeamName teamId={game.teamTwo} teams={teams} />
+                        <br />
+                        <strong>Time:</strong> {game.gameTime}
+                        <br />
+                        <strong>Venue:</strong> {game.gameVenue}
+                    </div>
+                ))}
+            </Card.Title>
+        </Card.Body>
+    </Card>
+))}
 
-                                </Card.Title>
-                                <Card.Text>
-                                    <strong>Time:</strong> {fixture.gameTime}
-                                    <br />
-                                    <strong>Venue:</strong> {fixture.gameVenue}
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    ))}
+
                 </Col>
             </Row>
 
