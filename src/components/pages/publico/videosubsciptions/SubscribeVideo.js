@@ -132,6 +132,11 @@ return(<>
                                 Choose a Subscription Method
                             </Button>
 
+                            <div className='text-center'>
+                                <h6>or</h6>
+                                <p><a href={`/watch_subscribed_video/${video._id}`}>watch video if you subscribed to watch </a></p>
+                            </div>
+
 
 
         </div>
