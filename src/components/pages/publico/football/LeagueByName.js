@@ -200,44 +200,53 @@ const WithTable = () => {
         return <h3 className="text-center">DATA IS LOADING...</h3>;
     }
 
-    // Sort teams by points (descending) before rendering
-    const sortedTeams = [...table.teams].sort((a, b) => b.points - a.points);
-
+    const sortedTeams = [...table.teams].sort((a, b) => 
+        b.points - a.points || 
+        b.goalDifference - a.goalDifference || 
+        b.goalsFor - a.goalsFor
+    );
+    
+    
     return (
         <Container>
             <Row>
                 <Col xs={12}>
                     <h3>League Table</h3>
+
                     <Table striped bordered hover>
-                        <thead>
-                            <tr>
-                                <th>Team</th>
-                                <th>Games Played</th>
-                                <th>Wins</th>
-                                <th>Draws</th>
-                                <th>Losses</th>
-                                <th>Goals For</th>
-                                <th>Goals Against</th>
-                                <th>Goal Difference</th>
-                                <th>Points</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {sortedTeams.map((team, index) => (
-                                <tr key={index}>
-                                    <td><TeamInTable teamid={team.teamId} /></td>
-                                    <td>{team.gamesPlayed}</td>
-                                    <td>{team.wins}</td>
-                                    <td>{team.draws}</td>
-                                    <td>{team.losses}</td>
-                                    <td>{team.goalsFor}</td>
-                                    <td>{team.goalsAgainst}</td>
-                                    <td>{team.goalDifference}</td>
-                                    <td>{team.points}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </Table>
+    <thead>
+        <tr>
+            <th>#</th> {/* Column for ranking number */}
+            <th>Team</th>
+            <th>Games Played</th>
+            <th>Wins</th>
+            <th>Draws</th>
+            <th>Losses</th>
+            <th>Goals For</th>
+            <th>Goals Against</th>
+            <th>Goal Difference</th>
+            <th>Points</th>
+        </tr>
+    </thead>
+    <tbody>
+        {sortedTeams.map((team, index) => (
+            <tr key={team.teamId}>
+                <td>{index + 1}</td> {/* Display the ranking number */}
+                <td><TeamInTable teamid={team.teamId} /></td>
+                <td>{team.gamesPlayed}</td>
+                <td>{team.wins}</td>
+                <td>{team.draws}</td>
+                <td>{team.losses}</td>
+                <td>{team.goalsFor}</td>
+                <td>{team.goalsAgainst}</td>
+                <td>{team.goalDifference}</td>
+                <td>{team.points}</td>
+            </tr>
+        ))}
+    </tbody>
+</Table>
+
+                    
                 </Col>
             </Row>
 

@@ -3,6 +3,7 @@ import {
   CREATE_GAME,
   CREATE_LEAGUE,
   CREATE_TEAM,
+  DELETE_GAME,
   GAMES_BY_LEAGUE,
   GET_GAME,
   GET_GAMES,
@@ -316,7 +317,7 @@ export function updateLeague(data, id) {
   };
 }
 
-export function updateGame(data, id) {
+export function updateGame(data, id, leagueId) {
   return async function (dispatch) {
     try {
       const response = await axios.put(
@@ -331,10 +332,47 @@ export function updateGame(data, id) {
 
       dispatch({ type: UPDATE_GAME });
       alert(response.data.msg);
+      window.location.href = `/single_league/${leagueId}`
+
     } catch (error) {
       console.log("there was a problem " + error);
       dispatch({ type: SOCCER_ERROR });
       throw error;
     }
   };
+}
+
+
+// DELETE
+
+export function deleteGame(id, leagueId) {
+
+  return async function(dispatch) {
+    try {
+
+      const response = await axios.delete(`${ApiUrl}/admin_erase_game/${id}`, {
+
+        headers: {
+          Authorization: `Bearer ${bmagtoken}`,
+        },
+
+      })
+
+
+      dispatch({type: DELETE_GAME})
+      alert(response.data.msg)
+
+      window.location.href = `/single_league/${leagueId}`
+
+
+
+
+      
+    } catch (error) {
+      console.log("there was a problem " + error);
+      dispatch({ type: SOCCER_ERROR });
+      throw error;
+      
+    }
+  }
 }

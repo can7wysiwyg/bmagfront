@@ -1,4 +1,4 @@
-import { CREATE_GAME, CREATE_LEAGUE, CREATE_TEAM, GAMES_BY_LEAGUE, GET_GAME, GET_GAMES, GET_LEAGUE, GET_LEAGUE_RESULTS, GET_LEAGUES, GET_TABLE, GET_TABLES, GET_TEAM, GET_TEAMS, SOCCER_TABLE_CREATE, UPDATE_GAME, UPDATE_LEAGUE, UPDATE_TABLE, UPDATE_TEAM } from "../actions/types";
+import { CREATE_GAME, CREATE_LEAGUE, CREATE_TEAM, DELETE_GAME, GAMES_BY_LEAGUE, GET_GAME, GET_GAMES, GET_LEAGUE, GET_LEAGUE_RESULTS, GET_LEAGUES, GET_TABLE, GET_TABLES, GET_TEAM, GET_TEAMS, SOCCER_TABLE_CREATE, UPDATE_GAME, UPDATE_LEAGUE, UPDATE_TABLE, UPDATE_TEAM } from "../actions/types";
 
 export function soccerRdcr(state={}, action) {
     switch(action.type) {
@@ -55,6 +55,9 @@ export function soccerRdcr(state={}, action) {
             return{...state, msg: "success"} 
 
         case UPDATE_TABLE:
+            return{...state, msg: "success"}    
+
+        case DELETE_GAME:
             return{...state, msg: "success"}    
             
         default:

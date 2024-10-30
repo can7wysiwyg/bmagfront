@@ -45,6 +45,9 @@ export default function ManageTable() {
         }
     };
 
+    
+
+
     if (!league || !table) {
         return <h4>LOADING....</h4>;
     }

@@ -240,7 +240,7 @@ if(games.length === 0) {
                   <ListGroup.Item>Timer: {timers[item._id]}</ListGroup.Item>
                 )}
               </ListGroup>
-              <Card.Link href={`/game/${item._id}`}>View Details</Card.Link>
+              <Card.Link href={`/game/${item._id}`}>Start Game</Card.Link>
             </Card.Body>
           </Card>
         </Col>
