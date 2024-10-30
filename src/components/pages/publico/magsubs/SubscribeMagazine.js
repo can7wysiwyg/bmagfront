@@ -109,6 +109,10 @@ return(<>
                             <Button variant="primary" onClick={handleShow}>
                                 Choose a Subscription Method
                             </Button>
+                            <div className='text-center'>
+                                <h6>or</h6>
+                                <p><a href={`/read_magazine/${singleIssue._id}`}>read magazine if subscribed to magazine </a></p>
+                            </div>
                         </div>
                     </div>
                 </div>
