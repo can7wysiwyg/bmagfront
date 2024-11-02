@@ -7,7 +7,9 @@ import { ApiUrl } from '../../../../helpers/ApiUrl';
 
 
 export default function Game() {
-  const { id } = useParams();
+  // const { id } = useParams();
+  const { id, leagueId } = useParams();
+
   const game = useSelector((state) => state.soccerRdcr.game);
   const teams = useSelector((state) => state.soccerRdcr.teams);
   const leagues = useSelector((state) => state.soccerRdcr.leagues);
@@ -20,7 +22,7 @@ export default function Game() {
   // New state variables to hold the current game details and timer
   const [currentTeamOne, setCurrentTeamOne] = useState('');
   const [currentTeamTwo, setCurrentTeamTwo] = useState('');
-  const [currentLeague, setCurrentLeague] = useState('');
+  const [currentLeague, setCurrentLeague] = useState(leagueId)
   const [teamOneScore, setTeamOneScore] = useState(0);
   const [teamTwoScore, setTeamTwoScore] = useState(0);
   const [tempTeamOneScore, setTempTeamOneScore] = useState(0);
@@ -30,6 +32,9 @@ export default function Game() {
 const [teamTwoScorers, setTeamTwoScorers] = useState(['']);
 const[isBtn, setIsBtn] = useState(false)
 const[disAb, setDisabled] = useState(false)
+const [half, setHalf] = useState('');
+const [addedMinutes, setAddedMinutes] = useState('');
+
 
 
 
@@ -156,7 +161,7 @@ const btnState = () => {
           if (updatedGame) {
             setCurrentTeamOne(updatedGame.teamOne);
             setCurrentTeamTwo(updatedGame.teamTwo);
-            setCurrentLeague(updatedGame.leagueName);
+            setCurrentLeague(updatedGame.leagueId);
           }
         })
         .catch((error) => {
@@ -205,6 +210,30 @@ const btnState = () => {
     }
   };
   
+
+  const handleGameMessages = (e) => {
+    e.preventDefault();
+  
+    // Prepare the message object
+    const message = {
+      action: 'gameMessages',  // Assuming this is the action you want to send
+      gameId: id,             // Use your game ID as needed
+      half: half,             // Include half information
+      addedMinutes: addedMinutes // Include added minutes
+    };
+  
+    // Send message via WebSocket
+    if (ws) {
+      ws.send(JSON.stringify(message));
+    }
+  
+    // Reset the form fields
+    // setHalf('');
+    setAddedMinutes('');
+  };
+  
+
+  
   
 
   if (!currentGame || !teams || !leagues) {
@@ -220,7 +249,7 @@ const btnState = () => {
           <Card.Body>
             <Card.Title><SampleT gameId={game.teamOne} teams={teams} /> vs {" "} <SampleT gameId={game.teamTwo} teams={teams} /> </Card.Title>
             <Card.Subtitle className="mb-2 text-muted">
-              <SampleLeague leagueId={game.leagueName} leagues={leagues} />
+              <SampleLeague leagueId={leagueId} leagues={leagues} />
             </Card.Subtitle>
             <ListGroup variant="flush">
               <ListGroup.Item>Time: {game.gameTime}</ListGroup.Item>
@@ -245,7 +274,7 @@ const btnState = () => {
               <TeamName teamId={currentTeamTwo} teams={teams} />
             </Card.Title>
             <Card.Subtitle className="mb-2 text-muted">
-              <LeagueName leagueId={currentLeague} leagues={leagues} />
+              <LeagueName leagueId={leagueId} leagues={leagues} />
             </Card.Subtitle>
             <ListGroup variant="flush">
               <ListGroup.Item>Time: {currentGame.gameTime}</ListGroup.Item>
@@ -305,11 +334,43 @@ const btnState = () => {
       Add Scorer
     </Button>
   </Form.Group>
+  <br></br>
 
   <Button variant="primary" onClick={handleGoalUpdate}>
     Update Goals
   </Button>
 </Form>
+
+
+<br>
+
+</br>
+
+
+<Form onSubmit={handleGameMessages}>
+      <Form.Group>
+        <Form.Label>Write whether it's the first or second half</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="First Half"
+          value={half}
+          onChange={(e) => setHalf(e.target.value)}
+        />
+      </Form.Group>
+
+      <Form.Group>
+        <Form.Label>Write added minutes</Form.Label>
+        <Form.Control
+          type="number"
+          value={addedMinutes}
+          onChange={(e) => setAddedMinutes(e.target.value)}
+        />
+      </Form.Group>
+
+      <Button variant="secondary" type="submit">
+        Game Messages
+      </Button>
+    </Form>
 
             
 

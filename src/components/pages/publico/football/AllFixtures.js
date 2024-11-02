@@ -16,6 +16,7 @@ export default function AllFixtures() {
   const [localGames, setLocalGames] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [goalUpdates, setGoalUpdates] = useState({});
+  const[myGameMessage, setGameMessages ] = useState({})
   const [goalScorers, setGoalScorers] = useState({}); // New state for goal scorers
   const [timers, setTimers] = useState({}); // Store timer values as strings
 
@@ -69,6 +70,7 @@ export default function AllFixtures() {
 const textData = await response.json();
 
 
+
 textData.forEach(log => {
   try {
     const messageData = JSON.parse(log); // Parse the JSON directly since it no longer has the prefix
@@ -77,6 +79,21 @@ textData.forEach(log => {
     if (messageData.action === "startGame") {
       const { gameId } = messageData;
       startTimerForGame(gameId);
+    }
+
+    //game messages
+    
+    if(messageData.action === "gameMessages") {
+      const {gameId, half, addedMinutes} = messageData
+      setGameMessages(prev => ({
+        ...prev,
+        [gameId]: {
+          half,
+          addedMinutes
+        }
+      }));
+
+
     }
 
     // Handle goal updates
@@ -185,6 +202,12 @@ if(games?.length === 0) {
         <Col lg={12} key={item._id || index} className="mb-4">
           <Card className="text-center">
             <Card.Body>
+            {myGameMessage[item._id] && (
+                  <ListGroup.Item style={{color: "black", fontWeight: "bolder"}}>
+                     {myGameMessage[item._id].half} <br></br>
+                     {myGameMessage[item._id].addedMinutes === "" ? "" : <p style={{color: "red"}}> ADDED MINUTES: {myGameMessage[item._id].addedMinutes}  </p>  } <br></br>
+                  </ListGroup.Item>
+                )}
               <Card.Title>
                 <TeamName teamId={item.teamOne} teams={teams} /> vs{" "}
                 <TeamName teamId={item.teamTwo} teams={teams} />

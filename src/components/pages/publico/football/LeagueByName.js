@@ -251,7 +251,7 @@ const WithTable = () => {
             </Row>
 
             <Row>
-                <Col xs={12} md={6}>
+                <Col xs={12} md={6} style={{padding: "2rem"}}>
                     <h3>Results</h3>
                     {paginatedResults?.map((result, index) => (
                         <Card key={index} className="mb-3">
@@ -271,25 +271,35 @@ const WithTable = () => {
                     ))}
                 </Col>
 
-                <Col xs={12} md={6}>
+                <Col xs={12} md={6} >
                     <h3>Fixtures</h3>
                     {paginatedFixtures?.map((fixture, index) => (
-                        <Card key={index} className="mb-3">
+                        <div key={index} >
+                        <Card  className="mb-3"  >
                             <Card.Body>
-                                <Card.Title>
+                                <Card.Title style={{paddingBottom: "4rem"}}>
                                     {fixture.games.map((game, gameIndex) => (
-                                        <div key={gameIndex}>
+                                        <div key={gameIndex} >
                                             <TeamName teamId={game.teamOne} teams={teams} /> vs <TeamName teamId={game.teamTwo} teams={teams} />
                                             <br />
                                             <strong>Time:</strong> {game.gameTime}
                                             <br />
                                             <strong>Venue:</strong> {game.gameVenue}
+                                            <br>
+                                            </br>
                                         </div>
                                     ))}
                                 </Card.Title>
+                                <br>
+                                
+                                </br>
                             </Card.Body>
+                            
                         </Card>
-                    ))}
+                        <br></br>
+                        </div>
+                        
+                                           ))}
                 </Col>
 
                

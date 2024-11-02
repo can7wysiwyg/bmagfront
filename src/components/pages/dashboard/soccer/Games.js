@@ -186,6 +186,8 @@ if(games.length === 0) {
 }
   
 
+let leagueName = games[0].leagueName
+
 
 
   return (
@@ -240,7 +242,9 @@ if(games.length === 0) {
                   <ListGroup.Item>Timer: {timers[item._id]}</ListGroup.Item>
                 )}
               </ListGroup>
-              <Card.Link href={`/game/${item._id}`}>Start Game</Card.Link>
+              {/* <Card.Link href={`/game/${item._id}`}>Start Game</Card.Link> */}
+              <Card.Link href={`/game/${item._id}/${leagueName}`}>Start Game</Card.Link>
+
             </Card.Body>
           </Card>
         </Col>

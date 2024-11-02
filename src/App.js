@@ -134,7 +134,9 @@ function App() {
         <Route path="/teams" element={<Teams />} />
         <Route path="/leagues" element={<Leagues />} />
         <Route path="/admin_games" element={<Games />} />
-        <Route path="/game/:id" element={<Game />} />
+        {/* <Route path="/game/:id" element={<Game />} /> */}
+        <Route path="/game/:id/:leagueId" element={<Game />} />
+
         <Route path="/all_fixtures/:id" element={<AllFixtures />} />
         <Route path="/league_by_name/:id" element={<LeagueByName />} />
         <Route path="/create_table" element={<CreateTable />} />
