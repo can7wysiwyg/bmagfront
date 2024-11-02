@@ -938,9 +938,28 @@ body {
     height: auto!important;
     object-fit: cover!important;
     aspect-ratio: 16 / 9!important; /* Wide aspect ratio */
-    max-height: 500px!important; /* Optional: limit the height */
+    max-height: 800px!important; /* Optional: limit the height */
     overflow: hidden!important;
   }
+
+  @media (min-width: 768px) {
+    .panoramic-image {
+        aspect-ratio: 16 / 9 !important; /* Maintain panoramic on larger screens */
+        height: 110vh !important; /* Optional: limit the height on larger screens */
+    }
+}
+
+/* Media query for mobile screens */
+@media (max-width: 767px) {
+    .panoramic-image {
+        width: 100% !important;
+        height: 110vh !important; /* Full height of the viewport */
+        aspect-ratio: auto !important; /* Disable aspect ratio */
+    }
+}
+
+
+
 
   .panoramic-video {
     width: 100%!important;
