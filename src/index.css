@@ -930,28 +930,7 @@ body {
   /*# sourceMappingURL=style.css.map */
   
 
-  /* .panoramic-image {
-    width: 100%;
-    height: auto;
-    overflow-clip-margin: unset;
-    object-fit: contain;
-    object-position: center;
-
-    aspect-ratio: 16 / 9;
-    max-height: 800px;
-    overflow: hidden; */
-
-    /* width: 100% !important;
-    height: auto !important;
-    overflow-clip-margin: unset!important; */
-    /* object-fit: cover !important;  */
-    /* aspect-ratio: 16 / 9 !important;
-    max-height: 800px !important;
-    overflow: hidden !important;
-    object-position: center;  */
-
-/* } */
-
+  
 
 .panoramic-image {
   width: 100%;
