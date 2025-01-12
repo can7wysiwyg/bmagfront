@@ -11,6 +11,10 @@ export default function Login() {
         password: ""
     })
 
+    
+
+
+     const [loading, setLoading] = useState(false); // Loading state
     const dispatch = useDispatch()
 
 
@@ -24,14 +28,20 @@ export default function Login() {
     }
 
 
-    const handleSubmit = async(e) => {
-        e.preventDefault()
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      setLoading(true); // Show spinner
+      try {
+        await dispatch(adminLogin(formData));
+      } catch (error) {
+        console.log("Login failed:", error);
+      } finally {
+        setLoading(false); // Hide spinner after login
+      }
+    };
+  
 
-        await dispatch(adminLogin(formData))
-
-
-    }
-
+    
   return (
     <>
     <div className="container" style={{ marginTop: "2rem", marginBottom: "6rem" }}>
@@ -73,9 +83,19 @@ export default function Login() {
 
                   <br />
 
-                  <button type="submit" className="btn btn-primary">
-                    login
-                  </button>
+                  <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={loading} // Disable button while loading
+                >
+                  {loading ? (
+                    <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  ) : (
+                    "Login"
+                  )}
+                </button>
+
+                  
                 </form>
               </div>
 

@@ -94,7 +94,7 @@ export default function Dashboard() {
 
             </div>
             <h6 className="font-weight-bold mb-3">ARTICLES</h6>
-            <p className="text-muted mb-0"><a href="/articles_dashboard">Add and Manage Articles</a></p>
+            <p className="text-muted mb-0"><a href="/articles_dashboard">Publish and Manage Articles</a></p>
         </div>
     </div>
 </div>

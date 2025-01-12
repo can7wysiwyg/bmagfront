@@ -24,7 +24,6 @@ export default function Footer() {
           <li><a href="/about">About</a></li>
           <li><a href="/contact">Contact</a></li>
           <li><a href="/">Home</a></li>
-          <li><a href="/search">Search</a></li>
           
           
         </ul>
@@ -33,10 +32,10 @@ export default function Footer() {
       <div className="col-lg-2 col-md-3 col-6 mb-4">
         <h6 className="mb-4">Social Links</h6>
         <ul className="list-unstyled footer-list">
-          <li><a href="#">Facebook</a></li>
-          <li><a href="#">Twitter</a></li>
-          <li><a href="#">LinkedIn</a></li>
-          <li><a href="#">Instagram</a></li>
+          <li><a href="https://www.facebook.com/profile.php?id=100080092784804&mibextid=ZbWKwL">Facebook</a></li>
+          <li><a href="https://x.com/bim_magazini?t=_7KbTNKWJkNXGHiXmFqJcQ&s=09">Twitter</a></li>
+    
+          <li><a href="https://www.instagram.com/bim_magazine?igsh=cjVvY3M0cDJzMTV2">Instagram</a></li>
         </ul>
       </div>
 

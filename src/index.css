@@ -934,10 +934,7 @@ body {
 
 .panoramic-image {
   width: 100%;
-  height: auto; /* Set initial height to 0 */
-  /* padding-bottom: 56.25%;  */
-  /* 16:9 aspect ratio */
-  /* background-size: cover; */
+  height: auto; 
   vertical-align: bottom;
   background-position: center;
   background-repeat: no-repeat;
@@ -956,42 +953,7 @@ body {
 
 
 
-  /* .panoramic-image {
-    width: 150%!important;
-    height: 150%!important;
-    object-fit: cover!important;
-    aspect-ratio: 16/9!important; 
-    max-height: 800px!important; 
-    overflow: hidden!important;
-  } */
-
-  /* .panoramic-image{
-
-    width: 100%!important;
-    
-    aspect-ratio: 16 / 9!important;
-     object-fit: cover !important;
-    height: auto!important;
-    overflow: hidden!important;
-    max-height: 800px!important
-  } */
-
-  /* @media (min-width: 768px) {
-    .panoramic-image {
-        aspect-ratio: 16 / 9 !important; /* Maintain panoramic on larger screens */
-        /* height: 110vh !important; 
-    }
-} */
-
-/* Media query for mobile screens */
-/* @media (max-width: 767px) {
-    .panoramic-image {
-        width: 100% !important;
-        height: 110vh !important; 
-        aspect-ratio: auto !important; 
-    }
-} */ */
-
+  
 
 
 
