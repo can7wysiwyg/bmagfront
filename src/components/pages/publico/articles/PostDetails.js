@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import { articleByMagIssue } from '../../../../redux/actions/magazineAction'
 import { publicGetGenre} from '../../../../redux/actions/publicAction'
 import moment from 'moment/moment'
+import CommentSection from './CommentSection'
 
 
 
@@ -82,6 +83,14 @@ export default function PostDetails() {
 
       
       </div>
+
+      <div className='text-center'>
+
+        <CommentSection articleId={articleByIssue._id} />
+
+        
+        
+        </div> 
     </article>
 
     </div>
