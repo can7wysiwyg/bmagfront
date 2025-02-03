@@ -188,6 +188,9 @@ try {
                                                 <li className="list-inline-item">
                                                     Date : {moment(article.createdAt).format("MMM D YYYY")}
                                                 </li>
+                                                <li className='list-inline-item'>
+                                                  <a href={`/post_cooments/${article._id}`}>view comments</a>
+                                                </li>
                                             </ul>
                                             <ArticleBody article={article} />
                                         </div>
