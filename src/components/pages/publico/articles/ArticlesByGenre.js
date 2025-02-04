@@ -5,6 +5,8 @@ import { ByGenreArticles } from '../../../../redux/actions/magazineAction';
 import { publicGetGenre } from '../../../../redux/actions/publicAction';
 import { Container, Row, Col, Card, Pagination } from 'react-bootstrap';
 import moment from 'moment';
+import { ApiUrl } from '../../../../helpers/ApiUrl';
+
 
 export default function ArticlesByGenre() {
     const { id } = useParams();
@@ -38,6 +40,23 @@ export default function ArticlesByGenre() {
         };
         fetchCat();
     }, [dispatch, id]);
+
+
+    const handleClick = async( articleId) => {
+          
+          
+          try {
+            await fetch(`${ApiUrl}/articleroute/update_article_clicks/${articleId}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' }
+            });
+          } catch (error) {
+            console.error('Error:', error);
+          }
+          
+    
+        }
+    
 
     // Pagination logic
     const indexOfLastArticle = currentPage * articlesPerPage;
@@ -74,7 +93,7 @@ export default function ArticlesByGenre() {
                             <Card>
                                 <Card.Img variant="top" src={article.articlePhoto} alt={article.articleTitle} />
                                 <Card.Body>
-                                    <Card.Title>
+                                    <Card.Title onClick={() => handleClick(article._id)}>
                                         <a href={`/post-details/${article._id}`}>{article.articleTitle}</a>
                                     </Card.Title>
                                     <Card.Text>

@@ -17,6 +17,9 @@ export default function ArticleDashboard() {
         <ListGroup.Item className="text-center">
           <a href={`/view_all_articles`}>View and Manage Articles</a>
         </ListGroup.Item>
+        <ListGroup.Item className="text-center">
+          <a href={`/most_viewed_articles`}>Most Viewed Articles</a>
+        </ListGroup.Item>
 
         
         

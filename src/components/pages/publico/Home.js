@@ -6,6 +6,7 @@ import { articlesAll, magShowAll } from '../../../redux/actions/magazineAction';
 import Loader from './Loader';
 import { Pagination, Container, Spinner } from 'react-bootstrap';
 import SideBar from './SideBar';
+import { ApiUrl } from '../../../helpers/ApiUrl';
 
 
 
@@ -20,6 +21,7 @@ export default function Home() {
     const magIssues = useSelector((state) => state.magRdcr.magIssues)
 
     const [currentPage, setCurrentPage] = useState(1); // Pagination state
+    
     const articlesPerPage = 6; // 6 articles per page
 
 
@@ -109,6 +111,21 @@ try {
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+    const handleClick = async( articleId) => {
+      
+      
+      try {
+        await fetch(`${ApiUrl}/articleroute/update_article_clicks/${articleId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        console.error('Error:', error);
+      }
+      
+
+    }
+
    
     if (!articles) {
       return (
@@ -175,15 +192,20 @@ try {
                                             </div>
                                         </div>
                                         <div className="col-12 mx-auto">
-                                            <h3>
-                                                <a className="post-title" href={`/post-details/${article._id}`}>
+                                            <h3  onClick={() => handleClick(article._id)} >
+                                          
+
+                                            
+                                                  <a className="post-title" href={`/post-details/${article._id}`} 
+                                                   >
+
                                                     {article.articleTitle}
-                                                </a>
+                                                </a>  
                                             </h3>
                                             <ul className="list-inline post-meta mb-4">
                                                 <li className="list-inline-item">
                                                     <i className="ti-user mr-2"></i>
-                                                    <a href="author.html">{article.articleAuthor}</a>
+                                                    {article.articleAuthor}
                                                 </li>
                                                 <li className="list-inline-item">
                                                     Date : {moment(article.createdAt).format("MMM D YYYY")}
@@ -192,7 +214,7 @@ try {
                                                   <a href={`/post_cooments/${article._id}`}>view comments</a>
                                                 </li>
                                             </ul>
-                                            <ArticleBody article={article} />
+                                            <ArticleBody article={article}  />
                                         </div>
                                     </article>
                                 ))
@@ -253,6 +275,25 @@ const PaginationComponent = ({ articlesPerPage, totalArticles, paginate, current
 const ArticleBody = ({ article }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
+  let articleId = article._id
+
+
+  const handleClick = async() => {
+      
+      
+    try {
+      await fetch(`${ApiUrl}/articleroute/update_article_clicks/${articleId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' }
+      });
+    } catch (error) {
+      console.error('Error:', error);
+    }
+    
+
+  }
+
+
   const toggleExpansion = () => {
     setIsExpanded(!isExpanded);
   };
@@ -272,10 +313,8 @@ const ArticleBody = ({ article }) => {
         }}
       />
       {shouldShowSeeMore && (
-        <span onClick={toggleExpansion}>
-          {isExpanded ? (
-            ''
-          ) : (
+        <span onClick={() => {toggleExpansion(); handleClick();}} >
+          {!isExpanded && (
             <a href={`post-details/${article._id}`} className="btn btn-outline-primary">
               continue reading
             </a>

@@ -67,6 +67,7 @@ import SingleLeague from "./components/pages/dashboard/soccer/SingleLeague";
 import ManageTables from "./components/pages/dashboard/soccer/ManageTables";
 import ManageTable from "./components/pages/dashboard/soccer/ManageTable";
 import PostComments from "./components/pages/publico/articles/PostComments";
+import MostViewed from "./components/pages/dashboard/articles/MostViewed";
 
 // import Epl from "./components/pages/publico/tables/Epl";
 
@@ -145,6 +146,7 @@ function App() {
         <Route path="/manage_tables" element={<ManageTables />} />
         <Route path="/view_league_table/:id" element={<ManageTable />} />
         <Route path="/post_cooments/:id" element={<PostComments />} />
+        <Route path="/most_viewed_articles" element={<MostViewed />} />
         {/* <Route path="/epl_table" element={<Epl />} /> */}
 
 
