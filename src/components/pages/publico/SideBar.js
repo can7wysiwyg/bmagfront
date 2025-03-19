@@ -1,38 +1,48 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { articlesAll, magShowAll } from "../../../redux/actions/magazineAction";
-import {
-  publicGetGenres,
-  watchVideos,
-} from "../../../redux/actions/publicAction";
 import moment from "moment/moment";
-import { getLeagues } from "../../../redux/actions/soccerAction";
+import { fetchAllCategories } from "../../../helpers/articlesHelpers/CategoriesFetch";
+import { fetchArticles } from "../../../helpers/articlesHelpers/ArticlesFetch";
+import { fetchAllVideos } from "../../../helpers/articlesHelpers/VideosFetch";
+import { fetchAllMags, fetchRecentIssue } from "../../../helpers/articlesHelpers/MagazinesFetch";
+import { fetchAllLeagues } from "../../../helpers/articlesHelpers/LeaguesFetch";
 
 export default function SideBar() {
   const [suggestions, setSuggestions] = useState([]);
   const [query, setQuery] = useState("");
-  const categories = useSelector((state) => state.publicRdcr.categories);
-  const newIssue = useSelector((state) => state.publicRdcr.newIssue);
-  const magIssues = useSelector((state) => state.magRdcr.magIssues);
-  const articles = useSelector((state) => state.magRdcr.articles);
-  const videos = useSelector((state) => state.publicRdcr.videos);
-  const leagues = useSelector((state) => state.soccerRdcr.leagues);
-
-  const dispatch = useDispatch();
-
+ const [articles, setArticles] = useState([])
+   const [categories, setCategories] = useState([])
+   const [newIssue, setNewIssue] = useState({})
+   const [magIssues, setMagIssues] = useState([])
+   const[videos, setVideos] = useState([])
+   const[leagues, setLeagues] = useState([])
+ 
   useEffect(() => {
-    const fetchCats = async () => {
+    const fetchData = async () => {
       try {
-        await dispatch(publicGetGenres());
-        await dispatch(watchVideos());
-        await dispatch(getLeagues());
+        const genres = await fetchAllCategories()
+        const news = await fetchArticles()
+        const vids = await fetchAllVideos()
+        const recentMagIssue = await fetchRecentIssue()
+        const allMags = await fetchAllMags()
+        const locLeagues = await fetchAllLeagues()
+
+        if(genres && !genres.error && news && !news.error) {
+          setCategories(genres?.categories)
+          setArticles(news?.articles)
+          setVideos(vids?.videos)
+          setNewIssue(recentMagIssue?.newIssue)
+          setMagIssues(allMags?.magIssues)
+          setLeagues(locLeagues.leagues)
+        }
+        
       } catch (error) {
         console.error("there was a problem");
       }
     };
 
-    fetchCats();
-  }, [dispatch]);
+    fetchData();
+  }, []);
+
 
   const handleSearchChange = (e) => {
     const value = e.target.value;
@@ -55,10 +65,12 @@ export default function SideBar() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (query.length > 0) {
-      dispatch(magShowAll(query));
-      dispatch(articlesAll(query));
+      // dispatch(magShowAll(query));
+      // dispatch(articlesAll(query));
     }
   };
+
+  console.log(newIssue)
 
   return (
     <>
@@ -82,7 +94,7 @@ export default function SideBar() {
 
         {suggestions.length > 0 && (
           <ul className="suggestions-list" style={{ listStyle: "none" }}>
-            {suggestions.map((item, index) => (
+            {suggestions?.map((item, index) => (
               <li key={index}>
                 <a href={`post-details/${item._id}`}> {item.articleTitle} </a>
               </li>
@@ -93,12 +105,12 @@ export default function SideBar() {
 
       {/* new magazine issue */}
 
-      <div className="col-lg-8 order-1 order-lg-2 mb-5 mb-lg-0 text-center">
+       <div className="col-lg-8 order-1 order-lg-2 mb-5 mb-lg-0 text-center">
         <div className="widget">
           <h5 className="widget-title">
             <span>Latest Magazine Issue</span>
           </h5>
-          <ul className="list-unstyled widget-list">
+           <ul className="list-unstyled widget-list">
             {newIssue?.map((issue) => (
               <li
                 key={issue._id}
@@ -133,12 +145,12 @@ export default function SideBar() {
                   </small>
                 </div>
               </li>
-            ))}
+            ))} 
           </ul>
         </div>
       </div>
 
-      <div className="col-lg-8 order-1 order-lg-2 mb-5 mb-lg-0 text-center">
+       <div className="col-lg-8 order-1 order-lg-2 mb-5 mb-lg-0 text-center">
         <div className="widget">
           <h5 className="widget-title">
             <span>Latest Video</span>
@@ -146,7 +158,7 @@ export default function SideBar() {
 
           {videos?.slice(0, 1).map((video) => (
             <div key={video._id}>
-              {/* Replace this with your actual video rendering logic */}
+          
               <video width="300">
                 <source src={video.videoLink} type="video/mp4" />
                 Your browser does not support the video tag.
@@ -158,14 +170,14 @@ export default function SideBar() {
             </div>
           ))}
         </div>
-      </div>
+      </div> 
 
       <div className="widget catego-mobile-widget">
         <h5 className="widget-title">
           <span>Categories</span>
         </h5>
         <ul className="list-unstyled widget-list">
-          {categories?.map((cat) => (
+          {categories.map((cat) => (
             <li key={cat._id}>
               <a className="d-flex" href={`/article_by_genre/${cat._id}`}>
                 {cat.genreName}

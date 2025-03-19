@@ -1,107 +1,42 @@
 import React, {  useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { publicGetGenres, publicNewMagIssue } from '../../../redux/actions/publicAction'
 import moment from 'moment/moment';
-import { articlesAll, magShowAll } from '../../../redux/actions/magazineAction';
 import Loader from './Loader';
 import { Pagination, Container, Spinner } from 'react-bootstrap';
 import SideBar from './SideBar';
 import { ApiUrl } from '../../../helpers/ApiUrl';
+import { fetchArticles } from '../../../helpers/articlesHelpers/ArticlesFetch';
 
 
 
 
 export default function Home() {
+  const [articles, setArticles] = useState([])
+  const [categories, setCategories] = useState([])
+  const [newIssue, setNewIssue] = useState({})
+  const [magIssues, setMagIssues] = useState([])
+  const [currentPage, setCurrentPage] = useState(1); 
     
-    const dispatch = useDispatch()
+  const articlesPerPage = 6; 
+
+useEffect(() => {
+
+  const fetchAllArticles = async () => {
+    const data = await fetchArticles()
     
-    const categories = useSelector((state) => state.publicRdcr.categories)
-    const newIssue = useSelector((state) => state.publicRdcr.newIssue)
-    const articles = useSelector((state) => state.magRdcr.articles)
-    const magIssues = useSelector((state) => state.magRdcr.magIssues)
-
-    const [currentPage, setCurrentPage] = useState(1); // Pagination state
-    
-    const articlesPerPage = 6; // 6 articles per page
-
-
-    useEffect(() => {
-
-const fetchCats = async()=> {
-    try {
-
-        await dispatch(publicGetGenres())
+    if (data && !data.error) {
+        setArticles(data.articles)
         
-    } catch (error) {
-        console.error("there was a problem")
+    } else {
+        console.log("Failed to fetch articles or received error", data)
     }
 }
 
-fetchCats()
-
-    }, [dispatch])
+fetchAllArticles()
 
 
- 
-   useEffect(() => {
-
-    const fetchNewIssue = async() => {
-
-try {
-
-    await dispatch(publicNewMagIssue())
+}, [])
     
-} catch (error) {
-    console.error("there was a problem")
-}
-    }
-
-    fetchNewIssue()
-
-
-   }, [dispatch]) 
-
-
-    useEffect(() => {
-
-        const fetchAllArticles = async() => {
-            try {
-
-
-                await dispatch(articlesAll())
-                
-            } catch (error) {
-                console.error("there was a problem")
-            }
-        }
-
-
-        fetchAllArticles()
-     
-
-    }, [dispatch]);
-
-
-    useEffect(() => {
-
-      const fetchData = async() => {
-
-        try {
-
-          await dispatch(magShowAll())
-          
-        } catch (error) {
-          console.error("there was a problem")
-        }
-
-      }
-
-      fetchData()
-
-
-    }, [dispatch])
-
-
     
 
     // Pagination logic
@@ -139,7 +74,7 @@ try {
   
 
 
-    if(!categories || categories === undefined || categories === null) {
+    if(!categories ) {
         return ""
     }
 
@@ -164,7 +99,7 @@ try {
     <div className="row">
       <aside className="col-lg-4 order-2 order-lg-1">
 
-        <SideBar />
+         <SideBar /> 
     
         
 
@@ -172,7 +107,7 @@ try {
       </aside>
 
       
-        <div className="col-lg-8 order-1 order-lg-2 mb-5 mb-lg-0">
+         <div className="col-lg-8 order-1 order-lg-2 mb-5 mb-lg-0"> 
         <h5 className="widget-title"><span>Latest Articles</span></h5>
 
            {/* Display paginated articles */}
@@ -186,7 +121,7 @@ try {
                                                 <img
                                                     loading="lazy"
                                                     src={article.articlePhoto}
-                                                    className="img-fluid panoramic-image"
+                                                    className=" panoramic-image"
                                                     alt="post-thumb"
                                                 />
                                             </div>

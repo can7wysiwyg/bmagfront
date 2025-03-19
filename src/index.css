@@ -933,8 +933,8 @@ body {
   
 
 .panoramic-image {
-  width: 100%;
-  height: auto; 
+  width: 100%; 
+  max-height: 50%!important; 
   vertical-align: bottom;
   background-position: center;
   background-repeat: no-repeat;
@@ -971,15 +971,6 @@ body {
     white-space: pre-wrap!important;
 }
 
-.catego-mobile-widget{
-  display: none;
-}
-
-@media (max-width: 768px) {
-  .catego-mobile-widget {
-    display: block; /* Show the widget on small devices */
-  }
-}
 
 .stylish-list-item {
   background-color: #f9f9f9;

@@ -1,33 +1,33 @@
 import React, { useEffect } from "react";
 import { DashboardComp } from "../../helpers/DashboardComp";
 import { AuthComp } from "../../helpers/AuthComp";
-import { useDispatch, useSelector } from "react-redux";
-import { publicGetGenres } from "../../redux/actions/publicAction";
+// import { useDispatch, useSelector } from "react-redux";
+// import { publicGetGenres } from "../../redux/actions/publicAction";
 import Logo from "./Logo.jpg";
 import SubTokenCheck from "../../helpers/SubTokenCheck";
-import { magShowAll } from "../../redux/actions/magazineAction";
+// import { magShowAll } from "../../redux/actions/magazineAction";
 import VideoSubToken from "../../helpers/VideoSubToken";
-import { getLeagues } from "../../redux/actions/soccerAction";
+// import { getLeagues } from "../../redux/actions/soccerAction";
 
 export default function NavMenu() {
-  const dispatch = useDispatch();
-  const categories = useSelector((state) => state.publicRdcr.categories);
-  const magIssues = useSelector((state) => state.magRdcr.magIssues)
-  const leagues = useSelector((state) => state.soccerRdcr.leagues)
+  // const dispatch = useDispatch();
+  // const categories = useSelector((state) => state.publicRdcr.categories);
+  // const magIssues = useSelector((state) => state.magRdcr.magIssues)
+  // const leagues = useSelector((state) => state.soccerRdcr.leagues)
 
-  useEffect(() => {
-    const fetchCats = async () => {
-      try {
-        await dispatch(publicGetGenres());
-        await dispatch(magShowAll())
-        await dispatch(getLeagues())
-      } catch (error) {
-        console.error("there was a problem");
-      }
-    };
+  // useEffect(() => {
+  //   const fetchCats = async () => {
+  //     try {
+  //       await dispatch(publicGetGenres());
+  //       await dispatch(magShowAll())
+  //       await dispatch(getLeagues())
+  //     } catch (error) {
+  //       console.error("there was a problem");
+  //     }
+  //   };
 
-    fetchCats();
-  }, [dispatch]);
+  //   fetchCats();
+  // }, [dispatch]);
 
   
   return (
@@ -81,7 +81,7 @@ export default function NavMenu() {
                   >
                     Categories <i className="ti-angle-down ms-1"></i>
                   </p>
-                  <ul className="dropdown-menu" aria-labelledby="pagesDropdown">
+                  {/* <ul className="dropdown-menu" aria-labelledby="pagesDropdown">
                     {categories?.map((cat) => (
                       <li key={cat._id}>
                         <a
@@ -92,7 +92,7 @@ export default function NavMenu() {
                         </a>
                       </li>
                     ))}
-                  </ul>
+                  </ul> */}
                 </li>
 
                 {/*magazines  */}
@@ -108,7 +108,7 @@ export default function NavMenu() {
                   >
                     Magazines <i className="ti-angle-down ms-1"></i>
                   </p>
-                  <ul className="dropdown-menu" aria-labelledby="pagesDropdown">
+                  {/* <ul className="dropdown-menu" aria-labelledby="pagesDropdown">
                     {magIssues?.map((magazine) => (
                       <li key={magazine._id}>
                         <a
@@ -119,7 +119,7 @@ export default function NavMenu() {
                         </a>
                       </li>
                     ))}
-                  </ul>
+                  </ul> */}
                 </li>
 
 
@@ -137,7 +137,7 @@ export default function NavMenu() {
                   >
                   Football   <i className="ti-angle-down ms-1"></i>
                   </p>
-                  <ul className="dropdown-menu" aria-labelledby="pagesDropdown">
+                  {/* <ul className="dropdown-menu" aria-labelledby="pagesDropdown">
                     {leagues?.map((league) => (
                       <li key={league._id}>
                         <a
@@ -148,7 +148,7 @@ export default function NavMenu() {
                         </a>
                       </li>
                     ))}
-                  </ul>
+                  </ul> */}
                 </li>
 
 
@@ -164,7 +164,7 @@ export default function NavMenu() {
                   >
                     Videos <i className="ti-angle-down ms-1"></i>
                   </p>
-                  <ul className="dropdown-menu" aria-labelledby="pagesDropdown">
+                  {/* <ul className="dropdown-menu" aria-labelledby="pagesDropdown">
                     {categories?.map((cat) => (
                       <li key={cat._id}>
                         <a
@@ -175,7 +175,7 @@ export default function NavMenu() {
                         </a>
                       </li>
                     ))}
-                  </ul>
+                  </ul> */}
                 </li>
 
 
