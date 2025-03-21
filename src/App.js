@@ -14,7 +14,7 @@ import Login from "./components/autho/Login";
 // import EditArticleAuthor from "./components/pages/dashboard/articles/EditArticleAuthor";
 // import EditArticleTitle from "./components/pages/dashboard/articles/EditArticleTitle";
 import Home from "./components/pages/publico/Home";
-// import PostDetails from "./components/pages/publico/articles/PostDetails";
+ import PostDetails from "./components/pages/publico/articles/PostDetails";
 // import ArticlesByGenre from "./components/pages/publico/articles/ArticlesByGenre";
 // import ShowMagIssue from "./components/pages/publico/magazines/ShowMagIssue";
  import Footer from "./components/pages/publico/Footer";
@@ -30,7 +30,7 @@ import Home from "./components/pages/publico/Home";
 // import ChooseActionCategory from "./components/pages/dashboard/categories/ChooseActionCategory";
 // import ViewAllArticles from "./components/pages/dashboard/articles/ViewAllArticles";
 // import UpdateArticlePhoto from "./components/pages/dashboard/articles/UpdateArticlePhoto";
-// import ReadMagazine from "./components/pages/publico/magsubs/ReadMagazine";
+ import ReadMagazine from "./components/pages/publico/magsubs/ReadMagazine";
 // import VideosDashboard from "./components/pages/dashboard/videos/VideosDashboard";
 // import UploadVideo from "./components/pages/dashboard/videos/UploadVideo";
 // import ManageVideos from "./components/pages/dashboard/videos/ManageVideos";
@@ -38,12 +38,12 @@ import Home from "./components/pages/publico/Home";
 // import EditVideo from "./components/pages/dashboard/videos/EditVideo";
 // import EditVideoName from "./components/pages/dashboard/videos/EditVideoName";
 // import ArticleDashboard from "./components/pages/dashboard/articles/ArticleDashboard";
-// import SubscribeMagazine from "./components/pages/publico/magsubs/SubscribeMagazine";
+import SubscribeMagazine from "./components/pages/publico/magsubs/SubscribeMagazine";
 // import MagazineSubscriptions from "./components/pages/dashboard/subscriptions/MagazineSubscriptions";
 // import SubscriptionToken from "./components/pages/dashboard/subscriptions/SubscriptionToken";
 // import CheckSubscriber from "./components/pages/dashboard/subscriptions/CheckSubscriber";
 // import MySubscribed from "./components/pages/publico/magsubs/MySubscrbed";
-// import MyMagazines from "./components/pages/publico/magazines/MyMagazines";
+  import MyMagazines from "./components/pages/publico/magazines/MyMagazines";
 // import SubscribeVideo from "./components/pages/publico/videosubsciptions/SubscribeVideo";
 // import VideoSubscriptions from "./components/pages/dashboard/subscriptions/VideoSubscriptions";
 // import VideoSubscriptionToken from "./components/pages/dashboard/subscriptions/VideoSubscriptionToken";
@@ -80,6 +80,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/bmag" element={<Login />} />
+        <Route path="/post-details/:id" element={<PostDetails />} />
+        <Route path="/subscribed_magazine/:id" element={<MyMagazines />} />
+        <Route path="/subscribe_magazine/:id" element={<SubscribeMagazine />} />
+        <Route path="/read_magazine/:id" element={<ReadMagazine />} />
+
         {/* <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/publish_magazine" element={<PublishMagazine />} />
         <Route path="/new_mag_issue" element={<NewMagIssue />} />
@@ -92,8 +97,7 @@ function App() {
         <Route path="/edit_article_content/:id" element={<EditArticleContent />} />
         <Route path="/edit_article_author/:id" element={<EditArticleAuthor />} />
         <Route path="/edit_article_title/:id" element={<EditArticleTitle />} />
-        <Route path="/post-details/:id" element={<PostDetails />} />
-        <Route path="/article_by_genre/:id" element={<ArticlesByGenre />} />
+                <Route path="/article_by_genre/:id" element={<ArticlesByGenre />} />
         <Route path="/show_mag_issue/:id" element={<ShowMagIssue />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
@@ -107,7 +111,7 @@ function App() {
         <Route path="/choose_action" element={<ChooseActionCategory />} />
         <Route path="/view_all_articles" element={<ViewAllArticles />} />
         <Route path="/update_article_photo/:id" element={<UpdateArticlePhoto />} />
-        <Route path="/read_magazine/:id" element={<ReadMagazine />} />
+        
         <Route path="/videos_dashboard" element={<VideosDashboard />} />
         <Route path="/upload_video" element={<UploadVideo />} />
         <Route path="/manage_videos" element={<ManageVideos />} />
@@ -116,12 +120,12 @@ function App() {
         <Route path="/edit_video/:id" element={<EditVideo />} />
         <Route path="/edit_video_name/:id" element={<EditVideoName />} />
         <Route path="/articles_dashboard" element={<ArticleDashboard />} />
-        <Route path="/subscribe_magazine/:id" element={<SubscribeMagazine />} />
+        
         <Route path="/magazine_subscriptions" element={<MagazineSubscriptions />} />
         <Route path="/subscription_token/:id" element={<SubscriptionToken />} />
         <Route path="/check_subscriber/:id" element={<CheckSubscriber />} />
         <Route path="/my_subscribed_magazines" element={<MySubscribed />} />
-        <Route path="/subscribed_magazine/:id" element={<MyMagazines />} />
+        
         <Route path="/subscribe_video/:id" element={<SubscribeVideo />} />
         <Route path="/video_subscriptions" element={<VideoSubscriptions />} />
         <Route path="/video_subscription_token/:id" element={<VideoSubscriptionToken />} />

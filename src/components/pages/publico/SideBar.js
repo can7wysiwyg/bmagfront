@@ -65,12 +65,11 @@ export default function SideBar() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (query.length > 0) {
-      // dispatch(magShowAll(query));
-      // dispatch(articlesAll(query));
+  // will implement this later
+      // fetchArticles()
     }
   };
 
-  console.log(newIssue)
 
   return (
     <>
@@ -105,51 +104,7 @@ export default function SideBar() {
 
       {/* new magazine issue */}
 
-       <div className="col-lg-8 order-1 order-lg-2 mb-5 mb-lg-0 text-center">
-        <div className="widget">
-          <h5 className="widget-title">
-            <span>Latest Magazine Issue</span>
-          </h5>
-           <ul className="list-unstyled widget-list">
-            {newIssue?.map((issue) => (
-              <li
-                key={issue._id}
-                className="media widget-post align-items-center"
-              >
-                <img
-                  loading="lazy"
-                  className="mr-3 "
-                  src={issue.magazinePhoto}
-                  alt="post-thumb"
-                  style={{
-                    height: "auto",
-                    width: "200px",
-                  }}
-                />
-
-                <div className="media-body">
-                  <p className=" mb-0">{issue.magazineIssue}</p>
-                  <p
-                    className=" mb-2 text-danger"
-                    style={{ cursor: "pointer" }}
-                  >
-                    {" "}
-                    <a href={`/subscribe_magazine/${issue._id}`}>
-                      {" "}
-                      read magazine{" "}
-                    </a>
-                  </p>
-
-                  <small>
-                    released on{moment(issue.createdAt).format("MMM D YYYY")}
-                  </small>
-                </div>
-              </li>
-            ))} 
-          </ul>
-        </div>
-      </div>
-
+      
        <div className="col-lg-8 order-1 order-lg-2 mb-5 mb-lg-0 text-center">
         <div className="widget">
           <h5 className="widget-title">

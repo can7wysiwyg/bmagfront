@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { magShowSingle } from '../../../../redux/actions/magazineAction';
-import { readSubMaga } from '../../../../redux/actions/subscriptionAction';
 import { Worker, Viewer, SpecialZoomLevel } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import { toolbarPlugin } from '@react-pdf-viewer/toolbar';
@@ -10,13 +7,13 @@ import '@react-pdf-viewer/toolbar/lib/styles/index.css';
 import { fullScreenPlugin } from '@react-pdf-viewer/full-screen';
 import '@react-pdf-viewer/full-screen/lib/styles/index.css';
 import moment from 'moment/moment';
+import { fetchMagSingle, UserReadSubdMag } from '../../../../helpers/articlesHelpers/MagazinesFetch';
 
 export default function ReadMagazine() {
     const { id } = useParams();
-    const dispatch = useDispatch();
-    const singleIssue = useSelector((state) => state.magRdcr.singleIssue);
-    const magazine = useSelector((state) => state.subRdcr.magazine); 
-    const readerEntry = useSelector((state) => state.subRdcr.readerEntry); 
+        const [singleIssue, setSingleIssue] = useState({});
+    const [magazine, setMagazine] = useState({}); 
+    const [readerEntry, setReaderEntry] = useState({}); 
     const [formData, setFormData] = useState({ token: "" });
     const [pdfVisible, setPdfVisible] = useState(false);
 
@@ -26,13 +23,16 @@ export default function ReadMagazine() {
     useEffect(() => {
         const fetchMaga = async () => {
             try {
-                await dispatch(magShowSingle(id));
+              const data =  await fetchMagSingle(id);
+              if(data && !data.error) {
+                setSingleIssue(data?.singleIssue)
+              }
             } catch (error) {
                 console.error("There was a problem");
             }
         };
         fetchMaga();
-    }, [dispatch, id]);
+    }, [id]);
 
     const handleInputChange = (e) => {
         setFormData({
@@ -44,7 +44,10 @@ export default function ReadMagazine() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await dispatch(readSubMaga(formData));
+      const data =  await UserReadSubdMag(formData)
+
+      setMagazine(data?.magazine)
+      setReaderEntry(data?.readerEntry)
     
         
         if (magazine) {

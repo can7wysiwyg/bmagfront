@@ -15,7 +15,7 @@ export async   function fetchArticle(id) {
 
     try {
 
-        const response = await fetch(`${ApiUrl}/articleroute/article_by_magazineissue/${id}`)
+        const response = await fetch(`${ApiUrl}/articleroute/article_single/${id}`)
 
         const data = await response.json()
 

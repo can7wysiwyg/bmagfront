@@ -20,3 +20,22 @@ export async function fetchAllCategories() {
     }
 
 }
+
+
+export async function fetchCategory(id) {
+
+    try {
+
+        const response = await fetch(`${ApiUrl}/genreroute/get_single_genre/${id}`)
+
+        if(!response.ok) {
+            console.log("there was a problem fetching fetching category")
+        }
+
+        return await response.json()
+        
+        
+    } catch (error) {
+        console.log("error fetching category")
+    }
+}

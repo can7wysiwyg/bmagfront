@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { magShowSingle } from '../../../../redux/actions/magazineAction';
 import moment from 'moment/moment';
-import { Modal, Button, Form } from 'react-bootstrap'; // Import Bootstrap components
-import { sendSubData } from '../../../../redux/actions/subscriptionAction';
+import { Modal, Button, Form } from 'react-bootstrap'; 
+import { fetchMagSingle, UserMagSubscribe } from '../../../../helpers/articlesHelpers/MagazinesFetch';
 import MySubscribed from './MySubscrbed';
 
 export default function SubscribeMagazine() {
     const { id } = useParams();
-    const dispatch = useDispatch();
-    const singleIssue = useSelector((state) => state.magRdcr.singleIssue);
+    const [singleIssue, setSingleIssue] = useState({});
     const [magazineId, setMagazineId] = useState(null); // Initialize state
 
     const [showModal, setShowModal] = useState(false);
@@ -28,13 +25,16 @@ export default function SubscribeMagazine() {
     useEffect(() => {
         const fetchMaga = async () => {
             try {
-                await dispatch(magShowSingle(id));
+              const data =  await fetchMagSingle(id);
+              if(data && !data.error) {
+                setSingleIssue(data?.singleIssue)
+              }
             } catch (error) {
                 console.error("There was a problem");
             }
         };
         fetchMaga();
-    }, [dispatch, id]);
+    }, [id]);
 
 
 
@@ -49,7 +49,7 @@ export default function SubscribeMagazine() {
 
     }, []);
 
-    
+    console.log("heyyy")
 
     if(id === magazineId) {
         
@@ -83,10 +83,9 @@ return(<>
 
     const handleSubmit = async(e) => {
         e.preventDefault();
+
+        await UserMagSubscribe(formData)
     
-        
-        await dispatch(sendSubData(formData, id))
-        
           
         handleClose(); 
     };

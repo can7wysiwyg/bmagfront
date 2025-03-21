@@ -1,8 +1,6 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { findByTok } from '../../../../redux/actions/subscriptionAction';
-import { magShowAll } from '../../../../redux/actions/magazineAction';
+import React, { useEffect, useState } from 'react';
 import Home from '../Home';
+import { fetchAllMags, UserSubdMagByToken } from '../../../../helpers/articlesHelpers/MagazinesFetch';
 
 export default function MySubscribed() {
   const storedTokens = JSON.parse(localStorage.getItem('subscriptions')) || [];
@@ -34,39 +32,47 @@ export default function MySubscribed() {
 }
 
 const MagazineName = ({ tokenId }) => {
-  const dispatch = useDispatch();
-  const item = useSelector((state) => state.subRdcr.item);
+
+  const [item, setItem] = useState({});
 
   useEffect(() => {
     const fetchItem = async () => {
       try {
-        await dispatch(findByTok(tokenId)); // Fetch item by token
+       const data = await UserSubdMagByToken(tokenId)
+       if(data && !data.error) {
+        setItem(data?.item)
+       }
       } catch (error) {
         console.error(error);
       }
     };
 
     fetchItem();
-  }, [dispatch, tokenId]);
+  }, [tokenId]);
 
   if (!item) {
     return null; // Render nothing if item isn't ready
   }
 
-  // Split the token to get the magazine ID
-  const [_, magazineId] = tokenId.split('-'); // Assuming token is structured as described
+
+  const [_, magazineId] = tokenId.split('-'); 
 
   return <IssueName item={item} magazineId={magazineId} tokenId={tokenId} />;
 };
 
 const IssueName = ({ item, magazineId, tokenId }) => {
-  const magIssues = useSelector((state) => state.magRdcr.magIssues);
-  const dispatch = useDispatch();
+  const [magIssues, setMagIssues] = useState([]);
+  
 
   useEffect(() => {
     const fetchMags = async () => {
       try {
-        await dispatch(magShowAll()); // Fetch all magazines
+       const data = await fetchAllMags()
+ 
+       if(data && !data.error) {
+        setMagIssues(data?.magIssues)
+       }
+
       } catch (error) {
         console.error(error);
       }
@@ -75,10 +81,15 @@ const IssueName = ({ item, magazineId, tokenId }) => {
     if (!magIssues || magIssues.length === 0) {
       fetchMags();
     }
-  }, [dispatch, magIssues]);
+  }, [magIssues]);
 
   if (!magIssues || magIssues.length === 0) {
-    return <p>Loading magazines...</p>; 
+    return(<>
+    <div className=" text-center spinner-border" role="status">
+  <span className="sr-only">Loading...</span>
+</div>
+    
+    </>) 
   }
 
   // Find the magazine using the magazine ID extracted from the token

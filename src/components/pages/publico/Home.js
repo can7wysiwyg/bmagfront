@@ -149,7 +149,7 @@ fetchAllArticles()
                                                   <a href={`/post_cooments/${article._id}`}>view comments</a>
                                                 </li>
                                             </ul>
-                                            <ArticleBody article={article}  />
+                                            <ArticleBody article={article}  /> 
                                         </div>
                                     </article>
                                 ))
@@ -234,7 +234,7 @@ const ArticleBody = ({ article }) => {
   };
 
   const { articleContent } = article;
-  const maxChars = 150;
+  const maxChars = 100;
 
   const shouldShowSeeMore = articleContent.length > maxChars;
 
@@ -243,7 +243,7 @@ const ArticleBody = ({ article }) => {
       <div
         dangerouslySetInnerHTML={{
           __html: isExpanded
-            ? articleContent
+            ? articleContent 
             : articleContent.slice(0, maxChars),
         }}
       />
