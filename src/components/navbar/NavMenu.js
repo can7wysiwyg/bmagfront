@@ -1,33 +1,40 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { DashboardComp } from "../../helpers/DashboardComp";
 import { AuthComp } from "../../helpers/AuthComp";
-// import { useDispatch, useSelector } from "react-redux";
-// import { publicGetGenres } from "../../redux/actions/publicAction";
 import Logo from "./Logo.jpg";
 import SubTokenCheck from "../../helpers/SubTokenCheck";
-// import { magShowAll } from "../../redux/actions/magazineAction";
 import VideoSubToken from "../../helpers/VideoSubToken";
-// import { getLeagues } from "../../redux/actions/soccerAction";
+import { fetchAllCategories } from "../../helpers/articlesHelpers/CategoriesFetch";
+import { fetchAllLeagues } from "../../helpers/articlesHelpers/LeaguesFetch";
+
+
 
 export default function NavMenu() {
-  // const dispatch = useDispatch();
-  // const categories = useSelector((state) => state.publicRdcr.categories);
-  // const magIssues = useSelector((state) => state.magRdcr.magIssues)
-  // const leagues = useSelector((state) => state.soccerRdcr.leagues)
 
-  // useEffect(() => {
-  //   const fetchCats = async () => {
-  //     try {
-  //       await dispatch(publicGetGenres());
-  //       await dispatch(magShowAll())
-  //       await dispatch(getLeagues())
-  //     } catch (error) {
-  //       console.error("there was a problem");
-  //     }
-  //   };
+   const [categories, setCategories] = useState([]);
+  const [leagues, setLeagues ]= useState([])
 
-  //   fetchCats();
-  // }, [dispatch]);
+  useEffect(() => {
+    const fetchCats = async () => {
+      try {
+       const allCats = await fetchAllCategories();
+    
+      const allLeagues =  await fetchAllLeagues()
+
+   if(allCats && allLeagues && !allCats.error && !allLeagues.error) {
+
+    setCategories(allCats?.categories)
+    setLeagues(allLeagues?.leagues)
+
+   }
+
+      } catch (error) {
+        console.error("there was a problem");
+      }
+    };
+
+    fetchCats();
+  }, []);
 
   
   return (
@@ -81,7 +88,7 @@ export default function NavMenu() {
                   >
                     Categories <i className="ti-angle-down ms-1"></i>
                   </p>
-                  {/* <ul className="dropdown-menu" aria-labelledby="pagesDropdown">
+                   <ul className="dropdown-menu" aria-labelledby="pagesDropdown">
                     {categories?.map((cat) => (
                       <li key={cat._id}>
                         <a
@@ -92,38 +99,9 @@ export default function NavMenu() {
                         </a>
                       </li>
                     ))}
-                  </ul> */}
+                  </ul> 
                 </li>
 
-                {/*magazines  */}
-
-                <li className="nav-item dropdown">
-                  <p
-                    className="nav-link dropdown-toggle"
-                    id="pagesDropdown"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    Magazines <i className="ti-angle-down ms-1"></i>
-                  </p>
-                  {/* <ul className="dropdown-menu" aria-labelledby="pagesDropdown">
-                    {magIssues?.map((magazine) => (
-                      <li key={magazine._id}>
-                        <a
-                          className="dropdown-item"
-                          href={`/subscribe_magazine/${magazine._id}`}
-                        >
-                          {magazine.magazineIssue}
-                        </a>
-                      </li>
-                    ))}
-                  </ul> */}
-                </li>
-
-
-               {/*magazines  */}
                 {/* test */}
 
                 <li className="nav-item dropdown">
@@ -137,7 +115,7 @@ export default function NavMenu() {
                   >
                   Football   <i className="ti-angle-down ms-1"></i>
                   </p>
-                  {/* <ul className="dropdown-menu" aria-labelledby="pagesDropdown">
+                   <ul className="dropdown-menu" aria-labelledby="pagesDropdown">
                     {leagues?.map((league) => (
                       <li key={league._id}>
                         <a
@@ -148,47 +126,10 @@ export default function NavMenu() {
                         </a>
                       </li>
                     ))}
-                  </ul> */}
+                  </ul>
                 </li>
 
 
-
-                <li className="nav-item dropdown">
-                  <p
-                    className="nav-link dropdown-toggle"
-                    id="pagesDropdown"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    Videos <i className="ti-angle-down ms-1"></i>
-                  </p>
-                  {/* <ul className="dropdown-menu" aria-labelledby="pagesDropdown">
-                    {categories?.map((cat) => (
-                      <li key={cat._id}>
-                        <a
-                          className="dropdown-item"
-                          href={`/videos/${cat._id}`}
-                        >
-                          {cat.genreName}
-                        </a>
-                      </li>
-                    ))}
-                  </ul> */}
-                </li>
-
-
-                
-
-
-                {/* <li className="nav-item">
-
-
-                  <a className="nav-link" href="/search">
-                    Search
-                  </a> */}
-                {/* </li> */}
                 <li className="nav-item">
                   <a className="nav-link" href="/about">
                     About

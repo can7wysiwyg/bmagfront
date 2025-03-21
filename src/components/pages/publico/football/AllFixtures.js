@@ -1,17 +1,16 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Container, Card, Row, Col, ListGroup, Pagination } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { getTeams, getLeagues, getGamesByLeague } from "../../../../redux/actions/soccerAction";
 import { ApiUrl } from "../../../../helpers/ApiUrl";
 import moment from "moment";
 import { useParams } from "react-router-dom";
+import { fetchAllLeagues, fetchGamesByLeague, fetchTeams } from "../../../../helpers/articlesHelpers/LeaguesFetch";
 
 export default function AllFixtures() {
     const {id} = useParams()
-  const dispatch = useDispatch();
-  const games = useSelector((state) => state.soccerRdcr.gamesFromLeague);
-  const teams = useSelector((state) => state.soccerRdcr.teams);
-  const leagues = useSelector((state) => state.soccerRdcr.leagues);
+  
+  const [games, setGames] = useState([]);
+  const [teams, setTeams] = useState([]);
+  const [leagues, setLeagues] = useState([]);
 
   const [localGames, setLocalGames] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -25,26 +24,39 @@ export default function AllFixtures() {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        await dispatch(getGamesByLeague(id));
-        await dispatch(getTeams());
-        await dispatch(getLeagues());
+
+       const byLeague = await fetchGamesByLeague(id);
+       const allTeams = await fetchTeams();
+       const allLeagues = await fetchAllLeagues();
+
+       if(byLeague && allTeams && allLeagues) {
+
+        setGames(byLeague?.gamesFromLeague)
+        setTeams(allTeams?.teams)
+        setLeagues(allLeagues?.leagues)
+       }
+
+
+
+
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
     fetchItems();
-  }, [dispatch, id]);
+  }, [id]);
+
 
 
 
   useEffect(() => {
     const interval = setInterval(() => {
-      dispatch(getGamesByLeague(id)); // Fetch the latest games
+      fetchGamesByLeague(id); // Fetch the latest games
     }, 1000); // Poll every second
 
     return () => clearInterval(interval); // Clean up on unmount
-  }, [dispatch, id]);
+  }, [id]);
 
 
   // Function to fetch game timers from the API
@@ -182,10 +194,10 @@ textData.forEach(log => {
   const totalPages = Math.ceil(localGames.length / gamesPerPage);
 
 if(games?.length === 0) {
-  return(<>
+  return(<div className="text-center" style={{margin: 30}}>
   
   <h3>NO FIXTURES AT THE MOMENT</h3>
-  </>)
+  </div>)
 }
   
   return (

@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { ByGenreArticles } from '../../../../redux/actions/magazineAction';
-import { publicGetGenre } from '../../../../redux/actions/publicAction';
 import { Container, Row, Col, Card, Pagination } from 'react-bootstrap';
 import moment from 'moment';
 import { ApiUrl } from '../../../../helpers/ApiUrl';
+import { fetchArticlesByGenre } from '../../../../helpers/articlesHelpers/ArticlesFetch';
+import { fetchCategory } from '../../../../helpers/articlesHelpers/CategoriesFetch';
 
 
 export default function ArticlesByGenre() {
     const { id } = useParams();
-    const dispatch = useDispatch();
-    const articlesByGenre = useSelector((state) => state.magRdcr.articlesByGenre);
-    const category = useSelector((state) => state.publicRdcr.category);
+        const [articlesByGenre, setArticlesByGenre] = useState([]);
+    const [category, setCategory] = useState([]);
     
     // State for pagination
     const [currentPage, setCurrentPage] = useState(1);
@@ -22,24 +20,31 @@ export default function ArticlesByGenre() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                await dispatch(ByGenreArticles(id));
+               const data = await fetchArticlesByGenre(id)
+
+               setArticlesByGenre(data?.articlesByGenre)
+
+               
             } catch (error) {
                 console.error("There was a problem fetching the articles");
             }
         };
         fetchData();
-    }, [dispatch, id]);
+    }, [id]);
 
     useEffect(() => {
         const fetchCat = async () => {
             try {
-                await dispatch(publicGetGenre(id));
+             const data =  await fetchCategory(id);
+              
+             setCategory(data?.category)
+
             } catch (error) {
                 console.error("There was a problem fetching the category");
             }
         };
         fetchCat();
-    }, [dispatch, id]);
+    }, [id]);
 
 
     const handleClick = async( articleId) => {
@@ -68,16 +73,16 @@ export default function ArticlesByGenre() {
     
 
     if (!category ) {
-        return(<>
-        <h4 className='text-center' style={{margin: "4rem"}}>there are no articles from this category at the moment</h4>
-        </>);
+        return(<div className="text-center" style={{margin: 30}}>
+        <h4 className='text-center' style={{margin: "4rem"}}>no data</h4>
+        </div>);
     }
 
 
     if (!articlesByGenre ) {
-        return(<>
-        <h4 className='text-center' style={{margin: "4rem"}}>there are no articles from this category at the moment</h4>
-        </>);
+        return(<div className="text-center" style={{margin: 30}}>
+        <h4 className='text-center' style={{margin: "4rem"}}>No Data</h4>
+        </div>);
     }
 
 

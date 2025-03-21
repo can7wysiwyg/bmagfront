@@ -49,8 +49,7 @@ export default function SubscribeMagazine() {
 
     }, []);
 
-    console.log("heyyy")
-
+   
     if(id === magazineId) {
         
 

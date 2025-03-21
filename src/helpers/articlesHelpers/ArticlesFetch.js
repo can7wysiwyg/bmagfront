@@ -29,3 +29,19 @@ export async   function fetchArticle(id) {
 
 
 
+export async function fetchArticlesByGenre(id) {
+
+    try {
+        const response = await fetch(`${ApiUrl}/articleroute/articles_by_genre/${id}`)
+
+        if(!response.ok) {
+
+        }
+
+        return await response.json()
+        
+    } catch (error) {
+        console.log(`there was a problem fetching articles by genre ${error}`)
+    }
+    
+}

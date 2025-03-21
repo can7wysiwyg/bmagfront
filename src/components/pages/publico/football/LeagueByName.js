@@ -1,20 +1,23 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getGamesByLeague, getLeague, getLeagueResults, getTable, getTeams } from '../../../../redux/actions/soccerAction';
 import { Container, Row, Col, Table, Card, Pagination } from 'react-bootstrap';
+import { fetchLeague,  fetchAllLeagues, fetchGamesByLeague, fetchTeams } from '../../../../helpers/articlesHelpers/LeaguesFetch';
 
 export default function LeagueByName() {
     const { id } = useParams();
-    const dispatch = useDispatch();
-    const league = useSelector((state) => state.soccerRdcr.league);
+    
+    const [league, setLeague] = useState([]);
     
 
     
     
     useEffect(() => {
         const fetchData = async () => {
-            await dispatch(getLeague(id));
+          const data = await fetchLeague(id)
+
+          if(data && !data.error) {
+            setLeague(data?.league)
+          }
                     };
         fetchData();
     }, [dispatch, id]);
@@ -22,10 +25,10 @@ export default function LeagueByName() {
     
 
     if(!league) {
- return(<>
+ return(<div className="text-center" style={{margin: 30}}>
  
  <h4>LOADING....</h4>
- </>)
+ </div>)
 
     }
 
@@ -48,10 +51,9 @@ export default function LeagueByName() {
 
 const WithoutTable = () => {
     const { id } = useParams();
-    const dispatch = useDispatch();
-    const gamesFromLeague = useSelector((state) => state.soccerRdcr.gamesFromLeague);
-    const results = useSelector((state) => state.soccerRdcr.results);
-    const teams = useSelector((state) => state.soccerRdcr.teams);
+    const [gamesFromLeague, setGamesFromLeague] = useState([]);
+    const [results, setResults] = useState([]);
+    const [teams, setTeams] = useState([]);
 
 
     const [activePage, setActivePage] = useState(1);
@@ -60,12 +62,22 @@ const WithoutTable = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            await dispatch(getGamesByLeague(id));
+            const byLeague = await fetchGamesByLeague(id);
+            const allTeams = await fetchTeams();
             await dispatch(getLeagueResults(id));
-            await dispatch(getTeams())
+
+
+            if(byLeague && allTeams  ) {
+
+                setGames(byLeague?.gamesFromLeague)
+                setTeams(allTeams?.teams)
+            
+               }
+        
+        
         };
         fetchData();
-    }, [dispatch, id]);
+    }, [id]);
 
 
     // Pagination handlers

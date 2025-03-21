@@ -15,7 +15,7 @@ import Login from "./components/autho/Login";
 // import EditArticleTitle from "./components/pages/dashboard/articles/EditArticleTitle";
 import Home from "./components/pages/publico/Home";
  import PostDetails from "./components/pages/publico/articles/PostDetails";
-// import ArticlesByGenre from "./components/pages/publico/articles/ArticlesByGenre";
+import ArticlesByGenre from "./components/pages/publico/articles/ArticlesByGenre";
 // import ShowMagIssue from "./components/pages/publico/magazines/ShowMagIssue";
  import Footer from "./components/pages/publico/Footer";
 // import About from "./components/pages/publico/About";
@@ -60,8 +60,8 @@ import SubscribeMagazine from "./components/pages/publico/magsubs/SubscribeMagaz
 // import Leagues from "./components/pages/dashboard/soccer/Leagues";
 // import Games from "./components/pages/dashboard/soccer/Games";
 // import Game from "./components/pages/dashboard/soccer/Game";
-// import AllFixtures from "./components/pages/publico/football/AllFixtures";
-// import LeagueByName from "./components/pages/publico/football/LeagueByName";
+ import AllFixtures from "./components/pages/publico/football/AllFixtures";
+import LeagueByName from "./components/pages/publico/football/LeagueByName";
 // import CreateTable from "./components/pages/dashboard/soccer/CreateTable";
 // import SingleLeague from "./components/pages/dashboard/soccer/SingleLeague";
 // import ManageTables from "./components/pages/dashboard/soccer/ManageTables";
@@ -84,6 +84,9 @@ function App() {
         <Route path="/subscribed_magazine/:id" element={<MyMagazines />} />
         <Route path="/subscribe_magazine/:id" element={<SubscribeMagazine />} />
         <Route path="/read_magazine/:id" element={<ReadMagazine />} />
+        <Route path="/article_by_genre/:id" element={<ArticlesByGenre />} />
+        <Route path="/all_fixtures/:id" element={<AllFixtures />} />
+        <Route path="/league_by_name/:id" element={<LeagueByName />} />
 
         {/* <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/publish_magazine" element={<PublishMagazine />} />
@@ -97,7 +100,7 @@ function App() {
         <Route path="/edit_article_content/:id" element={<EditArticleContent />} />
         <Route path="/edit_article_author/:id" element={<EditArticleAuthor />} />
         <Route path="/edit_article_title/:id" element={<EditArticleTitle />} />
-                <Route path="/article_by_genre/:id" element={<ArticlesByGenre />} />
+                
         <Route path="/show_mag_issue/:id" element={<ShowMagIssue />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
@@ -142,8 +145,8 @@ function App() {
         <Route path="/admin_games" element={<Games />} />
                 <Route path="/game/:id/:leagueId" element={<Game />} />
 
-        <Route path="/all_fixtures/:id" element={<AllFixtures />} />
-        <Route path="/league_by_name/:id" element={<LeagueByName />} />
+        
+        
         <Route path="/create_table" element={<CreateTable />} />
         <Route path="/single_league/:id" element={<SingleLeague />} />
         <Route path="/manage_tables" element={<ManageTables />} />
