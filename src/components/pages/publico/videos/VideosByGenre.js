@@ -1,29 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { watchByGenre } from '../../../../redux/actions/publicAction';
-import { Container, Row, Col, Spinner, Pagination } from 'react-bootstrap'; // Import Bootstrap components
+import { Container, Row, Col, Spinner, Pagination } from 'react-bootstrap'; 
 import { useParams } from 'react-router-dom';
+import { fetchVideosByGenre } from '../../../../helpers/articlesHelpers/VideosFetch';
 
 export default function VideosByGenre() {
     const {id} = useParams()
-    const dispatch = useDispatch();
-    const videosByGenre = useSelector((state) => state.publicRdcr.videosByGenre); // Adjust the state according to your Redux setup
+  
+    const [videosByGenre, setVideosByGenre] = useState([])
 
-    // State for pagination
+
     const [currentPage, setCurrentPage] = useState(1);
     const videosPerPage = 8; // 8 videos per page
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                await dispatch(watchByGenre(id));
+                const videos = await fetchVideosByGenre(id)
+                if(videos && !videos.error) {
+                    setVideosByGenre(videos?.videosByGenre)
+                }
             } catch (error) {
                 console.error("There was a problem fetching videos.");
             }
         };
 
         fetchData();
-    }, [dispatch, id]);
+    }, [id]);
 
     if (!videosByGenre) {
         return (

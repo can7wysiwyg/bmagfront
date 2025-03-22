@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
-import { watchVideo } from '../../../../redux/actions/publicAction';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
+import { fetchSingleVideo } from '../../../../helpers/articlesHelpers/VideosFetch';
 
 
 export default function ViewVideo() {
@@ -10,19 +9,25 @@ export default function ViewVideo() {
     
 
     const dispatch = useDispatch();
-    const video = useSelector((state) => state.publicRdcr.video); // Adjust the state according to your Redux setup
+    const [video, setVideo] = useSelector({}); 
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                await dispatch(watchVideo(id));
+                
+               const singleVideo = await fetchSingleVideo(id)
+
+               if(singleVideo) {
+                setVideo(singleVideo?.video)
+               }
+
             } catch (error) {
                 console.error("There was a problem fetching videos.");
             }
         };
 
         fetchData();
-    }, [dispatch, id]);
+    }, [id]);
 
 
     if(!video) {
