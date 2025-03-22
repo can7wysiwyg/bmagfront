@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Container, Row, Col, Table, Card, Pagination } from 'react-bootstrap';
-import { fetchLeague,  fetchAllLeagues, fetchGamesByLeague, fetchTeams } from '../../../../helpers/articlesHelpers/LeaguesFetch';
+import { fetchLeague,   fetchGamesByLeague, fetchTeams, fetchLeagueTable, fetchLeagueResults } from '../../../../helpers/articlesHelpers/LeaguesFetch';
 
 export default function LeagueByName() {
     const { id } = useParams();
@@ -20,7 +20,7 @@ export default function LeagueByName() {
           }
                     };
         fetchData();
-    }, [dispatch, id]);
+    }, [id]);
 
     
 
@@ -64,13 +64,14 @@ const WithoutTable = () => {
         const fetchData = async () => {
             const byLeague = await fetchGamesByLeague(id);
             const allTeams = await fetchTeams();
-            await dispatch(getLeagueResults(id));
+            const leagueResults = await fetchLeagueResults(id);
 
 
             if(byLeague && allTeams  ) {
 
-                setGames(byLeague?.gamesFromLeague)
+                setGamesFromLeague(byLeague?.gamesFromLeague)
                 setTeams(allTeams?.teams)
+                setResults(leagueResults?.results)
             
                }
         
@@ -183,36 +184,50 @@ if(!gamesFromLeague || !teams) {
 
 const WithTable = () => {
     const { id } = useParams();
-    const table = useSelector((state) => state.soccerRdcr.table);
-    const gamesFromLeague = useSelector((state) => state.soccerRdcr.gamesFromLeague);
-    const results = useSelector((state) => state.soccerRdcr.results);
-    const teams = useSelector((state) => state.soccerRdcr.teams);
+    const [table, setTable] = useState({});
+    const [gamesFromLeague, setGamesFromLeague] = useState([]);
+    const [results, setResults] = useState([]);
+    const [teams, setTeams] = useState([]);
+
     
-    const dispatch = useDispatch();
     
     const [activePage, setActivePage] = useState(1);
     const itemsPerPage = 10;
 
     useEffect(() => {
         const fetchData = async () => {
-            await dispatch(getGamesByLeague(id));
-            await dispatch(getTable(id));
-            await dispatch(getLeagueResults(id));
-            await dispatch(getTeams());
+            const byLeague = await fetchGamesByLeague(id);
+            const allTeams = await fetchTeams();
+            const leagueResults = await fetchLeagueResults(id);
+            const singleTable = await fetchLeagueTable(id)
+
+        
+
+
+            if(byLeague && allTeams && leagueResults  ) {
+
+                setGamesFromLeague(byLeague?.gamesFromLeague)
+                setTeams(allTeams?.teams)
+                setResults(leagueResults?.results)
+                setTable(singleTable?.table)
+            
+               }
+        
+           
         };
         fetchData();
-    }, [dispatch, id]);
+    }, [id]);
 
     const handlePageChange = (pageNumber) => setActivePage(pageNumber);
 
     const paginatedResults = results?.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage);
     const paginatedFixtures = gamesFromLeague?.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage);
 
-    if (!table || !gamesFromLeague || !results || !teams) {
+    if (!table?.teams || !gamesFromLeague || !results || !teams) {
         return <h3 className="text-center">DATA IS LOADING...</h3>;
     }
-
-    const sortedTeams = [...table.teams].sort((a, b) => 
+    
+    const sortedTeams = [...table?.teams].sort((a, b) => 
         b.points - a.points || 
         b.goalDifference - a.goalDifference || 
         b.goalsFor - a.goalsFor
@@ -220,24 +235,22 @@ const WithTable = () => {
     
     
     return (
-        <Container>
-            <Row>
-                <Col xs={12}>
-                    <h3>League Table</h3>
-
+        <Container >
+            <Row className='d-flex justify-content-center'>
+                <Col md={6} >
+                <h3 className="text-center">League Table</h3>
+ 
                     <Table striped bordered hover>
     <thead>
         <tr>
             <th>#</th> {/* Column for ranking number */}
             <th>Team</th>
-            <th>Games Played</th>
-            <th>Wins</th>
-            <th>Draws</th>
-            <th>Losses</th>
-            <th>Goals For</th>
-            <th>Goals Against</th>
-            <th>Goal Difference</th>
-            <th>Points</th>
+            <th>GP</th>
+            <th>W</th>
+            <th>D</th>
+            <th>L</th>
+            <th>GD</th>
+            <th>P</th>
         </tr>
     </thead>
     <tbody>
@@ -249,8 +262,6 @@ const WithTable = () => {
                 <td>{team.wins}</td>
                 <td>{team.draws}</td>
                 <td>{team.losses}</td>
-                <td>{team.goalsFor}</td>
-                <td>{team.goalsAgainst}</td>
                 <td>{team.goalDifference}</td>
                 <td>{team.points}</td>
             </tr>
@@ -263,7 +274,7 @@ const WithTable = () => {
             </Row>
 
             <Row>
-                <Col xs={12} md={6} style={{padding: "2rem"}}>
+                <Col xs={12} md={6} >
                     <h3>Results</h3>
                     {paginatedResults?.map((result, index) => (
                         <Card key={index} className="mb-3">
@@ -332,18 +343,20 @@ const WithTable = () => {
 
 
 const TeamInTable = ({ teamid }) => {
-  const dispatch = useDispatch();
-  const teams = useSelector((state) => state.soccerRdcr.teams);
+  
+  const [teams, setTeams] = useState([]);
 
   useEffect(() => {
       const fetchData = async () => {
           if (!teams || teams.length === 0) {
-              await dispatch(getTeams());
+             const allTeams = await fetchTeams()
+
+             setTeams(allTeams?.teams)
           }
       };
 
       fetchData();
-  }, [dispatch, teams]);
+  }, [teams]);
 
   // Find the team in the list of teams based on teamName (team ID)
   const team = teams?.find((t) => t._id === teamid);

@@ -102,9 +102,35 @@ export async function fetchLeague(id) {
 export async function fetchLeagueResults(id) {
 
     try {
+
+        const response = await fetch(`${ApiUrl}/results_by_league_name/${id}`)
+
+        if(!response.ok) {
+            console.log("there was a problem fetching the results")
+        }
+
+        return await response.json()
         
     } catch (error) {
-        console.log(`there was a pro`)
+        console.log(`there was a problem fetching the results ${error}`)
     }
     
+}
+
+
+export async function fetchLeagueTable(id) {
+
+    try {
+
+        const response = await fetch(`${ApiUrl}/table_get_single/${id}`)
+
+        if(!response.ok) {
+            console.log('problem fetching the table')
+        }
+
+        return await response.json()
+        
+    } catch (error) {
+        console.log(`problem fetching the table ${error}`)
+    }
 }
