@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
-import { editArticleAuthor } from '../../../../redux/actions/magazineAction';
+import axios from 'axios';
+import { ApiUrl } from '../../../../helpers/ApiUrl';
+import { bmagtoken } from '../../../../helpers/Bmag';
+
+
 
 export default function EditArticleAuthor() {
     const {id} = useParams()
     const[formData, setFormData] = useState({articleAuthor: ""})
-    const dispatch = useDispatch()
-
+    
     const handleInputChange = (e) => {
         setFormData({
           ...formData,
@@ -20,8 +22,15 @@ export default function EditArticleAuthor() {
       const handleSubmit = async(event) => {
         event.preventDefault()
 
-        await dispatch(editArticleAuthor(formData, id))
+        await axios.put(`${ApiUrl}/adminarticleroute/update_author/${id}`, formData, {
+          headers: {
+            Authorization: `Bearer ${bmagtoken}`
+          }
+        })
 
+
+        window.location.href = `/article_single/${id}`
+    
 
       }
     

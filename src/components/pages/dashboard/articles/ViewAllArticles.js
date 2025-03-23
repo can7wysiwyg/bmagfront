@@ -1,26 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { articlesAll } from '../../../../redux/actions/magazineAction';
 import { bmagtoken } from '../../../../helpers/Bmag';
+import { fetchArticles } from '../../../../helpers/articlesHelpers/ArticlesFetch';
 
 export default function ViewAllArticles() {
-    const dispatch = useDispatch();
-    const articles = useSelector((state) => state.magRdcr.articles);
+        const [articles, setArticles] = useState([]);
 
     const [currentPage, setCurrentPage] = useState(1);
     const articlesPerPage = 4; // Display 4 articles per page
 
     // Fetch articles on component mount
     useEffect(() => {
-        const fetchArticles = async () => {
+        const fetchData = async () => {
             try {
-                await dispatch(articlesAll());
+              const data = await fetchArticles()
+              if(data && !data.error) {
+                setArticles(data?.articles)
+              }
+              
             } catch (error) {
                 console.error("There was a problem", error);
             }
         };
-        fetchArticles();
-    }, [dispatch]);
+        fetchData();
+    }, []);
 
     // Pagination Logic
     const indexOfLastArticle = currentPage * articlesPerPage;
@@ -63,9 +65,9 @@ export default function ViewAllArticles() {
                     <ul className="pagination justify-content-center">
                         {[...Array(totalPages).keys()].map(pageNumber => (
                             <li key={pageNumber + 1} className={`page-item ${currentPage === pageNumber + 1 ? 'active' : ''}`}>
-                                <a onClick={() => paginate(pageNumber + 1)} className="page-link" href="!#">
+                                <h2 onClick={() => paginate(pageNumber + 1)} className="page-link" style={{cursor: "pointer"}}>
                                     {pageNumber + 1}
-                                </a>
+                                </h2>
                             </li>
                         ))}
                     </ul>

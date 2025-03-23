@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { watchVideo } from '../../../../redux/actions/publicAction'
 import moment from 'moment'
 import { Button, Modal, Form } from 'react-bootstrap'
-import { videoSubscribe } from '../../../../redux/actions/videoSubscriptionAction'
 import MySubscribedVideos from './MySubscribedVideos'
+import { fetchSingleVideo, subscribeToVideo } from '../../../../helpers/articlesHelpers/VideosFetch'
 
 
 
 export default function SubscribeVideo() {
     const {id} = useParams()
-    const dispatch = useDispatch()
-    const video = useSelector((state) => state.publicRdcr.video)
+    const [video, setVideo] = useState({})
     const [videoId, setVideoId] = useState(null); 
     const [showModal, setShowModal] = useState(false);
 
@@ -36,7 +33,11 @@ export default function SubscribeVideo() {
 
         try {
 
-          await dispatch(watchVideo(id))
+         const item = await fetchSingleVideo(id)
+
+         if(item && !item.error) {
+            setVideo(item?.video)
+         }
           
         } catch (error) {
           console.error(`There was a problem: ${error}`);
@@ -103,7 +104,7 @@ return(<>
         e.preventDefault();
     
         
-        await dispatch(videoSubscribe(formData, id))
+        await subscribeToVideo(formData)
         
           
         handleClose(); 

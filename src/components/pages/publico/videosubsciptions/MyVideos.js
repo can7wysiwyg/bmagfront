@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { watchSubsribedVideo } from '../../../../redux/actions/videoSubscriptionAction';
+import { fetchWatchVideoSubscribed } from '../../../../helpers/articlesHelpers/VideosFetch';
 
 
 
 export default function MyVideos() {
 
     const {id} = useParams()
-    const dispatch = useDispatch();
-    const videoSubscribed = useSelector((state) => state.vidSubRdcr.videoSubscribed)
+       const [videoSubscribed, setVideoSubribed] = useState([])
     const [formData, setFormData] = useState({ token: "" });
     const [videoVisible, setVideoVisible] = useState(false); 
 
@@ -23,7 +21,11 @@ export default function MyVideos() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await dispatch(watchSubsribedVideo(formData));
+      const video =  await fetchWatchVideoSubscribed(formData);
+
+      if(video && !video.error) {
+        setVideoSubribed(video?.videoSubscribed)
+      }
 
         setVideoVisible(true);  
        

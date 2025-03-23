@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { genreView } from '../../../../redux/actions/magazineAction';
 import { Container, Form, Row, Col, Button } from 'react-bootstrap';
-import { articleCreate } from '../../../../redux/actions/publishAction';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { fetchAllCategories } from '../../../../helpers/articlesHelpers/CategoriesFetch';
+import axios from 'axios';
+import { ApiUrl } from '../../../../helpers/ApiUrl';
+import { bmagtoken } from '../../../../helpers/Bmag';
 
 
 export default function PublishArticle() {
@@ -17,19 +18,23 @@ export default function PublishArticle() {
 
   const [articlePhoto, setArticlePhoto] = useState(false);
   const [btnText, setBtnText] = useState('ADD NEW ARTICLE');
-  const dispatch = useDispatch();
-  const genres = useSelector((state) => state.magRdcr.genres);
+  const [genres, setGenres] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await dispatch(genreView());
+      const data =  await fetchAllCategories()
+
+      if(data && !data.error) {
+
+        setGenres(data?.categories)
+      }
       } catch (error) {
         console.error('There was a problem');
       }
     };
     fetchData();
-  }, [dispatch]);
+  }, []);
 
   const handleInputChange = (e) => {
     setFormDatta({
@@ -57,7 +62,14 @@ export default function PublishArticle() {
     formData.append('articleContent', formDatta.articleContent); // Use ReactQuill content
     formData.append('articleTitle', formDatta.articleTitle);
 
-    await dispatch(articleCreate(formData));
+    const response = await axios.post(`${ApiUrl}/adminarticleroute/create_new_article`, formData, {
+      headers: {
+        Authorization: `Bearer ${bmagtoken}`
+      }
+    })
+alert(response.data.msg)
+ window.location.href ="/articles_dashboard"
+
   };
 
   const chango = () => {

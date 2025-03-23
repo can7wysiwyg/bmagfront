@@ -1,16 +1,14 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { articleByMagIssue } from '../../../../redux/actions/magazineAction'
 import moment from 'moment/moment'
+import { fetchArticle } from '../../../../helpers/articlesHelpers/ArticlesFetch'
 
 
 
 export default function DashArticleSingle() {
 const{id} = useParams()
-const dispatch = useDispatch()
 
-const articleByIssue = useSelector((state) => state.magRdcr.articleByIssue)
+const [articleByIssue, setArticleSingle] = useState([])
 
 useEffect(() => {
 
@@ -18,7 +16,11 @@ useEffect(() => {
 
         try {
 
-            await dispatch(articleByMagIssue(id))
+         const data =   await fetchArticle(id)
+
+         if(data && !data.error) {
+          setArticleSingle(data?.articleSingle)
+         }
             
         } catch (error) {
             console.error("there was a problem")
@@ -31,7 +33,7 @@ useEffect(() => {
 
 
 
-}, [dispatch, id])
+}, [id])
 
 
 if(!articleByIssue || articleByIssue === undefined || articleByIssue === null) {

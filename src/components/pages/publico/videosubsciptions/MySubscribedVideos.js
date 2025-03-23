@@ -1,8 +1,6 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { videoSubToken } from '../../../../redux/actions/videoSubscriptionAction';
-import { watchVideos } from '../../../../redux/actions/publicAction';
+import React, { useEffect, useState } from 'react';
 import Home from '../Home';
+import { fetchAllVideos, fetchVideosBySubToken } from '../../../../helpers/articlesHelpers/VideosFetch';
 
 
 
@@ -17,7 +15,7 @@ export default function MySubscribedVideos() {
       </>)
     }
   
-console.log(storedTokens)
+
 
   return (
     <>
@@ -43,20 +41,23 @@ console.log(storedTokens)
 
 
 const VideoName = ({ tokenId }) => {
-    const dispatch = useDispatch();
-    const item = useSelector((state) => state.vidSubRdcr.item);
+    
+    const [item, setItem] = useState({});
   
     useEffect(() => {
       const fetchItem = async () => {
         try {
-          await dispatch(videoSubToken(tokenId)); // Fetch item by token
+         const subItem = await fetchVideosBySubToken(tokenId)
+         if(subItem && !subItem.error) {
+          setItem(subItem?.item)
+         }
         } catch (error) {
           console.error(error);
         }
       };
   
       fetchItem();
-    }, [dispatch, tokenId]);
+    }, [tokenId]);
   
     if (!item) {
       return null; 
@@ -69,13 +70,18 @@ const VideoName = ({ tokenId }) => {
   };
   
   const IssueName = ({ item, videoId, tokenId }) => {
-    const videos = useSelector((state) => state.publicRdcr.videos);
-    const dispatch = useDispatch();
-  
+    const [videos, setVideos] = useState([]);
+    
     useEffect(() => {
       const fetchVideos = async () => {
         try {
-          await dispatch(watchVideos()); // Fetch all magazines
+        const allvideos = await fetchAllVideos()
+
+
+        if(allvideos && !allvideos.error) {
+          setVideos(allvideos?.videos)
+        }
+
         } catch (error) {
           console.error(error);
         }
@@ -84,7 +90,7 @@ const VideoName = ({ tokenId }) => {
       if (!videos || videos.length === 0) {
         fetchVideos();
       }
-    }, [dispatch, videos]);
+    }, [videos]);
   
     if (!videos || videos.length === 0) {
       return <p>Loading magazines...</p>; 

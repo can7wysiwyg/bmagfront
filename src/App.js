@@ -1,18 +1,18 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import NavMenu from "./components/navbar/NavMenu";
 import Login from "./components/autho/Login";
-// import Dashboard from "./components/pages/dashboard/Dashboard";
+ import Dashboard from "./components/pages/dashboard/Dashboard";
 // import PublishMagazine from "./components/pages/dashboard/magazines/PublishMagazine";
 // import NewMagIssue from "./components/pages/dashboard/magazines/NewMagIssue";
 // import GenreCreate from "./components/pages/dashboard/categories/GenreCreate";
-// import ArticlesGenreView from "./components/pages/dashboard/articles/ArticlesGenreView";
-// import PublishArticle from "./components/pages/dashboard/articles/PublishArticle";
-// import DashArticlesByIssue from "./components/pages/dashboard/articles/DashArticlesByIssue";
-// import DashArticleSingle from "./components/pages/dashboard/articles/DashArticleSingle";
-// import EditArticle from "./components/pages/dashboard/articles/EditArticle";
-// import EditArticleContent from "./components/pages/dashboard/articles/EditArticleContent";
-// import EditArticleAuthor from "./components/pages/dashboard/articles/EditArticleAuthor";
-// import EditArticleTitle from "./components/pages/dashboard/articles/EditArticleTitle";
+ import ArticlesGenreView from "./components/pages/dashboard/articles/ArticlesGenreView";
+ import PublishArticle from "./components/pages/dashboard/articles/PublishArticle";
+//  import DashArticlesByIssue from "./components/pages/dashboard/articles/DashArticlesByIssue";
+ import DashArticleSingle from "./components/pages/dashboard/articles/DashArticleSingle";
+ import EditArticle from "./components/pages/dashboard/articles/EditArticle";
+ import EditArticleContent from "./components/pages/dashboard/articles/EditArticleContent";
+ import EditArticleAuthor from "./components/pages/dashboard/articles/EditArticleAuthor";
+ import EditArticleTitle from "./components/pages/dashboard/articles/EditArticleTitle";
 import Home from "./components/pages/publico/Home";
  import PostDetails from "./components/pages/publico/articles/PostDetails";
 import ArticlesByGenre from "./components/pages/publico/articles/ArticlesByGenre";
@@ -28,8 +28,8 @@ import ArticlesByGenre from "./components/pages/publico/articles/ArticlesByGenre
 // import UpdateMagaPdf from "./components/pages/dashboard/magazines/UpdateMagaPdf";
 // import UpdateMagaCover from "./components/pages/dashboard/magazines/UpdateMagaCover";
 // import ChooseActionCategory from "./components/pages/dashboard/categories/ChooseActionCategory";
-// import ViewAllArticles from "./components/pages/dashboard/articles/ViewAllArticles";
-// import UpdateArticlePhoto from "./components/pages/dashboard/articles/UpdateArticlePhoto";
+ import ViewAllArticles from "./components/pages/dashboard/articles/ViewAllArticles";
+import UpdateArticlePhoto from "./components/pages/dashboard/articles/UpdateArticlePhoto";
  import ReadMagazine from "./components/pages/publico/magsubs/ReadMagazine";
 // import VideosDashboard from "./components/pages/dashboard/videos/VideosDashboard";
 // import UploadVideo from "./components/pages/dashboard/videos/UploadVideo";
@@ -37,7 +37,7 @@ import ArticlesByGenre from "./components/pages/publico/articles/ArticlesByGenre
 // import ViewVideo from "./components/pages/publico/videos/ViewVideo";
 // import EditVideo from "./components/pages/dashboard/videos/EditVideo";
 // import EditVideoName from "./components/pages/dashboard/videos/EditVideoName";
-// import ArticleDashboard from "./components/pages/dashboard/articles/ArticleDashboard";
+ import ArticleDashboard from "./components/pages/dashboard/articles/ArticleDashboard";
 import SubscribeMagazine from "./components/pages/publico/magsubs/SubscribeMagazine";
 // import MagazineSubscriptions from "./components/pages/dashboard/subscriptions/MagazineSubscriptions";
 // import SubscriptionToken from "./components/pages/dashboard/subscriptions/SubscriptionToken";
@@ -66,8 +66,8 @@ import LeagueByName from "./components/pages/publico/football/LeagueByName";
 // import SingleLeague from "./components/pages/dashboard/soccer/SingleLeague";
 // import ManageTables from "./components/pages/dashboard/soccer/ManageTables";
 // import ManageTable from "./components/pages/dashboard/soccer/ManageTable";
-// import PostComments from "./components/pages/publico/articles/PostComments";
-// import MostViewed from "./components/pages/dashboard/articles/MostViewed";
+ import PostComments from "./components/pages/publico/articles/PostComments";
+ import MostViewed from "./components/pages/dashboard/articles/MostViewed";
 
 // import Epl from "./components/pages/publico/tables/Epl";
 
@@ -87,19 +87,31 @@ function App() {
         <Route path="/article_by_genre/:id" element={<ArticlesByGenre />} />
         <Route path="/all_fixtures/:id" element={<AllFixtures />} />
         <Route path="/league_by_name/:id" element={<LeagueByName />} />
-
-        {/* <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/publish_magazine" element={<PublishMagazine />} />
-        <Route path="/new_mag_issue" element={<NewMagIssue />} />
-        <Route path="/genres_create" element={<GenreCreate />} />
-        <Route path="/article_genres_view" element={<ArticlesGenreView />} />
-        <Route path="/add_article" element={<PublishArticle />} />
-        <Route path="/view_articles/:id" element={<DashArticlesByIssue />} />
+         <Route path="/dashboard" element={<Dashboard />} />
+         <Route path="/articles_dashboard" element={<ArticleDashboard />} />
+         <Route path="/add_article" element={<PublishArticle />} />
+         <Route path="/view_all_articles" element={<ViewAllArticles />} />
+         <Route path="/post_cooments/:id" element={<PostComments />} />
+        <Route path="/most_viewed_articles" element={<MostViewed />} />
         <Route path="/article_single/:id" element={<DashArticleSingle />} />
         <Route path="/edit_article/:id" element={<EditArticle />} />
+        <Route path="/update_article_photo/:id" element={<UpdateArticlePhoto />} />
         <Route path="/edit_article_content/:id" element={<EditArticleContent />} />
         <Route path="/edit_article_author/:id" element={<EditArticleAuthor />} />
         <Route path="/edit_article_title/:id" element={<EditArticleTitle />} />
+        <Route path="/article_genres_view" element={<ArticlesGenreView />} />
+        
+        {/* <Route path="/view_articles/:id" element={<DashArticlesByIssue />} /> */}
+       
+        
+        
+        
+         {/*  
+        <Route path="/publish_magazine" element={<PublishMagazine />} />
+        <Route path="/new_mag_issue" element={<NewMagIssue />} />
+        <Route path="/genres_create" element={<GenreCreate />} />
+        
+        
                 
         <Route path="/show_mag_issue/:id" element={<ShowMagIssue />} />
         <Route path="/about" element={<About />} />
@@ -112,8 +124,7 @@ function App() {
         <Route path="/update_magaissue_pdffile/:id" element={<UpdateMagaPdf />} />
         <Route path="/update_magaissue_cover/:id" element={<UpdateMagaCover />} />
         <Route path="/choose_action" element={<ChooseActionCategory />} />
-        <Route path="/view_all_articles" element={<ViewAllArticles />} />
-        <Route path="/update_article_photo/:id" element={<UpdateArticlePhoto />} />
+        
         
         <Route path="/videos_dashboard" element={<VideosDashboard />} />
         <Route path="/upload_video" element={<UploadVideo />} />
@@ -122,7 +133,6 @@ function App() {
         <Route path="/videos/:id" element={<VideosByGenre />} />
         <Route path="/edit_video/:id" element={<EditVideo />} />
         <Route path="/edit_video_name/:id" element={<EditVideoName />} />
-        <Route path="/articles_dashboard" element={<ArticleDashboard />} />
         
         <Route path="/magazine_subscriptions" element={<MagazineSubscriptions />} />
         <Route path="/subscription_token/:id" element={<SubscriptionToken />} />
@@ -151,8 +161,7 @@ function App() {
         <Route path="/single_league/:id" element={<SingleLeague />} />
         <Route path="/manage_tables" element={<ManageTables />} />
         <Route path="/view_league_table/:id" element={<ManageTable />} />
-        <Route path="/post_cooments/:id" element={<PostComments />} />
-        <Route path="/most_viewed_articles" element={<MostViewed />} />
+        
          */}
 
 

@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { updatePhotoArticle } from '../../../../redux/actions/magazineAction'
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
+import axios from 'axios';
+import { ApiUrl } from '../../../../helpers/ApiUrl';
+import { bmagtoken } from '../../../../helpers/Bmag';
 
 export default function UpdateArticlePhoto() {
     const{id} = useParams()
-    const dispatch = useDispatch()
-    const[articlePhoto, setArticlePhoto] = useState(false) 
+       const[articlePhoto, setArticlePhoto] = useState(false) 
     const[btnText, setBtnText] = useState("UPDATE ARTICLE PHOTO")
 
     const handleBookImageUpload = (event) => {
@@ -24,7 +24,15 @@ export default function UpdateArticlePhoto() {
     
         formData.append('articlePhoto', articlePhoto)
     
-        await dispatch(updatePhotoArticle(formData, id))
+        
+            await axios.put(`${ApiUrl}/adminarticleroute/update_article_photo/${id}`, formData, {
+              headers: {
+                Authorization: `Bearer ${bmagtoken}`
+              }
+            })    
+            
+            
+            window.location.href = `/article_single/${id}`
     
       }
 

@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { watchVideo } from '../../../../redux/actions/publicAction'
-import { watchSubsribedVideo } from '../../../../redux/actions/videoSubscriptionAction'
 import moment from 'moment'
+import { fetchSingleVideo, fetchWatchVideoSubscribed } from '../../../../helpers/articlesHelpers/VideosFetch';
 
 export default function WatchSubscribedVideo() {
     const {id} = useParams()
-    const dispatch = useDispatch()
-   const video = useSelector((state) => state.publicRdcr.video); 
-   const videoSubscribed = useSelector((state) => state.vidSubRdcr.videoSubscribed)
-   const watcherEntry = useSelector((state) => state.vidSubRdcr.watcherEntry)
+    
+   const [video, setVideo] = useState({}); 
+   const [videoSubscribed, setVideoSubscribed] = useState([])
+   const [watcherEntry, setWatcherEntry] = useState([])
    const [formData, setFormData] = useState({ token: "" });
     const [videoVisible, setVideoVisible] = useState(false);
 
     useEffect(() => {
         const fetchVideo = async () => {
             try {
-                await dispatch(watchVideo(id));
+               const item = await fetchSingleVideo(id);
+
+               if(item && !item.error) {
+                setVideo(item?.video)
+               }
             } catch (error) {
                 console.error("There was a problem");
             }
@@ -37,7 +39,13 @@ export default function WatchSubscribedVideo() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await dispatch(watchSubsribedVideo(formData));
+     const item =  await fetchWatchVideoSubscribed(formData);
+
+     if(item && !item?.error) {
+
+        setVideoSubscribed(item?.videoSubscribed)
+        setWatcherEntry(item?.watcherEntry)
+     }
 
         if (videoSubscribed) {
             

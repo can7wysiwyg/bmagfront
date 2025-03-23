@@ -1,16 +1,14 @@
 import React from 'react'
-import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useEffect, useState } from "react"
 import { motion } from 'framer-motion';
-import { genreView } from '../../../../redux/actions/magazineAction';
+import { fetchAllCategories } from '../../../../helpers/articlesHelpers/CategoriesFetch';
 
 
 
 
 export default function ArticlesGenreView() {
-    const dispatch = useDispatch()
-
-    const genres = useSelector((state) => state.magRdcr.genres)
+    
+    const [genres, setGenres] = useState([])
 
     const categoryVariants = {
         hidden: {
@@ -35,7 +33,11 @@ export default function ArticlesGenreView() {
 
             try {
 
-                await dispatch(genreView())
+               const data = await fetchAllCategories()
+
+               if(data && !data.error) {
+                setGenres(data?.categories)
+               }
                 
             } catch (error) {
                 console.error("there was a problem")
@@ -47,7 +49,7 @@ export default function ArticlesGenreView() {
         fetchData()
 
 
-    }, [dispatch])
+    }, [])
 
 
     if(!genres || genres === undefined || genres === null) {

@@ -1,21 +1,28 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Container, ListGroup, Button, Modal } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
-import { deleteArticle } from '../../../../redux/actions/magazineAction';
+import axios from 'axios';
+import { ApiUrl } from '../../../../helpers/ApiUrl';
+import { bmagtoken } from '../../../../helpers/Bmag';
 
 export default function EditArticle() {
   const { id } = useParams();
   const [showModal, setShowModal] = useState(false);
-  const dispatch = useDispatch()
-
+  
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
   const erasingArticle = async(e) => {
     e.preventDefault()
 
-    await dispatch(deleteArticle(id))
+    await axios.delete(`${ApiUrl}/adminarticleroute/delete_article/${id}`, {
+      headers: {
+        Authorization: `Bearer ${bmagtoken}`
+      }
+    })
+
+    window.location.href ="/view_all_articles"
+
   }
 
   return (
