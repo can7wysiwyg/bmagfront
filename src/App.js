@@ -2,9 +2,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import NavMenu from "./components/navbar/NavMenu";
 import Login from "./components/autho/Login";
  import Dashboard from "./components/pages/dashboard/Dashboard";
-// import PublishMagazine from "./components/pages/dashboard/magazines/PublishMagazine";
-// import NewMagIssue from "./components/pages/dashboard/magazines/NewMagIssue";
-// import GenreCreate from "./components/pages/dashboard/categories/GenreCreate";
+ import PublishMagazine from "./components/pages/dashboard/magazines/PublishMagazine";
+ import NewMagIssue from "./components/pages/dashboard/magazines/NewMagIssue";
+import GenreCreate from "./components/pages/dashboard/categories/GenreCreate";
  import ArticlesGenreView from "./components/pages/dashboard/articles/ArticlesGenreView";
  import PublishArticle from "./components/pages/dashboard/articles/PublishArticle";
 //  import DashArticlesByIssue from "./components/pages/dashboard/articles/DashArticlesByIssue";
@@ -18,16 +18,16 @@ import Home from "./components/pages/publico/Home";
 import ArticlesByGenre from "./components/pages/publico/articles/ArticlesByGenre";
 // import ShowMagIssue from "./components/pages/publico/magazines/ShowMagIssue";
  import Footer from "./components/pages/publico/Footer";
-// import About from "./components/pages/publico/About";
-// import Contact from "./components/pages/publico/Contact";
-// import SeeMagazines from "./components/pages/dashboard/magazines/SeeMagazines";
-// import AllMagazineIssues from "./components/pages/dashboard/magazines/AllMagazineIssues";
-// import EditMagIssue from "./components/pages/dashboard/magazines/EditMagIssue";
+ import About from "./components/pages/publico/About";
+ import Contact from "./components/pages/publico/Contact";
+ import SeeMagazines from "./components/pages/dashboard/magazines/SeeMagazines";
+import AllMagazineIssues from "./components/pages/dashboard/magazines/AllMagazineIssues";
+import EditMagIssue from "./components/pages/dashboard/magazines/EditMagIssue";
 // import Search from "./components/pages/publico/Search";
-// import EditMagIssueName from "./components/pages/dashboard/magazines/EditMagIssueName";
-// import UpdateMagaPdf from "./components/pages/dashboard/magazines/UpdateMagaPdf";
-// import UpdateMagaCover from "./components/pages/dashboard/magazines/UpdateMagaCover";
-// import ChooseActionCategory from "./components/pages/dashboard/categories/ChooseActionCategory";
+ import EditMagIssueName from "./components/pages/dashboard/magazines/EditMagIssueName";
+ import UpdateMagaPdf from "./components/pages/dashboard/magazines/UpdateMagaPdf";
+ import UpdateMagaCover from "./components/pages/dashboard/magazines/UpdateMagaCover";
+ import ChooseActionCategory from "./components/pages/dashboard/categories/ChooseActionCategory";
  import ViewAllArticles from "./components/pages/dashboard/articles/ViewAllArticles";
 import UpdateArticlePhoto from "./components/pages/dashboard/articles/UpdateArticlePhoto";
  import ReadMagazine from "./components/pages/publico/magsubs/ReadMagazine";
@@ -100,6 +100,23 @@ function App() {
         <Route path="/edit_article_author/:id" element={<EditArticleAuthor />} />
         <Route path="/edit_article_title/:id" element={<EditArticleTitle />} />
         <Route path="/article_genres_view" element={<ArticlesGenreView />} />
+        <Route path="/choose_action" element={<ChooseActionCategory />} />
+        <Route path="/genres_create" element={<GenreCreate />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/see_magazines" element={<SeeMagazines />} />
+        <Route path="/new_mag_issue" element={<NewMagIssue />} />
+        <Route path="/all_magazine_issues" element={<AllMagazineIssues />} />
+        <Route path="/edit_mag_issue/:id" element={<EditMagIssue />} />
+        <Route path="/edit_magissue_name/:id" element={<EditMagIssueName />} />
+        <Route path="/update_magaissue_pdffile/:id" element={<UpdateMagaPdf />} />
+        <Route path="/update_magaissue_cover/:id" element={<UpdateMagaCover />} />
+        <Route path="/publish_magazine" element={<PublishMagazine />} />
+        
+        
+        
+
+        
         
         {/* <Route path="/view_articles/:id" element={<DashArticlesByIssue />} /> */}
        
@@ -107,23 +124,13 @@ function App() {
         
         
          {/*  
-        <Route path="/publish_magazine" element={<PublishMagazine />} />
-        <Route path="/new_mag_issue" element={<NewMagIssue />} />
-        <Route path="/genres_create" element={<GenreCreate />} />
         
         
                 
         <Route path="/show_mag_issue/:id" element={<ShowMagIssue />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/see_magazines" element={<SeeMagazines />} />
-        <Route path="/all_magazine_issues" element={<AllMagazineIssues />} />
-        <Route path="/edit_mag_issue/:id" element={<EditMagIssue />} />
+                
+        
         <Route path="/search" element={<Search />} />
-        <Route path="/edit_magissue_name/:id" element={<EditMagIssueName />} />
-        <Route path="/update_magaissue_pdffile/:id" element={<UpdateMagaPdf />} />
-        <Route path="/update_magaissue_cover/:id" element={<UpdateMagaCover />} />
-        <Route path="/choose_action" element={<ChooseActionCategory />} />
         
         
         <Route path="/videos_dashboard" element={<VideosDashboard />} />

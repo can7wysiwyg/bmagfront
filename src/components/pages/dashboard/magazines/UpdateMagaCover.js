@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
-import { magaCoverPhoto } from '../../../../redux/actions/magazineAction';
+import axios from 'axios';
+import { ApiUrl } from '../../../../helpers/ApiUrl';
+import { bmagtoken } from '../../../../helpers/Bmag';
+
 
 export default function UpdateMagaCover() {
    const{id} = useParams()
    const[magazinePhoto, setMagazinePhoto] = useState(false)
    const[btnText, setBtnText] = useState("UPDATE PHOTO")
-   const dispatch = useDispatch()
-
+   
    const handleBookImageUpload = (event) => {
     const file = event.target.files[0];
     setMagazinePhoto(file);
@@ -24,7 +25,14 @@ export default function UpdateMagaCover() {
 
     formData.append('magazinePhoto', magazinePhoto)
 
-    await dispatch(magaCoverPhoto(formData, id))
+    await axios.put(`${ApiUrl}/adminmagaroute/update_magazine_cover_photo/${id}`, formData, {
+      headers: {
+        Authorization: `Bearer ${bmagtoken}`
+      }
+    })
+     window.location.href =`/edit_mag_issue/${id}`
+
+
 
   }
 

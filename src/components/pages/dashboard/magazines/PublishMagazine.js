@@ -1,7 +1,8 @@
+import axios from 'axios';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
-import publishMagazine from '../../../../redux/actions/publishAction';
+import { ApiUrl } from '../../../../helpers/ApiUrl';
+import { bmagtoken } from '../../../../helpers/Bmag';
 
 export default function PublishMagazine() {
     const [formDatta, setFormData] = useState({ magazineIssue: "" });
@@ -9,8 +10,7 @@ export default function PublishMagazine() {
     const [btnText, setBtnText] = useState("PUBLISH MAGAZINE");
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const dispatch = useDispatch();
-
+    
     const handleInputChange = (e) => {
         setFormData({
             ...formDatta,
@@ -40,8 +40,14 @@ export default function PublishMagazine() {
         
         // Dispatch the action
         try {
-            await dispatch(publishMagazine(formData));
+        
+             await axios.post(`${ApiUrl}/adminmagaroute/create_magazine`, formData, {
+                headers: {
+                    Authorization: `Bearer ${bmagtoken}`
+                }
+             })
             alert("Magazine Published Successfully!");
+            window.location.href = "/new_mag_issue"
         } catch (error) {
             console.error("Error publishing magazine", error);
             alert("An error occurred while publishing the magazine.");

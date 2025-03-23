@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { getIssueAdmin } from '../../../../redux/actions/magazineAction'
 import moment from "moment/moment"
+import axios from 'axios'
+import { ApiUrl } from '../../../../helpers/ApiUrl'
+import { bmagtoken } from '../../../../helpers/Bmag'
 
 export default function NewMagIssue() {
-const newIssue = useSelector((state) => state.magRdcr.newIssue)
-const dispatch = useDispatch()
+const [newIssue, setNewIssue] = useState([])
 
 
 useEffect(() => {
@@ -14,7 +14,15 @@ useEffect(() => {
 
         try {
 
-            await dispatch(getIssueAdmin())
+          const response =  await axios.get(`${ApiUrl}/adminmagaroute/new_issue`, {
+                headers: {
+                    Authorization: `Bearer ${bmagtoken}`
+                }
+            })
+
+            
+                setNewIssue(response.data.newIssue)
+
             
         } catch (error) {
             console.error("there was a problem")
@@ -26,21 +34,21 @@ useEffect(() => {
 
 
 
-}, [dispatch])
+}, [])
 
 
 if(!newIssue || newIssue === undefined || newIssue === null) {
 
-    return(<>
-    <h5 className='text-center mt-2'> data is loading</h5>
+    return(<div className='text-center' style={{margin: 23}}>
+    <h5> data is loading</h5>
     
-    </>)
+    </div>)
 }    if( newIssue && newIssue.length === 0) {
 
-    return(<>
+    return(<div className='text-center' style={{margin: 40}}>
         <h5 className='text-center mt-2'> there is no new magazines.. upload  <a href='/publish_magazine'>one</a> </h5>
         
-        </>)
+        </div>)
 
 }
 
@@ -54,7 +62,10 @@ if(!newIssue || newIssue === undefined || newIssue === null) {
             <Magazine key={magazine._id} magazine={magazine} />
 
 
-        )) : "THERE WAS A PROBLEM"
+        )) : <div className='text-center' style={{margin: 40}}>
+        <h5 className='text-center mt-2'> try again later </h5>
+        
+        </div>
     }
 
 

@@ -1,13 +1,15 @@
-import React, { useEffect } from 'react'
-import { deletingMagIssue, magShowAll } from '../../../../redux/actions/magazineAction';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react'
 import { Table, Button, OverlayTrigger, Tooltip, } from 'react-bootstrap';
+import { fetchAllMags } from '../../../../helpers/articlesHelpers/MagazinesFetch';
+import axios from 'axios';
+import { ApiUrl } from '../../../../helpers/ApiUrl';
+import { bmagtoken } from '../../../../helpers/Bmag';
 
 
 
 export default function AllMagazineIssues() {
-    const dispatch = useDispatch()
-    const magIssues = useSelector((state) => state.magRdcr.magIssues)
+
+    const [magIssues, setMagIssues] = useState([])
 
     useEffect(() => {
 
@@ -15,7 +17,11 @@ export default function AllMagazineIssues() {
   
           try {
   
-            await dispatch(magShowAll())
+          const data =  await fetchAllMags()
+
+          if(data && !data.error) {
+            setMagIssues(data?.magIssues)
+          }
             
           } catch (error) {
             console.error("there was a problem")
@@ -26,7 +32,7 @@ export default function AllMagazineIssues() {
         fetchData()
   
   
-      }, [dispatch])
+      }, [])
   
 
   return (
@@ -74,15 +80,21 @@ export default function AllMagazineIssues() {
 
 const Buttons = ({item}) => {
     
-    const dispatch = useDispatch()
-
+    
     
     
     const handleDelete = async(event) => {
 
         event.preventDefault()
 
-        await dispatch(deletingMagIssue(item._id))
+        
+        await axios.delete(`${ApiUrl}/adminmagaroute/delete_magazine_issue/${item._id}`, {
+          headers: {
+            Authorization: `Bearer ${bmagtoken}`
+          }
+        })
+
+        window.location.reload()
 
         
     }

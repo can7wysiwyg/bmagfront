@@ -1,13 +1,14 @@
+import axios from 'axios';
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux';
-import { genreCreate } from '../../../../redux/actions/magazineAction';
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
+import { ApiUrl } from '../../../../helpers/ApiUrl';
+import { bmagtoken } from '../../../../helpers/Bmag';
+
 
 export default function GenreCreate() {
 
     const[formData, setFormData] = useState({genreName: ""})
-    const dispatch = useDispatch()
- 
+    
     const handleInputChange = (e) => {
      setFormData({
        ...formData,
@@ -19,7 +20,16 @@ export default function GenreCreate() {
    const handleSubmit = async(event) => {
      event.preventDefault()
  
-     dispatch(genreCreate(formData))
+     
+
+     await axios.post(`${ApiUrl}/admingenreroute/create_genre`, formData, {
+      headers: {
+        Authorization: `Bearer ${bmagtoken}`
+
+      }
+     })
+
+     window.location.href = "/choose_action"
  
    }
  

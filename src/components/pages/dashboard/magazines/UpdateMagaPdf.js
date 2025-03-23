@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
-import { magaPdfUpdate } from '../../../../redux/actions/magazineAction';
+import axios from 'axios';
+import { ApiUrl } from '../../../../helpers/ApiUrl';
+import { bmagtoken } from '../../../../helpers/Bmag';
+
 
 export default function UpdateMagaPdf() {
     const {id} = useParams()
     const[magazinePdfFile, setMagazinePdfFile] = useState(false)
     const[btnText, setBtnText] = useState("UPDATE MAGAZINE PDF")
-    const dispatch = useDispatch()
-
+    
     const handleBookFileUpload = (event) => {
         const file = event.target.files[0];
         setMagazinePdfFile(file);
@@ -24,7 +25,13 @@ export default function UpdateMagaPdf() {
     
         formData.append('magazinePdfFile', magazinePdfFile)
     
-        await dispatch(magaPdfUpdate(formData, id))
+        await axios.put(`${ApiUrl}/adminmagaroute/update_magazine_pdf_file/${id}`, formData, {
+          headers: {
+            Authorization: `Bearer ${bmagtoken}`
+          }
+        })
+         window.location.href =`/edit_mag_issue/${id}`
+    
     
       }
     

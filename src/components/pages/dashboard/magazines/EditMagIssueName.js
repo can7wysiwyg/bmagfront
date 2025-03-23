@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
-import { updateMagIssue } from '../../../../redux/actions/magazineAction';
+import axios from 'axios';
+import { ApiUrl } from '../../../../helpers/ApiUrl';
+import { bmagtoken } from '../../../../helpers/Bmag';
 
 export default function EditMagIssueName() {
     const {id} = useParams()
@@ -12,8 +13,7 @@ export default function EditMagIssueName() {
 
     const[btnText, setBtnText] = useState("UPDATE MAGAZINE ISSUE NAME")
 
-    const dispatch = useDispatch()
-
+   
     const handleInputChange = (e) => {
         setFormData({
           ...formData,
@@ -25,8 +25,13 @@ export default function EditMagIssueName() {
       const handleSubmit = async(event) => {
         event.preventDefault()
 
-        await dispatch(updateMagIssue(formData, id))
-
+      
+        await axios.put(`${ApiUrl}/adminmagaroute/update_magazine_issue/${id}`, formData, {
+          headers: {
+            Authorization: `Bearer ${bmagtoken}`
+          }
+        })
+         window.location.href =`/edit_mag_issue/${id}`
 
       }
 
