@@ -60,6 +60,47 @@ export async function fetchTeams() {
     
 }
 
+export async function fetchAllTables() {
+
+    try {
+
+        const response = await fetch(`${ApiUrl}/tables_all`)
+
+        if(!response.ok) {
+            console.log(`there was a problem fetching tables`)
+        }
+
+
+        return await response.json()
+        
+    } catch (error) {
+        console.log(`there was a problem while fetching tables ${error}`)
+    }
+    
+}
+
+
+
+export async function fetchAllGames() {
+
+    try {
+
+        const response = await fetch(`${ApiUrl}/public_show_games`)
+
+        if(!response.ok) {
+            console.log(`there was a problem fetching games`)
+        }
+
+
+        return await response.json()
+        
+    } catch (error) {
+        console.log(`there was a problem while fetching games ${error}`)
+    }
+    
+}
+
+
 
 export async function fetchGamesByLeague(id) {
 
@@ -133,4 +174,24 @@ export async function fetchLeagueTable(id) {
     } catch (error) {
         console.log(`problem fetching the table ${error}`)
     }
+}
+
+
+
+export async function fetchSingleGame(id) {
+
+    try {
+
+        const response = await fetch(`${ApiUrl}/public_show_game/${id}`)
+
+        if(!response.ok) {
+            console.log(`problem fetching game`)
+        }
+        
+        return await response.json()
+
+    } catch (error) {
+        console.log(`problem fetching game ${error}`)
+    }
+    
 }

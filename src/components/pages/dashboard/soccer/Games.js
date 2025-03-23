@@ -1,15 +1,15 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Container, Card, Row, Col, ListGroup, Pagination } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { getGames, getTeams, getLeagues } from "../../../../redux/actions/soccerAction";
+import { fetchAllGames, fetchAllLeagues, fetchTeams } from "../../../../helpers/articlesHelpers/LeaguesFetch";
+
 import { ApiUrl } from "../../../../helpers/ApiUrl";
 import moment from "moment";
 
 export default function Games() {
-  const dispatch = useDispatch();
-  const games = useSelector((state) => state.soccerRdcr.games);
-  const teams = useSelector((state) => state.soccerRdcr.teams);
-  const leagues = useSelector((state) => state.soccerRdcr.leagues);
+  
+  const [games, setGames] = useState([]);
+  const [teams, setTeams] = useState([]);
+  const [leagues, setLeagues] = useState([]);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [localGames, setLocalGames] = useState([]);
@@ -23,26 +23,37 @@ export default function Games() {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        await dispatch(getGames());
-        await dispatch(getTeams());
-        await dispatch(getLeagues());
+      const allGames = await fetchAllGames()
+
+      const allTeams = await fetchTeams()
+                   const allLeagues = await fetchAllLeagues()
+            
+                   if(allTeams && allLeagues && allGames) {
+                    setTeams(allTeams?.teams)
+                    setLeagues(allLeagues?.leagues)
+                    setGames(allGames?.games)
+                   }
+      
+        
+
+
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
     fetchItems();
-  }, [dispatch]);
+  }, []);
 
 
 
   useEffect(() => {
     const interval = setInterval(() => {
-      dispatch(getGames()); // Fetch the latest games
+      fetchAllGames() // Fetch the latest games
     }, 1000); // Poll every second
 
     return () => clearInterval(interval); // Clean up on unmount
-  }, [dispatch]);
+  }, []);
 
 
   // Function to fetch game timers from the API

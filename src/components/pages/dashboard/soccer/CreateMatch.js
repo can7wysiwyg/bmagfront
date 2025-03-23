@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { createGame, getLeagues, getTeams } from "../../../../redux/actions/soccerAction";
+
+import { fetchAllLeagues, fetchTeams } from "../../../../helpers/articlesHelpers/LeaguesFetch";
+import axios from "axios";
+import { ApiUrl } from "../../../../helpers/ApiUrl";
+import { bmagtoken } from "../../../../helpers/Bmag";
 
 export default function CreateMatch() {
   const [fixtures, setFixtures] = useState([
@@ -9,21 +12,25 @@ export default function CreateMatch() {
   ]);
   const [leagueLocked, setLeagueLocked] = useState(false);
 
-  const teams = useSelector((state) => state.soccerRdcr.teams);
-  const leagues = useSelector((state) => state.soccerRdcr.leagues);
-  const dispatch = useDispatch();
-
+  const [teams, setTeams] = useState([]);
+  const [leagues, setLeagues] = useState([]);
+  
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        await dispatch(getTeams());
-        await dispatch(getLeagues());
+       const allTeams = await fetchTeams()
+       const allLeagues = await fetchAllLeagues()
+
+       if(allTeams && allLeagues) {
+        setTeams(allTeams?.teams)
+        setLeagues(allLeagues?.leagues)
+       }
       } catch (error) {
         console.log(`${error}`);
       }
     };
     fetchItems();
-  }, [dispatch]);
+  }, []);
 
   const handleFixtureChange = (index, field, value) => {
     const updatedFixtures = [...fixtures];
@@ -43,7 +50,17 @@ export default function CreateMatch() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await dispatch(createGame(fixtures));  // Dispatch action to create multiple games
+    
+    await axios.post(`${ApiUrl}/admin_create_game`, fixtures, {
+      headers: {
+        Authorization: `Bearer ${bmagtoken}`
+      }
+    })
+
+    window.location.href = "/local_football_dashboard"
+
+
+
   };
 
   if (!teams || !leagues) {

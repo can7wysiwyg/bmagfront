@@ -1,25 +1,26 @@
 import React from 'react'
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Container, ListGroup } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { getLeagues, getTables } from '../../../../redux/actions/soccerAction';
+import { fetchAllLeagues, fetchAllTables } from '../../../../helpers/articlesHelpers/LeaguesFetch';
 
 export default function ManageTables() {
-    const dispatch = useDispatch()
-    const tables = useSelector((state) => state.soccerRdcr.tables)
+    const [tables, setTables] = useState([])
 
     useEffect(() => {
 
         const fetchData = async() => {
 
-            await dispatch(getTables())
+           const data = await fetchAllTables()
 
+           if(data && !data.error) {
+            setTables(data?.tables)
+           }
         }
 
         fetchData()
 
 
-    }, [dispatch])
+    }, [])
 
     if(!tables) {
         return(<>
@@ -85,15 +86,17 @@ export default function ManageTables() {
 
 
 const LeagueName = ({ leagueId }) => {
-    const dispatch = useDispatch();
-    const leagues = useSelector((state) => state.soccerRdcr.leagues);
+
+    const [leagues, setLeagues] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
-            await dispatch(getLeagues());
+          const data = await fetchAllLeagues()
+          
+          setLeagues(data?.leagues)
         };
         fetchData();
-    }, [dispatch]);
+    }, []);
 
     // Find the league with the matching leagueId
     const matchingLeague = leagues?.find((league) => league._id === leagueId);

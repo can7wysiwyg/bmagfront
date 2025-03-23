@@ -52,20 +52,20 @@ import SubscribeMagazine from "./components/pages/publico/magsubs/SubscribeMagaz
 // import MySubscribedVideos from "./components/pages/publico/videosubsciptions/MySubscribedVideos";
 // import MyVideos from "./components/pages/publico/videosubsciptions/MyVideos";
 // import VideosByGenre from "./components/pages/publico/videos/VideosByGenre";
-// import LocalFootball from "./components/pages/dashboard/soccer/LocalFootball";
-// import CreateLeague from "./components/pages/dashboard/soccer/CreateLeague";
-// import CreateTeam from "./components/pages/dashboard/soccer/CreateTeam";
-// import CreateMatch from "./components/pages/dashboard/soccer/CreateMatch";
-// import Teams from "./components/pages/dashboard/soccer/Teams";
-// import Leagues from "./components/pages/dashboard/soccer/Leagues";
-// import Games from "./components/pages/dashboard/soccer/Games";
-// import Game from "./components/pages/dashboard/soccer/Game";
+ import LocalFootball from "./components/pages/dashboard/soccer/LocalFootball";
+import CreateLeague from "./components/pages/dashboard/soccer/CreateLeague";
+import CreateTeam from "./components/pages/dashboard/soccer/CreateTeam";
+import CreateMatch from "./components/pages/dashboard/soccer/CreateMatch";
+import Teams from "./components/pages/dashboard/soccer/Teams";
+import Leagues from "./components/pages/dashboard/soccer/Leagues";
+import Games from "./components/pages/dashboard/soccer/Games";
+import Game from "./components/pages/dashboard/soccer/Game";
  import AllFixtures from "./components/pages/publico/football/AllFixtures";
 import LeagueByName from "./components/pages/publico/football/LeagueByName";
-// import CreateTable from "./components/pages/dashboard/soccer/CreateTable";
-// import SingleLeague from "./components/pages/dashboard/soccer/SingleLeague";
-// import ManageTables from "./components/pages/dashboard/soccer/ManageTables";
-// import ManageTable from "./components/pages/dashboard/soccer/ManageTable";
+import CreateTable from "./components/pages/dashboard/soccer/CreateTable";
+import SingleLeague from "./components/pages/dashboard/soccer/SingleLeague";
+import ManageTables from "./components/pages/dashboard/soccer/ManageTables";
+import ManageTable from "./components/pages/dashboard/soccer/ManageTable";
  import PostComments from "./components/pages/publico/articles/PostComments";
  import MostViewed from "./components/pages/dashboard/articles/MostViewed";
 
@@ -112,6 +112,19 @@ function App() {
         <Route path="/update_magaissue_pdffile/:id" element={<UpdateMagaPdf />} />
         <Route path="/update_magaissue_cover/:id" element={<UpdateMagaCover />} />
         <Route path="/publish_magazine" element={<PublishMagazine />} />
+        <Route path="/local_football_dashboard" element={<LocalFootball />} />
+        <Route path="/create_league" element={<CreateLeague />} />
+        <Route path="/create_team" element={<CreateTeam />} />
+        <Route path="/create_match" element={<CreateMatch />} />
+        <Route path="/teams" element={<Teams />} />
+        <Route path="/leagues" element={<Leagues />} />
+        <Route path="/admin_games" element={<Games />} />
+        <Route path="/game/:id/:leagueId" element={<Game />} />
+        <Route path="/create_table" element={<CreateTable />} />
+        <Route path="/single_league/:id" element={<SingleLeague />} />
+        <Route path="/manage_tables" element={<ManageTables />} />
+        <Route path="/view_league_table/:id" element={<ManageTable />} />
+        
         
         
         
@@ -153,21 +166,7 @@ function App() {
         <Route path="/check_video_subscriber/:id" element={<CheckVideoSubscriber />} />
         <Route path="/watch_my_subscribed_videos" element={<MySubscribedVideos />} />
         <Route path="/subscribed_video/:id" element={<MyVideos />} />
-        <Route path="/local_football_dashboard" element={<LocalFootball />} />
-        <Route path="/create_league" element={<CreateLeague />} />
-        <Route path="/create_team" element={<CreateTeam />} />
-        <Route path="/create_match" element={<CreateMatch />} />
-        <Route path="/teams" element={<Teams />} />
-        <Route path="/leagues" element={<Leagues />} />
-        <Route path="/admin_games" element={<Games />} />
-                <Route path="/game/:id/:leagueId" element={<Game />} />
-
         
-        
-        <Route path="/create_table" element={<CreateTable />} />
-        <Route path="/single_league/:id" element={<SingleLeague />} />
-        <Route path="/manage_tables" element={<ManageTables />} />
-        <Route path="/view_league_table/:id" element={<ManageTable />} />
         
          */}
 

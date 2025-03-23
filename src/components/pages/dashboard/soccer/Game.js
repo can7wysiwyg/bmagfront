@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getGame, getTeams, getLeagues } from '../../../../redux/actions/soccerAction';
 import { Container, Card, ListGroup, Button, Form } from 'react-bootstrap';
+import { fetchAllLeagues, fetchTeams, fetchSingleGame } from "../../../../helpers/articlesHelpers/LeaguesFetch";
 import { ApiUrl } from '../../../../helpers/ApiUrl';
 
 
@@ -10,10 +9,11 @@ export default function Game() {
   // const { id } = useParams();
   const { id, leagueId } = useParams();
 
-  const game = useSelector((state) => state.soccerRdcr.game);
-  const teams = useSelector((state) => state.soccerRdcr.teams);
-  const leagues = useSelector((state) => state.soccerRdcr.leagues);
-  const dispatch = useDispatch();
+  const [game, setGame] = useState({});
+  const [teams, setTeams] = useState([]);
+       const [leagues, setLeagues] = useState([]);
+     
+  
 
   const [liveGame, setLiveGame] = useState(null);
   const [isGameStarted, setIsGameStarted] = useState(false);
@@ -48,15 +48,24 @@ const btnState = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await dispatch(getGame(id));
-        await dispatch(getTeams());
-        await dispatch(getLeagues());
+               const oneGame = await fetchSingleGame(id)
+       const allTeams = await fetchTeams()
+                    const allLeagues = await fetchAllLeagues()
+             
+                    if(allTeams && allLeagues && oneGame) {
+                     setTeams(allTeams?.teams)
+                     setLeagues(allLeagues?.leagues)
+                     setGame(oneGame?.game)
+                    }
+       
+        
+
       } catch (error) {
         console.log(error);
       }
     };
     fetchData();
-  }, [dispatch, id]);
+  }, [id]);
 
   
 
@@ -156,7 +165,7 @@ const btnState = () => {
       }
       
       // Fetch the updated game details
-      dispatch(getGame(id))
+      fetchSingleGame(id)
         .then((updatedGame) => {
           if (updatedGame) {
             setCurrentTeamOne(updatedGame.teamOne);

@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Form, Container, ListGroup, Pagination, Row, Col } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { getLeagues } from "../../../../redux/actions/soccerAction";
+import { fetchAllLeagues } from "../../../../helpers/articlesHelpers/LeaguesFetch";
 
 export default function Leagues() {
-  const leagues = useSelector((state) => state.soccerRdcr.leagues);
-  const dispatch = useDispatch();
+  const [leagues, setLeagues] = useState([]);
   
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -14,14 +12,18 @@ export default function Leagues() {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        await dispatch(getLeagues());
+       const data = await fetchAllLeagues()
+
+       if(data && !data.error) {
+        setLeagues(data?.leagues)
+       }
       } catch (error) {
         console.log(`${error}`);
       }
     };
 
     fetchItems();
-  }, [dispatch]);
+  }, []);
 
   // Handle search input
   const handleSearchChange = (e) => {

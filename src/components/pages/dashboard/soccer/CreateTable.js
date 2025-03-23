@@ -1,25 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import { Dropdown, Button, ListGroup } from 'react-bootstrap';
-import {  getLeagues, getTeams } from '../../../../redux/actions/soccerAction';
-import { useDispatch, useSelector } from 'react-redux';
+import { fetchAllLeagues, fetchTeams } from "../../../../helpers/articlesHelpers/LeaguesFetch";
 import { bmagtoken } from '../../../../helpers/Bmag';
 import { ApiUrl } from '../../../../helpers/ApiUrl';
 
 
 export default function CreateTable() {
-   const dispatch = useDispatch()
-
-   const teams = useSelector((state) => state.soccerRdcr.teams);
-   const leagues = useSelector((state) => state.soccerRdcr.leagues);
- 
+   const [teams, setTeams] = useState([]);
+     const [leagues, setLeagues] = useState([]);
+     
    const [selectedLeague, setSelectedLeague] = useState(null);
    const [selectedTeams, setSelectedTeams] = useState([]);
  
    useEffect(() => {
      
     const fetchData = async() => {
-       await dispatch(getTeams());
-      await  dispatch(getLeagues());
+      const allTeams = await fetchTeams()
+             const allLeagues = await fetchAllLeagues()
+      
+             if(allTeams && allLeagues) {
+              setTeams(allTeams?.teams)
+              setLeagues(allLeagues?.leagues)
+             }
 
     }
 
@@ -27,7 +29,7 @@ export default function CreateTable() {
 
 
      
-   }, [dispatch]);
+   }, []);
  
    const handleLeagueSelect = (league) => {
      setSelectedLeague(league);

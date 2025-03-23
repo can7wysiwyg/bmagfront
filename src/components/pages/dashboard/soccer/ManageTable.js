@@ -1,28 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getLeague, getTable, getTeams, updateTeamStats } from '../../../../redux/actions/soccerAction'; // Assume you have an action to update stats
 import { Container, Row, Col, Table, Button } from 'react-bootstrap';
+import { fetchLeague, fetchLeagueTable, fetchTeams } from '../../../../helpers/articlesHelpers/LeaguesFetch';
+import axios from 'axios';
+import { ApiUrl } from '../../../../helpers/ApiUrl';
+import { bmagtoken } from '../../../../helpers/Bmag';
 
 
 export default function ManageTable() {
-    const { id } = useParams(); // This is the leagueId
-    const dispatch = useDispatch();
-    const league = useSelector((state) => state.soccerRdcr.league);
-    const table = useSelector((state) => state.soccerRdcr.table);
+    const { id } = useParams(); 
+    const [league, setLeague] = useState([]);
+    const [table, setTable] = useState([]);
     const [editableTable, setEditableTable] = useState([]);
     const [hasChanges, setHasChanges] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
-            await dispatch(getLeague(id));
-            await dispatch(getTable(id));
+          const itemLeague =  await fetchLeague(id)
+          const itemTable = await fetchLeagueTable(id)
+
+          if(itemLeague && itemTable) {
+            setLeague(itemLeague?.league)
+            setTable(itemTable?.table)
+          }
+
+
         };
         fetchData();
-    }, [dispatch, id]);
+    }, [id]);
 
     useEffect(() => {
-        if (table) {
+        if (table.teams) {
             setEditableTable(table.teams.map(team => ({ ...team })));
         }
     }, [table]);
@@ -36,8 +44,14 @@ export default function ManageTable() {
 
     const handleSaveAll = async () => {
         if (hasChanges) {
-            // Send the leagueId and updated teams array to the backend
-            await dispatch(updateTeamStats({ teams: editableTable }, id)); 
+           
+            await axios.put(`${ApiUrl}/update_table/${id}`, { teams: editableTable }, {
+                headers: {
+                    Authorization: `Bearer ${bmagtoken}`
+                }
+            } )
+
+
             setHasChanges(false);
             alert("All changes saved!");
         } else {
@@ -105,18 +119,23 @@ export default function ManageTable() {
 
 
 const TeamInTable = ({ teamid }) => {
-    const dispatch = useDispatch();
-    const teams = useSelector((state) => state.soccerRdcr.teams);
+
+    const [teams, setTeams] = useState([]);
   
     useEffect(() => {
         const fetchData = async () => {
             if (!teams || teams.length === 0) {
-                await dispatch(getTeams());
+               const data = await fetchTeams()
+
+               if(data && !data.error) {
+                setTeams(data?.teams)
+               }
+               
             }
         };
   
         fetchData();
-    }, [dispatch, teams]);
+    }, [teams]);
   
     // Find the team in the list of teams based on teamName (team ID)
     const team = teams?.find((t) => t._id === teamid);

@@ -1,7 +1,8 @@
+import axios from 'axios';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Container, Form, Row, Col, Button } from 'react-bootstrap';
-import {  createTeam } from '../../../../redux/actions/soccerAction';
+import { ApiUrl } from '../../../../helpers/ApiUrl';
+import { bmagtoken } from '../../../../helpers/Bmag';
 
 export default function CreateTeam() {
   const [formData, setFormData] = useState({
@@ -11,8 +12,7 @@ export default function CreateTeam() {
   });
 
   const [btnText, setBtnText] = useState('CREATE NEW TEAM');
-  const dispatch = useDispatch();
-
+  
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
@@ -24,7 +24,15 @@ export default function CreateTeam() {
     event.preventDefault();
     
     // Dispatch the createLeague action with the form data (startDate and endDate)
-    await dispatch(createTeam(formData));
+    await axios.post(`${ApiUrl}/admin_create_team`, formData, {
+      headers: {
+        Authorization: `Bearer ${bmagtoken}`
+      }
+    })
+
+    window.location.href = "/local_football_dashboard"
+
+
   };
 
   const chango = () => {

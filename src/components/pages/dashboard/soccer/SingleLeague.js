@@ -1,16 +1,18 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Container, Card, Row, Col, ListGroup, Pagination, Button, Form } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { getTeams, getLeagues, getGamesByLeague, getLeague, deleteGame, updateGame } from "../../../../redux/actions/soccerAction";
 import { useParams } from 'react-router-dom'
+import { fetchAllLeagues, fetchGamesByLeague, fetchLeague, fetchTeams } from "../../../../helpers/articlesHelpers/LeaguesFetch";
+import axios from "axios";
+import { ApiUrl } from "../../../../helpers/ApiUrl";
+import { bmagtoken } from "../../../../helpers/Bmag";
 
 export default function SingleLeague() {
   const { id } = useParams();
-  const dispatch = useDispatch();
-  const games = useSelector((state) => state.soccerRdcr.gamesFromLeague);
-  const teams = useSelector((state) => state.soccerRdcr.teams);
-  const leagues = useSelector((state) => state.soccerRdcr.leagues);
-  const league = useSelector((state) => state.soccerRdcr.league);
+
+  const [games, setGamesFromLeague] = useState([]);
+  const [teams, setTeams] = useState([]);
+  const [leagues, setLeagues] = useState([]);
+  const [league, setLeague] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [editingGameId, setEditingGameId] = useState(null);
   const [editGameData, setEditGameData] = useState({});
@@ -20,17 +22,23 @@ export default function SingleLeague() {
   useEffect(() => {
      const fetchItems = async () => {
         try {
-           await dispatch(getGamesByLeague(id));
-           await dispatch(getTeams());
-           await dispatch(getLeagues());
-           await dispatch(getLeague(id));
+         const fromLeague =  await fetchGamesByLeague(id)
+          const allTeams = await fetchTeams()
+          const allLeagues = await fetchAllLeagues()
+          const singleLeague = await fetchLeague(id)
+          
+
+          setGamesFromLeague(fromLeague?.gamesFromLeague)
+          setTeams(allTeams?.teams)
+          setLeagues(allLeagues?.leagues)
+          setLeague(singleLeague?.league)
         } catch (error) {
            console.error('Error fetching data:', error);
         }
      };
 
      fetchItems();
-  }, [dispatch, id]);
+  }, [id]);
 
   const indexOfLastGame = currentPage * gamesPerPage;
   const indexOfFirstGame = indexOfLastGame - gamesPerPage;
@@ -58,7 +66,14 @@ export default function SingleLeague() {
 
   const handleSaveClick = async (gameId) => {
      try {
-        await dispatch(updateGame(editGameData, gameId, id));
+      
+
+             await axios.put(`${ApiUrl}/admin_game_update/${gameId}`, editGameData, {
+             headers: {
+             Authorization: `Bearer ${bmagtoken}`
+             
+            } })
+
         setEditingGameId(null);  // Exit editing mode
      } catch (error) {
         console.error('Error updating game:', error);
@@ -72,7 +87,12 @@ export default function SingleLeague() {
 
   const handleDeleteGame = async (gameId) => {
      try {
-        await dispatch(deleteGame(gameId, id));
+        
+       await axios.delete(`${ApiUrl}/admin_erase_game/${gameId}`, {
+         headers: {
+            Authorization: `Bearer ${bmagtoken}`
+         }
+        })
      } catch (error) {
         console.error('Error deleting game:', error);
      }
@@ -83,7 +103,10 @@ export default function SingleLeague() {
   }
 
   if (games.length === 0) {
-     return <h3>NO FIXTURES FROM THIS LEAGUE AT THE MOMENT</h3>;
+     return (<div style={{textAlign: "center", margin: 34}}>
+     
+     <h3>NO FIXTURES FROM THIS LEAGUE AT THE MOMENT</h3>
+     </div>)
   }
 
   return (
