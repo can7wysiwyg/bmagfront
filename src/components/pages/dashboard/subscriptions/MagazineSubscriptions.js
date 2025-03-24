@@ -1,41 +1,49 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { adminAllSubs } from '../../../../redux/actions/subscriptionAction';
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import Pagination from 'react-bootstrap/Pagination';
-// import { magShowSingle } from '../../../../redux/actions/magazineAction';
+import axios from 'axios';
+import { ApiUrl } from '../../../../helpers/ApiUrl';
+import {bmagtoken} from "../../../../helpers/Bmag"
+
 
 export default function MagazineSubscriptions() {
-    const dispatch = useDispatch();
-    const subscriptions = useSelector((state) => state.subRdcr.subscriptions);
+    
+    const [subscriptions, setSubscriptions] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [subsPerPage] = useState(10); // Set the number of subscriptions per page
 
     useEffect(() => {
         const fetchSubscriptions = async () => {
             try {
-                await dispatch(adminAllSubs());
+
+                const response = await axios.get(`${ApiUrl}/admin_check_subscriptions_all`, {
+                    Headers: {
+                        Authorization: `Bearer ${bmagtoken}`
+                    }
+                })
+                  
+                setSubscriptions(response.data.subscriptions)
             } catch (error) {
                 console.error(`There was a problem: ${error}`);
             }
         };
 
         fetchSubscriptions();
-    }, [dispatch]);
+    }, []);
 
     if (!subscriptions) {
         return (
-            <>
+            <div style={{margin: 45}}>
                 <h3 className="text-center">Magazine subscriptions are loading...</h3>
-            </>
+            </div>
         );
     }
 
     if (subscriptions.length === 0) {
         return (
-            <>
+            <div style={{margin: 45}}>
                 <h3 className="text-center">There are no magazine subscriptions at the moment.</h3>
-            </>
+            </div>
         );
     }
 

@@ -1,21 +1,31 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { subscribedVideoSingle } from '../../../../redux/actions/videoSubscriptionAction'
 import moment from 'moment'
 import { watchVideo } from '../../../../redux/actions/publicAction'
+import axios from 'axios'
+import { ApiUrl } from '../../../../helpers/ApiUrl'
+import {bmagtoken} from "../../../../helpers/Bmag"
+import { fetchSingleVideo } from '../../../../helpers/articlesHelpers/VideosFetch'
+
 
 export default function CheckVideoSubscriber() {
     const {id} = useParams()
-    const dispatch = useDispatch()
-    const subscribedVideo = useSelector((state) => state.vidSubRdcr.subscribedVideo)
+        const [subscribedVideo, setSubscribedVideo] = useState({})
 
     useEffect(() => {
 
         const fetchSubscription = async() => {
             try {
 
-                await dispatch(subscribedVideoSingle(id))
+            
+                const response = await axios.get(`${ApiUrl}/video_subscription_single/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${bmagtoken}`
+                    }
+                })
+
+                setSubscribedVideo(response.data.subscribedVideo)
                 
             } catch (error) {
                 console.error("there was a problem " + error)
@@ -26,7 +36,7 @@ export default function CheckVideoSubscriber() {
 
         fetchSubscription()
 
-    }, [dispatch, id])
+    }, [id])
 
 
     if (!subscribedVideo) {
@@ -68,10 +78,9 @@ export default function CheckVideoSubscriber() {
 
 const VideoName = ({sub}) => {
 
-    const dispatch = useDispatch()
     
 
-    const video = useSelector((state) => state.publicRdcr.video)
+    const [video, setVideo] = useState({})
 
     useEffect(() => {
 
@@ -79,7 +88,11 @@ const VideoName = ({sub}) => {
 
             try {
 
-                await dispatch(watchVideo(sub))
+               const data = await fetchSingleVideo(sub)
+
+               if(data && !data.error) {
+                setVideo(data?.video)
+               }
                 
             } catch (error) {
                 console.error(`there was a problem ${error}`)
@@ -92,7 +105,7 @@ const VideoName = ({sub}) => {
 
 
 
-    }, [dispatch, sub])
+    }, [sub])
 
     if(!video) {
         return(<>

@@ -3,29 +3,46 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { subscribedVideoSingle, videoSubGenToken } from '../../../../redux/actions/videoSubscriptionAction'
 import { watchVideo } from '../../../../redux/actions/publicAction'
+import axios from 'axios'
+import { ApiUrl } from '../../../../helpers/ApiUrl'
+import { bmagtoken } from '../../../../helpers/Bmag'
+import { fetchSingleVideo } from '../../../../helpers/articlesHelpers/VideosFetch'
 
 
 
 export default function VideoSubscriptionToken() {
     const {id} = useParams()
-    const subscribedVideo = useSelector((state) => state.vidSubRdcr.subscribedVideo)
+    const [subscribedVideo, setSubscribedVideo] = useState({})
     const [generatedToken, setGeneratedToken] = useState(null);
-    const dispatch = useDispatch() 
     
     
     useEffect(() => {
         const fetchSub = async () => {
-            await dispatch(subscribedVideoSingle(id));
+            
+            const response = await axios.get(`${ApiUrl}/video_subscription_single/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${bmagtoken}`
+                }
+            })
+
+            setSubscribedVideo(response.data.subscribedVideo)
         };
 
         fetchSub();
-    }, [dispatch, id]);
+    }, [id]);
 
     
 
     const handleGenerateToken = async () => {
         const transactionId = subscribedVideo.transactionId; 
-        const response = await dispatch(videoSubGenToken({ transactionId, videoId: subscribedVideo.videoId }));
+        
+
+
+        const response = await axios.post(`${ApiUrl}/video_sub_generate_token`, { transactionId, videoId: subscribedVideo.videoId }, {
+            headers: {
+                Authorization: `Bearer ${bmagtoken}`
+            }
+        })
         setGeneratedToken(response.data); 
             
         
@@ -84,9 +101,8 @@ export default function VideoSubscriptionToken() {
 
 const VideoName = ({sub}) => {
 
-    const dispatch = useDispatch()
-
-    const video = useSelector((state) => state.publicRdcr.video)
+    
+    const [video, setVideo] = useState({})
 
     useEffect(() => {
 
@@ -94,7 +110,11 @@ const VideoName = ({sub}) => {
 
             try {
 
-                await dispatch(watchVideo(sub))
+               const data = await fetchSingleVideo(sub)
+
+               if(data && !data.error) {
+                setVideo(data?.video)
+               }
                 
             } catch (error) {
                 console.error(`there was a problem ${error}`)
@@ -107,7 +127,7 @@ const VideoName = ({sub}) => {
 
 
 
-    }, [dispatch, sub])
+    }, [sub])
 
     if(!video) {
         return(<>

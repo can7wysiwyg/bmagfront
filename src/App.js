@@ -39,7 +39,7 @@ import UpdateArticlePhoto from "./components/pages/dashboard/articles/UpdateArti
 // import EditVideoName from "./components/pages/dashboard/videos/EditVideoName";
  import ArticleDashboard from "./components/pages/dashboard/articles/ArticleDashboard";
 import SubscribeMagazine from "./components/pages/publico/magsubs/SubscribeMagazine";
-// import MagazineSubscriptions from "./components/pages/dashboard/subscriptions/MagazineSubscriptions";
+import MagazineSubscriptions from "./components/pages/dashboard/subscriptions/MagazineSubscriptions";
 // import SubscriptionToken from "./components/pages/dashboard/subscriptions/SubscriptionToken";
 // import CheckSubscriber from "./components/pages/dashboard/subscriptions/CheckSubscriber";
 // import MySubscribed from "./components/pages/publico/magsubs/MySubscrbed";
@@ -124,6 +124,7 @@ function App() {
         <Route path="/single_league/:id" element={<SingleLeague />} />
         <Route path="/manage_tables" element={<ManageTables />} />
         <Route path="/view_league_table/:id" element={<ManageTable />} />
+        <Route path="/magazine_subscriptions" element={<MagazineSubscriptions />} />
         
         
         
@@ -154,7 +155,7 @@ function App() {
         <Route path="/edit_video/:id" element={<EditVideo />} />
         <Route path="/edit_video_name/:id" element={<EditVideoName />} />
         
-        <Route path="/magazine_subscriptions" element={<MagazineSubscriptions />} />
+        
         <Route path="/subscription_token/:id" element={<SubscriptionToken />} />
         <Route path="/check_subscriber/:id" element={<CheckSubscriber />} />
         <Route path="/my_subscribed_magazines" element={<MySubscribed />} />

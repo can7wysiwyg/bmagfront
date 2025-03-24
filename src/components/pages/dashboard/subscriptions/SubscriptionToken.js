@@ -1,28 +1,41 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { adminSingleSubs } from '../../../../redux/actions/subscriptionAction';
-import { adminSubTokGen } from '../../../../redux/actions/subscriptionAction';
-import { magShowSingle } from '../../../../redux/actions/magazineAction';
+import axios from 'axios';
+import { ApiUrl } from '../../../../helpers/ApiUrl';
+import {bmagtoken} from "../../../../helpers/Bmag"
+import { fetchMagSingle } from '../../../../helpers/articlesHelpers/MagazinesFetch';
+
 
 
 export default function SubscriptionToken() {
     const { id } = useParams();
-    const dispatch = useDispatch();
-    const subscription = useSelector((state) => state.subRdcr.subscription);
+const [subscription, setSubscription] = useState([]);
+ 
     const [generatedToken, setGeneratedToken] = useState(null);
 
     useEffect(() => {
         const fetchSub = async () => {
-            await dispatch(adminSingleSubs(id));
+            const response =  await axios.get(`${ApiUrl}/admin_check_subscription_single/${id}`, {
+                Headers: {
+                    Authorization: `Bearer ${bmagtoken}`
+                }
+            }) 
+            setSubscription(response.data.subscription)
+
         };
 
         fetchSub();
-    }, [dispatch, id]);
+    }, [id]);
 
     const handleGenerateToken = async () => {
         const transactionId = subscription.transactionId; 
-        const response = await dispatch(adminSubTokGen({ transactionId, magazineId: subscription.magazineId }));
+        
+        const response = await axios.post(`${ApiUrl}/admin_generate_token`, { transactionId, magazineId: subscription.magazineId }, {
+            headers: {
+                Authorization: `Bearer ${bmagtoken}`
+            }
+        })
+                  
         setGeneratedToken(response.data); 
                
     };
@@ -72,9 +85,8 @@ export default function SubscriptionToken() {
 
 const IssueName = ({sub}) => {
 
-    const dispatch = useDispatch()
-
-    const singleIssue = useSelector((state) => state.magRdcr.singleIssue)
+    
+    const [singleIssue, setSingleIssue] = useState({})
 
     useEffect(() => {
 
@@ -82,7 +94,9 @@ const IssueName = ({sub}) => {
 
             try {
 
-                await dispatch(magShowSingle(sub))
+               const data = await fetchMagSingle(sub)
+
+               setSingleIssue(data?.singleIssue)
                 
             } catch (error) {
                 console.error(`there was a problem ${error}`)
@@ -95,7 +109,7 @@ const IssueName = ({sub}) => {
 
 
 
-    }, [dispatch, sub])
+    }, [sub])
 
     if(!singleIssue) {
         return(<>

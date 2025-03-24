@@ -1,28 +1,34 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { adminAllVideoSubs } from '../../../../redux/actions/videoSubscriptionAction';
 import { Link } from 'react-router-dom';
 import { Pagination } from 'react-bootstrap';
+import axios from 'axios';
+import { ApiUrl } from '../../../../helpers/ApiUrl';
+import { bmagtoken } from '../../../../helpers/Bmag';
 
 
 
 export default function VideoSubscriptions() {
-    const dispatch = useDispatch()
-    const subscribedVideos = useSelector((state) => state.vidSubRdcr.subscribedVideos)
+        const [subscribedVideos, setSubscribedVideos] = useState([])
     const [currentPage, setCurrentPage] = useState(1);
     const [subsPerPage] = useState(10); // Set the number of subscriptions per page
 
     useEffect(() => {
         const fetchSubscriptions = async () => {
             try {
-                await dispatch(adminAllVideoSubs());
+                const response = await axios.get(`${ApiUrl}/video_subscriptions_all`, {
+                    headers: {
+                        Authorization: `Bearer ${bmagtoken}`
+                    }
+                })
+
+                setSubscribedVideos(response.data.subscribedVideos)
             } catch (error) {
                 console.error(`There was a problem: ${error}`);
             }
         };
 
         fetchSubscriptions();
-    }, [dispatch]);
+    }, []);
 
     if (!subscribedVideos) {
         return (
