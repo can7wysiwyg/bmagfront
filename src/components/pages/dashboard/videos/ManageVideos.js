@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Table, Button, OverlayTrigger, Tooltip, Pagination } from 'react-bootstrap';
-import { watchVideos } from '../../../../redux/actions/publicAction';
-import { deleteVideo } from '../../../../redux/actions/magazineAction';
+import { fetchAllVideos } from '../../../../helpers/articlesHelpers/VideosFetch';
+import axios from 'axios';
+import { ApiUrl } from '../../../../helpers/ApiUrl';
+import { bmagtoken } from '../../../../helpers/Bmag';
+
 
 export default function ManageVideos() {
-    const dispatch = useDispatch();
-    const videos = useSelector((state) => state.publicRdcr.videos); // Adjust the state according to your Redux setup
+
+    const [videos, setVideos] = useState([]); 
 
     // State for pagination
     const [currentPage, setCurrentPage] = useState(1);
@@ -15,14 +17,16 @@ export default function ManageVideos() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                await dispatch(watchVideos());
+              const data =  await fetchAllVideos()
+
+              setVideos(data?.videos)
             } catch (error) {
                 console.error("There was a problem fetching videos.");
             }
         };
 
         fetchData();
-    }, [dispatch]);
+    }, []);
 
     // Get current videos for the current page
     const indexOfLastVideo = currentPage * videosPerPage;
@@ -84,11 +88,18 @@ export default function ManageVideos() {
 
 // Action buttons for editing and deleting videos
 const ActionButtons = ({ video }) => {
-    const dispatch = useDispatch();
-
+    
     const handleDelete = async (event) => {
         event.preventDefault();
-        await dispatch(deleteVideo(video._id));
+    
+
+        await axios.delete(`${ApiUrl}/erase_video/${video._id}`, {
+            headers: {
+                Authorization: `Bearer ${bmagtoken}`
+            }
+        })
+
+        window.location.reload()
     };
 
     const deleteButtonTooltip = <Tooltip id="delete-tooltip">Delete</Tooltip>;

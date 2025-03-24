@@ -8,7 +8,7 @@ export default function Contact() {
     <div className="row">
       <div className="col-12">
         <div className="title-bordered mb-5 d-flex align-items-center">
-          <h1 className="h4">Talk To Me Anytime :)</h1>
+          <h1 className="h4">Talk To Me Anytime 😊😊</h1>
           <ul className="list-inline social-icons ml-auto mr-3 d-none d-sm-block">
             <li className="list-inline-item"><a href="#"><i className="ti-facebook"></i></a></li>
             <li className="list-inline-item"><a href="#"><i className="ti-twitter-alt"></i></a></li>
@@ -30,7 +30,7 @@ export default function Contact() {
           <h4 className="mt-5">Hate Forms? Write Us Email</h4>
           <p>
             <i className="ti-email mr-2 text-primary"></i>
-            <a href="mailto:georgia.young@example.com">georgia.young@example.com</a>
+            <a href="mailto:hello@world.com">hello@world.com</a>
           </p>
         </div>
       </div>

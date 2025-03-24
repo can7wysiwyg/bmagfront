@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
-import { updateVideoName } from '../../../../redux/actions/magazineAction';
+import axios from 'axios';
+import { ApiUrl } from '../../../../helpers/ApiUrl';
+import { bmagtoken } from '../../../../helpers/Bmag';
 
 
 export default function EditVideoName() {
     const {id} = useParams()
     const[formData, setFormData] = useState({videoName: ""})
-    const dispatch = useDispatch()
+    
 
     const handleInputChange = (e) => {
         setFormData({
@@ -21,7 +22,14 @@ export default function EditVideoName() {
       const handleSubmit = async(event) => {
         event.preventDefault()
 
-        await dispatch(updateVideoName(formData, id))
+        
+        await axios.put(`${ApiUrl}/update_video_name/${id}`, formData, {
+          headers: {
+            Authorization: `Bearer ${bmagtoken}`
+          }
+        })
+
+        window.location.href = "/videos_dashboard"
 
 
       }

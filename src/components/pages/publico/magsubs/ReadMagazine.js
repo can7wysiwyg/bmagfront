@@ -41,10 +41,14 @@ export default function ReadMagazine() {
         });
     };
 
+    console.log(formData)
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
       const data =  await UserReadSubdMag(formData)
+
+      console.log(data)
 
       setMagazine(data?.magazine)
       setReaderEntry(data?.readerEntry)
@@ -53,6 +57,7 @@ export default function ReadMagazine() {
         if (magazine) {
             
             const token = formData.token;
+            console.log(token)
             const expiresAt = new Date(readerEntry.expiresAt); 
     
             

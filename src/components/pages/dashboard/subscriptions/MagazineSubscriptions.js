@@ -17,7 +17,8 @@ export default function MagazineSubscriptions() {
             try {
 
                 const response = await axios.get(`${ApiUrl}/admin_check_subscriptions_all`, {
-                    Headers: {
+                    
+                    headers: {
                         Authorization: `Bearer ${bmagtoken}`
                     }
                 })
@@ -128,17 +129,17 @@ export default function MagazineSubscriptions() {
 
 // const IssueName = ({sub}) => {
 
-//     const dispatch = useDispatch()
+//     
 
-//     const singleIssue = useSelector((state) => state.magRdcr.singleIssue)
+//     const [singleIssue, setSingleIssue] = useState([])
 
 //     useEffect(() => {
 
 //         const fetchSingle = async() => {
 
 //             try {
-
-//                 await dispatch(magShowSingle(sub))
+         //look for single magazine in articles/helpers/magazinefetch.js
+//                 await fetchMagIssue(sub)
                 
 //             } catch (error) {
 //                 console.error(`there was a problem ${error}`)
@@ -151,7 +152,7 @@ export default function MagazineSubscriptions() {
 
 
 
-//     }, [dispatch, sub])
+//     }, [sub])
 
 //     if(!singleIssue) {
 //         return(<>
@@ -160,7 +161,7 @@ export default function MagazineSubscriptions() {
 //     }
 
 
-// console.log(singleIssue)
+
 
 //     return(<>
     

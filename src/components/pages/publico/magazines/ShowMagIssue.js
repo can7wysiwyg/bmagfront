@@ -1,16 +1,15 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import {  magShowSingle } from '../../../../redux/actions/magazineAction'
 import moment from 'moment/moment'
 import { Container, Spinner } from 'react-bootstrap'
+import { fetchMagSingle } from '../../../../helpers/articlesHelpers/MagazinesFetch'
 
 
 
 export default function ShowMagIssue() {
     const {id} = useParams()
-    const dispatch = useDispatch()
-    const singleIssue = useSelector((state) => state.magRdcr.singleIssue)
+    
+    const [singleIssue, setSingleIssue] = useState({})
    
 
     useEffect(() => {
@@ -18,7 +17,9 @@ export default function ShowMagIssue() {
         const fetchData = async() => {
 
             try {
-                await dispatch(magShowSingle(id))
+              const data =  await fetchMagSingle(id)
+
+              setSingleIssue(data?.singleIssue)
                 
             } catch (error) {
                 console.error("there was a problem")
@@ -30,7 +31,7 @@ export default function ShowMagIssue() {
         fetchData()
 
 
-    }, [dispatch, id])
+    }, [id])
 
 
    

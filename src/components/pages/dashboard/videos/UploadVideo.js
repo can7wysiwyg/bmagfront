@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
-import { publishVideo } from '../../../../redux/actions/publishAction';
-import { genreView } from '../../../../redux/actions/magazineAction';
+import { fetchAllCategories } from '../../../../helpers/articlesHelpers/CategoriesFetch';
+import axios from 'axios';
+import { ApiUrl } from '../../../../helpers/ApiUrl';
+import { bmagtoken } from '../../../../helpers/Bmag';
 
 
 
@@ -12,20 +13,20 @@ export default function UploadVideo() {
     const [btnText, setBtnText] = useState("UPLOAD VIDEO");
     const [isUploading, setIsUploading] = useState(false);
     
-    const dispatch = useDispatch();
-
-    const genres = useSelector((state) => state.magRdcr.genres);
+    
+    const [genres, setGenres] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await dispatch(genreView());
+       const data = await fetchAllCategories()
+       setGenres(data?.categories)
       } catch (error) {
         console.error('There was a problem');
       }
     };
     fetchData();
-  }, [dispatch]);
+  }, []);
 
 
     const handleInputChange = (e) => {
@@ -50,9 +51,16 @@ export default function UploadVideo() {
         videoData.append('videoFile', videoFile);
         videoData.append('videoGenre', formData.videoGenre)
 
-        await dispatch(publishVideo(videoData));
+  
+        await axios.post(`${ApiUrl}/upload_video`, videoData, {
+          headers: {
+            Authorization: `Bearer ${bmagtoken}`
+          }
+        })
         setIsUploading(false);
         setBtnText("UPLOAD VIDEO");
+
+        window.location.href = "/videos_dashboard"
     };
 
     

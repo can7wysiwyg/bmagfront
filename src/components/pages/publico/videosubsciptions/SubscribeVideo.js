@@ -49,7 +49,7 @@ export default function SubscribeVideo() {
       fetchVideo()
 
 
-    }, [dispatch, id])
+    }, [id])
 
 
     useEffect(() => {
@@ -105,6 +105,8 @@ return(<>
     
         
         await subscribeToVideo(formData)
+
+        window.location.reload()
         
           
         handleClose(); 

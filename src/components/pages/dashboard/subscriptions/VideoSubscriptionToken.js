@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { subscribedVideoSingle, videoSubGenToken } from '../../../../redux/actions/videoSubscriptionAction'
-import { watchVideo } from '../../../../redux/actions/publicAction'
 import axios from 'axios'
 import { ApiUrl } from '../../../../helpers/ApiUrl'
 import { bmagtoken } from '../../../../helpers/Bmag'

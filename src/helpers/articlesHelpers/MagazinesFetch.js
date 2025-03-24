@@ -109,18 +109,15 @@ export async function UserSubdMagByToken(data) {
 
 
 export async function UserReadSubdMag(data) {
-
     try {
-        const response = await axios.post(`${ApiUrl}/reed_magazine_subscribed`, data)
-
-        if(!response.ok) {
-            console.log("problem fetching item")
-        }
-
-        return await response.json()
-
+      const response = await axios.post(`${ApiUrl}/reed_magazine_subscribed`, data);
+      
+      if(!response.data) {
+        console.log("problem fetching item");
+      }
+      
+      return response.data; // Use response.data instead of response.json()
     } catch (error) {
-        console.log("there was a problem fetching subscribed magazine", error)
+      console.log("there was a problem fetching subscribed magazine", error);
     }
-    
-}
+  }

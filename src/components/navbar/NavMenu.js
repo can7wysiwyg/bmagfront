@@ -102,6 +102,33 @@ export default function NavMenu() {
                   </ul> 
                 </li>
 
+
+                <li className="nav-item dropdown">
+                  <p
+                    className="nav-link dropdown-toggle"
+                    id="pagesDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    Videos <i className="ti-angle-down ms-1"></i>
+                  </p>
+                   <ul className="dropdown-menu" aria-labelledby="pagesDropdown">
+                    {categories?.map((cat) => (
+                      <li key={cat._id}>
+                        <a
+                          className="dropdown-item"
+                          href={`/videos/${cat._id}`}
+                        >
+                          {cat.genreName}
+                        </a>
+                      </li>
+                    ))}
+                  </ul> 
+                </li>
+
+
                 {/* test */}
 
                 <li className="nav-item dropdown">

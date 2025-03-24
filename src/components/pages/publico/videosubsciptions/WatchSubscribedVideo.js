@@ -25,7 +25,7 @@ export default function WatchSubscribedVideo() {
             }
         };
         fetchVideo();
-    }, [dispatch, id]);
+    }, [id]);
 
 
 

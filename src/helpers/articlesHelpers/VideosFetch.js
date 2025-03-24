@@ -86,12 +86,11 @@ export async function fetchWatchVideoSubscribed(token) {
     try {
         const response = await axios.post(`${ApiUrl}/watch_video_subscribed`, token)
 
-        if(!response.ok) {
-            console.log(`there was a problem fetching subscribed video`)
-        }
-
-        return await response.json()
-        
+        if(!response.data) {
+            console.log("problem fetching item");
+          }
+          
+          return response.data; // Use response.data instead of response.json() 
     } catch (error) {
         console.log(`there was a problem fetching subscribed video ${error}`)
     }
@@ -106,13 +105,11 @@ export async function subscribeToVideo(data) {
         const response = await axios.post(`${ApiUrl}/video_subscriber_credentials_submit`, data)
 
 
-        if(!response.ok) {
-            console.log(`there was a problem subscribing to video`)
-        }
-
-        return await response.json()
-        
-
+        if(!response.data) {
+            console.log("problem fetching item");
+          }
+          
+          return response.data; // Use response.data instead of response.json()
 
         
     } catch (error) {

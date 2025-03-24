@@ -84,6 +84,7 @@ return(<>
         e.preventDefault();
 
         await UserMagSubscribe(formData)
+        window.location.reload()
     
           
         handleClose(); 

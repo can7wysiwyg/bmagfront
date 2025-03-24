@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
 import { fetchSingleVideo } from '../../../../helpers/articlesHelpers/VideosFetch';
@@ -7,9 +7,7 @@ import { fetchSingleVideo } from '../../../../helpers/articlesHelpers/VideosFetc
 export default function ViewVideo() {
     const {id} = useParams()
     
-
-    const dispatch = useDispatch();
-    const [video, setVideo] = useSelector({}); 
+    const [video, setVideo] = useState({}); 
 
     useEffect(() => {
         const fetchData = async () => {

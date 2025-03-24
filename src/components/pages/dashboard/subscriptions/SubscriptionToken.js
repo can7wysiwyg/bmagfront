@@ -16,7 +16,7 @@ const [subscription, setSubscription] = useState([]);
     useEffect(() => {
         const fetchSub = async () => {
             const response =  await axios.get(`${ApiUrl}/admin_check_subscription_single/${id}`, {
-                Headers: {
+                headers: {
                     Authorization: `Bearer ${bmagtoken}`
                 }
             }) 

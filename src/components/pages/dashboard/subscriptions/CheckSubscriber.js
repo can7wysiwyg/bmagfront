@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { magShowSingle } from '../../../../redux/actions/magazineAction';
 import moment from 'moment';
 import axios from 'axios';
 import { ApiUrl } from '../../../../helpers/ApiUrl';
 import { fetchMagSingle } from '../../../../helpers/articlesHelpers/MagazinesFetch';
-
+import { bmagtoken } from '../../../../helpers/Bmag';
 
 export default function CheckSubscriber() {
     const {id} = useParams()
     
-    const [subscription, setSubscription] = useSelector([]);
+    const [subscription, setSubscription] = useState([]);
 
     useEffect(() => {
         const fetchSub = async () => {
          const response =  await axios.get(`${ApiUrl}/admin_check_subscription_single/${id}`, {
-                             Headers: {
+                             headers: {
                                  Authorization: `Bearer ${bmagtoken}`
                              }
                          }) 
