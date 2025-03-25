@@ -68,6 +68,8 @@ import ManageTables from "./components/pages/dashboard/soccer/ManageTables";
 import ManageTable from "./components/pages/dashboard/soccer/ManageTable";
 import PostComments from "./components/pages/publico/articles/PostComments";
 import MostViewed from "./components/pages/dashboard/articles/MostViewed";
+import ManageSingleLeague from "./components/pages/dashboard/soccer/ManageSingleLeague";
+import ManageSingleTeam from "./components/pages/dashboard/soccer/ManageSingleTeam";
 
 // import Epl from "./components/pages/publico/tables/Epl";
 
@@ -185,6 +187,8 @@ function App() {
           <Route path="/videos/:id" element={<VideosByGenre />} />
           <Route path="/edit_video/:id" element={<EditVideo />} />
           <Route path="/edit_video_name/:id" element={<EditVideoName />} />
+          <Route path="/manage_single_league/:id" element={<ManageSingleLeague />} />
+          <Route path="/manage_single_team/:id" element={<ManageSingleTeam />} />
 
           {/* <Route path="/view_articles/:id" element={<DashArticlesByIssue />} /> */}
 

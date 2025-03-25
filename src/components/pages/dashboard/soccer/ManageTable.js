@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Container, Row, Col, Table, Button } from 'react-bootstrap';
+import { Container, Row, Col, Table, Button, Modal } from 'react-bootstrap';
 import { fetchLeague, fetchLeagueTable, fetchTeams } from '../../../../helpers/articlesHelpers/LeaguesFetch';
 import axios from 'axios';
 import { ApiUrl } from '../../../../helpers/ApiUrl';
@@ -14,6 +14,28 @@ export default function ManageTable() {
     const [editableTable, setEditableTable] = useState([]);
     const [hasChanges, setHasChanges] = useState(false);
 
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    const handleDelete = async() => {
+
+        await axios.delete(`${ApiUrl}/erase_table_admin/${table?._id}`, {
+            headers: {
+                Authorization: `Bearer ${bmagtoken}`
+            }
+        })
+    
+        console.log('Table deleted');
+        handleClose();
+
+        window.location.href = '/local_football_dashboard'
+
+      };
+  
+  
+    
     useEffect(() => {
         const fetchData = async () => {
           const itemLeague =  await fetchLeague(id)
@@ -28,6 +50,9 @@ export default function ManageTable() {
         };
         fetchData();
     }, [id]);
+
+
+
 
     useEffect(() => {
         if (table.teams) {
@@ -109,10 +134,37 @@ export default function ManageTable() {
                     <Button variant="primary" onClick={handleSaveAll} disabled={!hasChanges}>
                         Save Changes
                     </Button>
+                    <div style={{marginTop: 15}}>
+                    <Button variant='danger' onClick={handleShow}>
+                        Delete Table
+                    </Button>
+
+                    </div>
+                    
                     <br />
                     <br />
                 </Col>
             </Row>
+
+            <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Deletion</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure you want to delete this table? 
+          This action cannot be undone.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={handleDelete}>
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+
         </Container>
     );
 }

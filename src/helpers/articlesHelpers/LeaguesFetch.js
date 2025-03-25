@@ -195,3 +195,21 @@ export async function fetchSingleGame(id) {
     }
     
 }
+
+
+export async function fetchTeamSingle(id) {
+
+    try {
+        const response = await fetch(`${ApiUrl}/public_show_team/${id}`)
+
+        if(!response.ok) {
+            console.log("there was a problem fetching the team")
+        }
+
+        return await response.json()
+        
+    } catch (error) {
+        console.log(`failure to fetch team ${error}`)
+    }
+    
+}

@@ -102,18 +102,18 @@ export default function SingleLeague() {
      return <h3>LOADING....</h3>;
   }
 
-  if (games.length === 0) {
-     return (<div style={{textAlign: "center", margin: 34}}>
+//   if (games.length === 0) {
+//      return (<div style={{textAlign: "center", margin: 34}}>
      
-     <h3>NO FIXTURES FROM THIS LEAGUE AT THE MOMENT</h3>
-     </div>)
-  }
+//      <h3>NO FIXTURES FROM THIS LEAGUE AT THE MOMENT</h3>
+//      </div>)
+//   }
 
   return (
     <>
      <Container className="mt-5 mb-5">
         <h5 style={{ fontFamily: "Times New Roman", textAlign: "center" }}>
-           {league.leagueName}
+    <a href={`/manage_single_league/${league?._id}`}>Manage  {league.leagueName} </a>
         </h5>
 
         <Row className="mt-4">

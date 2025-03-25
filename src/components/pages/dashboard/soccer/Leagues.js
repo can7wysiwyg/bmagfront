@@ -76,7 +76,7 @@ export default function Leagues() {
               </ListGroup.Item>
             ))
           ) : (
-            "No teams matching your search"
+            "No leagues matching your search"
           )}
         </ListGroup>
 

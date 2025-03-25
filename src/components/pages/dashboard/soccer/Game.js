@@ -266,8 +266,11 @@ const btnState = () => {
             </ListGroup>
 
             <Button variant="success" onClick={btnState} >
-              Start The Game Game
+              Start The Game 
             </Button>
+
+
+
           </Card.Body>
         ) : (
           <Card.Body>
